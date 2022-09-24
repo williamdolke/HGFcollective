@@ -9,11 +9,11 @@ import SwiftUI
 import FirebaseAuth
 
 struct LoginView: View {
-    @State private var isLoginMode = false
+    @State var isLoginMode = false
     @State private var email = ""
     @State private var password = ""
     @State private var loginStatusMessage = ""
-    @State private var isSecured: Bool = true
+    @State var isSecured: Bool = true
 
     var body: some View {
         NavigationView {
@@ -63,6 +63,9 @@ struct LoginView: View {
                         }.background(Color.theme.accent)
 
                     }
+                    
+                    Text(self.loginStatusMessage)
+                        .foregroundColor(.red)
                 }
                 .padding()
 
@@ -91,8 +94,6 @@ struct LoginView: View {
             }
 
             print("Successfully logged in as user: \(result?.user.uid ?? "")")
-
-            self.loginStatusMessage = "Successfully logged in as user: \(result?.user.uid ?? "")"
         }
     }
 }
