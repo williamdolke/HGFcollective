@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct LoginView: View {
-    @State var isLoginMode = false
-    @State var email = ""
-    @State var password = ""
-    @State var isSecured: Bool = true
+    @State private var isLoginMode = false
+    @State private var email = ""
+    @State private var password = ""
+    @State private var loginStatusMessage = ""
+    @State private var isSecured: Bool = true
 
     var body: some View {
         NavigationView {
             ScrollView {
-
                 VStack(spacing: 16) {
                     Picker(selection: $isLoginMode, label: Text("Picker here")) {
                         Text("Login")
@@ -75,8 +76,23 @@ struct LoginView: View {
     private func handleAction() {
         if isLoginMode {
             print("Logging into Firebase with existing credentials")
+            loginUser()
         } else {
             print("Registering a new account")
+        }
+    }
+    
+    private func loginUser() {
+        Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
+            if let error = error {
+                print("Failed to login user:", error)
+                self.loginStatusMessage = "Failed to login user: \(error)"
+                return
+            }
+
+            print("Successfully logged in as user: \(result?.user.uid ?? "")")
+
+            self.loginStatusMessage = "Successfully logged in as user: \(result?.user.uid ?? "")"
         }
     }
 }

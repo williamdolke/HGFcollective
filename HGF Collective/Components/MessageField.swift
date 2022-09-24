@@ -10,6 +10,7 @@ import SwiftUI
 struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @State private var message = ""
+    @State var showLogin: Bool = false
 
     var body: some View {
         HStack {
@@ -17,16 +18,23 @@ struct MessageField: View {
             CustomTextField(placeholder: Text("Enter your message here"), text: $message)
                 .frame(height: 52)
                 .disableAutocorrection(true)
-
-            Button {
-                messagesManager.sendMessage(text: message)
-                message = ""
-            } label: {
-                Image(systemName: "paperplane.fill")
-                    .foregroundColor(.white)
-                    .padding(10)
-                    .background(Color.theme.accent)
-                    .cornerRadius(50)
+            
+            NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
+                Button {
+                    if message == "admin login" {
+                        message = ""
+                        self.showLogin = true
+                    } else {
+                        messagesManager.sendMessage(text: message)
+                        message = ""
+                    }
+                } label: {
+                    Image(systemName: "paperplane.fill")
+                        .foregroundColor(.white)
+                        .padding(10)
+                        .background(Color.theme.accent)
+                        .cornerRadius(50)
+                }
             }
         }
         .padding(.horizontal)

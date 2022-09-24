@@ -65,7 +65,7 @@ struct HomeView: View {
                     .frame(width: 50, height: 50)
                     .clipShape(Circle())
                     .padding(.top, 90))
-            }.navigationViewStyle(StackNavigationViewStyle())
+            }
         }
     }
 }
