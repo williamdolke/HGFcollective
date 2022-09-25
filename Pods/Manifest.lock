@@ -1,0 +1,29 @@
+PODS:
+  - FirebaseFirestore (9.6.0):
+    - FirebaseFirestore/AutodetectLeveldb (= 9.6.0)
+  - FirebaseFirestore/AutodetectLeveldb (9.6.0):
+    - FirebaseFirestore/Base
+    - FirebaseFirestore/WithLeveldb
+  - FirebaseFirestore/Base (9.6.0)
+  - FirebaseFirestore/WithLeveldb (9.6.0):
+    - FirebaseFirestore/Base
+
+DEPENDENCIES:
+  - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `9.6.0`)
+
+EXTERNAL SOURCES:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 9.6.0
+
+CHECKOUT OPTIONS:
+  FirebaseFirestore:
+    :git: https://github.com/invertase/firestore-ios-sdk-frameworks.git
+    :tag: 9.6.0
+
+SPEC CHECKSUMS:
+  FirebaseFirestore: 9bfe2e814686fb3ba2495b97618b38987e4c8526
+
+PODFILE CHECKSUM: 309686697e3cec56403ca685158760c88dde1680
+
+COCOAPODS: 1.11.3
