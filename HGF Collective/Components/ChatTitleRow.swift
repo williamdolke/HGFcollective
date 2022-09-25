@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ChatTitleRow: View {
     @EnvironmentObject var messagesManager: MessagesManager
@@ -13,14 +14,12 @@ struct ChatTitleRow: View {
     var body: some View {
         VStack {
             HStack(spacing: 20) {
-                AsyncImage(url: URL(string: messagesManager.contact.iconURL)) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 50, height: 50)
-                        .cornerRadius(50)
-                } placeholder: {
-                    ProgressView()
-                }
+                WebImage(url: URL(string: messagesManager.contact.iconURL))
+                    .resizable()
+                    .placeholder(Image(systemName: "person.fill"))
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 50, height: 50)
+                    .cornerRadius(50)
                 
                 Text(messagesManager.contact.name)
                     .font(.title).bold()
