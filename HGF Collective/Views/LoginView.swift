@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 struct LoginView: View {
-    @State var isLoginMode = false
+    @State var isLoginMode = true
     @State private var email = ""
     @State private var password = ""
     @State private var loginStatusMessage = ""
@@ -20,7 +20,7 @@ struct LoginView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 16) {
-                    Picker(selection: $isLoginMode, label: Text("Picker here")) {
+                    Picker(selection: $isLoginMode, label: Text("Login or create account?")) {
                         Text("Login")
                             .tag(true)
                         Text("Create Account")
@@ -50,7 +50,7 @@ struct LoginView: View {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                             .foregroundColor(Color.theme.accent)
                     }
-                    NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
+                    NavigationLink(destination: InboxView().environmentObject(MessagesManager()).navigationBarBackButtonHidden(true), isActive: $showInbox) {
                         Button {
                             handleAction()
                         } label: {

@@ -24,13 +24,6 @@ struct ChatTitleRow: View {
                 Text(messagesManager.contact.name)
                     .font(.title).bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
-                // Phone logo
-                /*Image(systemName: "phone.fill")
-                 .foregroundColor(.gray)
-                 .padding(10)
-                 .background(.white)
-                 .cornerRadius(50)*/
             }
             .padding()
         }
