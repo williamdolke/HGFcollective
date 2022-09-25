@@ -23,7 +23,7 @@ struct ChatView: View {
                         }
                     }
                     .padding(.top, 10)
-                    .background(.white)
+                    .background(Color(UIColor.systemBackground))
                     .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier added in Extensions file
                     .onChange(of: messagesManager.lastMessageId) { id in
                         // When the lastMessageId changes, scroll to the bottom of the conversation
@@ -47,5 +47,9 @@ struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
         ChatView()
             .environmentObject(messagesManager)
+        
+        ChatView()
+            .environmentObject(messagesManager)
+            .preferredColorScheme(.dark)
     }
 }

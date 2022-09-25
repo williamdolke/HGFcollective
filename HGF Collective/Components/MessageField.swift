@@ -16,7 +16,8 @@ struct MessageField: View {
         HStack {
             // Custom text field created below
             CustomTextField(placeholder: Text("Enter your message here"), text: $message)
-                .frame(height: 52)
+                .frame(height: 60)
+                .contentShape(Rectangle())
                 .disableAutocorrection(true)
             
             NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
@@ -38,7 +39,6 @@ struct MessageField: View {
             }
         }
         .padding(.horizontal)
-        .padding(.vertical, 10)
         .background(.gray)
         .cornerRadius(50)
         .padding()

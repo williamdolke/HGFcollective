@@ -65,13 +65,3 @@ struct MailView: UIViewControllerRepresentable {
         uiViewController.setMessageBody(enquiryManager.mail.msgBody ?? "", isHTML: false)
     }
 }
-
-struct MailView_Previews: PreviewProvider {
-    static var result: Result<MFMailComposeResult, Error>? = nil
-    
-    static var previews: some View {
-        MailView(presentation: .constant(true), result: .constant(result))
-            .environmentObject(EnquiryManager())
-            .disabled(!MFMailComposeViewController.canSendMail())
-    }
-}

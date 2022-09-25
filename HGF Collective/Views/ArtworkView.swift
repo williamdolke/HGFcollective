@@ -64,5 +64,9 @@ struct ArtworkView_Previews: PreviewProvider {
     static var previews: some View {
         ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes"))
             .environmentObject(artistManager)
+        
+        ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes"))
+            .environmentObject(artistManager)
+            .preferredColorScheme(.dark)
     }
 }

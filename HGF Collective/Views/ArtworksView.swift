@@ -61,5 +61,9 @@ struct ArtworksView_Previews: PreviewProvider {
     static var previews: some View {
         ArtworksView()
             .environmentObject(artistManager)
+        
+        ArtworksView()
+            .environmentObject(artistManager)
+            .preferredColorScheme(.dark)
     }
 }

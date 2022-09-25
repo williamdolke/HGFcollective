@@ -44,5 +44,9 @@ struct ArtistsView_Previews: PreviewProvider {
     static var previews: some View {
         ArtistsView()
             .environmentObject(artistManager)
+        
+        ArtistsView()
+            .environmentObject(artistManager)
+            .preferredColorScheme(.dark)
     }
 }

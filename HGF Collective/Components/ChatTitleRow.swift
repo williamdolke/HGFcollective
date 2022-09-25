@@ -44,5 +44,9 @@ struct ChatTitleRow_Previews: PreviewProvider {
     static var previews: some View {
         ChatTitleRow()
             .environmentObject(messagesManager)
+        
+        ChatTitleRow()
+            .environmentObject(messagesManager)
+            .preferredColorScheme(.dark)
     }
 }

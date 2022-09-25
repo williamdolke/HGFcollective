@@ -39,5 +39,9 @@ struct ContactView_Previews: PreviewProvider {
     static var previews: some View {
         ContactView()
             .environmentObject(messagesManager)
+        
+        ContactView()
+            .environmentObject(messagesManager)
+            .preferredColorScheme(.dark)
     }
 }
