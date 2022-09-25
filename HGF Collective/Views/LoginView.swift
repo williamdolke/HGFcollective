@@ -14,6 +14,7 @@ struct LoginView: View {
     @State private var password = ""
     @State private var loginStatusMessage = ""
     @State var isSecured: Bool = true
+    @State private var showInbox: Bool = false
 
     var body: some View {
         NavigationView {
@@ -49,19 +50,20 @@ struct LoginView: View {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                             .foregroundColor(Color.theme.accent)
                     }
+                    NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
+                        Button {
+                            handleAction()
+                        } label: {
+                            HStack {
+                                Spacer()
+                                Text(isLoginMode ? "Log In" : "Create Account")
+                                    .foregroundColor(.white)
+                                    .padding(.vertical, 10)
+                                    .font(.system(size: 14, weight: .semibold))
+                                Spacer()
+                            }.background(Color.theme.accent)
 
-                    Button {
-                        handleAction()
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text(isLoginMode ? "Log In" : "Create Account")
-                                .foregroundColor(.white)
-                                .padding(.vertical, 10)
-                                .font(.system(size: 14, weight: .semibold))
-                            Spacer()
-                        }.background(Color.theme.accent)
-
+                        }
                     }
                     
                     Text(self.loginStatusMessage)
@@ -94,6 +96,7 @@ struct LoginView: View {
             }
 
             print("Successfully logged in as user: \(result?.user.uid ?? "")")
+            self.showInbox = true
         }
     }
 }
