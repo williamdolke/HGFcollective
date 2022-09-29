@@ -18,6 +18,7 @@ struct ContactView: View {
                     Text("")
                     ChatView()
                         .environmentObject(messagesManager)
+                        .environmentObject(EnquiryManager())
                         .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier added in Extensions file
                         .navigationTitle("Contact Us")
                         .navigationBarItems(trailing:
@@ -34,7 +35,7 @@ struct ContactView: View {
 }
 
 struct ContactView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager()
+    static let messagesManager = MessagesManager(uid: "test")
 
     static var previews: some View {
         ContactView()

@@ -58,7 +58,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
-    static let messagesManager = MessagesManager()
+    static let messagesManager = MessagesManager(uid: "test")
     
     static var previews: some View {
         ContentView()

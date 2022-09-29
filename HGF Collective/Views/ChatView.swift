@@ -9,12 +9,12 @@ import SwiftUI
 
 struct ChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
+    @EnvironmentObject var enquiryManager: EnquiryManager
     
     var body: some View {
         VStack {
             VStack {
-                ChatTitleRow()
-                    .environmentObject(messagesManager)
+                ChatTitleRow(username: enquiryManager.chat.name, iconURL: enquiryManager.chat.iconURL)
                 
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -42,7 +42,7 @@ struct ChatView: View {
 }
 
 struct ChatView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager()
+    static let messagesManager = MessagesManager(uid: "test")
     
     static var previews: some View {
         ChatView()

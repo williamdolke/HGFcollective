@@ -23,7 +23,7 @@ class ArtistManager: ObservableObject {
     }
     
     func getArtists() {
-        print(" Getting artists.")
+        print("Getting artists.")
         db.collection("artists").addSnapshotListener { querySnapshot, error in
             
             // If we don't have documents, exit the function

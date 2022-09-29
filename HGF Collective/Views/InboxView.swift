@@ -65,7 +65,7 @@ struct InboxView: View {
 }
 
 struct InboxView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager()
+    static let messagesManager = MessagesManager(uid: "test")
     
     static var previews: some View {
         InboxView()

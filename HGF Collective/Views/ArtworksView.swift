@@ -41,7 +41,7 @@ struct ArtworksView: View {
         
         artistManager.artists.forEach { artist in
             alreadyFiltered = false
-            artist.artworks!.forEach {artwork in
+            artist.artworks?.forEach {artwork in
                 if artwork.name.localizedCaseInsensitiveContains(searchQuery) || searchQuery == "" {
                     filteredArtworks.append(artwork.name)
                     if !alreadyFiltered {

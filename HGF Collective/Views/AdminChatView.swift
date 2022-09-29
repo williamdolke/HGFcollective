@@ -13,8 +13,7 @@ struct AdminChatView: View {
     var body: some View {
         VStack {
             VStack {
-                ChatTitleRow()
-                    .environmentObject(messagesManager)
+                ChatTitleRow(username: "UID", iconURL: "")
                 
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -42,13 +41,13 @@ struct AdminChatView: View {
 }
 
 struct AdminChatView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager()
+    static let messagesManager = MessagesManager(uid: "test")
     
     static var previews: some View {
-        ChatView()
+        AdminChatView()
             .environmentObject(messagesManager)
         
-        ChatView()
+        AdminChatView()
             .environmentObject(messagesManager)
             .preferredColorScheme(.dark)
     }

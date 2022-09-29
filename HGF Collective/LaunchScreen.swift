@@ -17,7 +17,7 @@ struct LaunchScreen: View {
         if isActive {
             ContentView()
                 .environmentObject(artistManager)
-                .environmentObject(MessagesManager())
+                .environmentObject(MessagesManager(uid: "test"))
         } else {
             VStack {
                 VStack {
@@ -55,6 +55,6 @@ struct LaunchScreen_Previews: PreviewProvider {
     static var previews: some View {
         LaunchScreen()
             .environmentObject(artistManager)
-            .environmentObject(MessagesManager())
+            .environmentObject(MessagesManager(uid: "test"))
     }
 }

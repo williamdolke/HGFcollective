@@ -14,5 +14,4 @@ struct Artist: Identifiable, Codable {
     var name: String
     var biography: String
     var artworks: [Artwork]?
-    var match: Bool?
 }

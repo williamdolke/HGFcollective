@@ -9,7 +9,8 @@ import Foundation
 
 struct Message: Identifiable, Codable {
     var id: String
-    var text: String
-    var received: Bool
+    var content: String
+    var isCustomer: Bool
     var timestamp: Date
+    var type: String
 }

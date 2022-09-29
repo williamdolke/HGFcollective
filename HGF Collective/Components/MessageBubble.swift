@@ -12,14 +12,14 @@ struct MessageBubble: View {
     @State private var showTime = false
     
     var body: some View {
-        VStack(alignment: message.received ? .leading : .trailing) {
+        VStack(alignment: message.isCustomer ? .leading : .trailing) {
             HStack {
-                Text(message.text)
+                Text(message.content)
                     .padding()
-                    .background(message.received ? .gray : Color.theme.accent)
+                    .background(message.isCustomer ? .gray : Color.theme.accent)
                     .cornerRadius(30)
             }
-            .frame(maxWidth: 300, alignment: message.received ? .leading : .trailing)
+            .frame(maxWidth: 300, alignment: message.isCustomer ? .leading : .trailing)
             .onTapGesture {
                 showTime.toggle()
             }
@@ -28,17 +28,17 @@ struct MessageBubble: View {
                 Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
                     .font(.caption2)
                     .foregroundColor(.gray)
-                    .padding(message.received ? .leading : .trailing, 25)
+                    .padding(message.isCustomer ? .leading : .trailing, 25)
             }
         }
-        .frame(maxWidth: .infinity, alignment: message.received ? .leading : .trailing)
-        .padding(message.received ? .leading : .trailing)
+        .frame(maxWidth: .infinity, alignment: message.isCustomer ? .leading : .trailing)
+        .padding(message.isCustomer ? .leading : .trailing)
         .padding(.horizontal, 10)
     }
 }
 
 struct MessageBubble_Previews: PreviewProvider {
     static var previews: some View {
-        MessageBubble(message: Message(id: "12345", text: "I've been coding applications from scratch in SwiftUI and it's so much fun!", received: true, timestamp: Date()))
+        MessageBubble(message: Message(id: "12345", content: "I've been coding applications from scratch in SwiftUI and it's so much fun!", isCustomer: true, timestamp: Date(), type: "text"))
     }
 }
