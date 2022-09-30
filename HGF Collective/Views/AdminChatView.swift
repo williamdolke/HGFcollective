@@ -13,12 +13,12 @@ struct AdminChatView: View {
     var body: some View {
         VStack {
             VStack {
-                ChatTitleRow(username: "UID", iconURL: "")
+                ChatTitleRow(username: messagesManager.uid.prefix(12) + "...", iconURL: "")
                 
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(messagesManager.messages, id: \.id) { message in
-                            MessageBubble(message: message)
+                            MessageBubble(message: message, isCustomer: !message.isCustomer)
                         }
                     }
                     .padding(.top, 10)
@@ -41,7 +41,7 @@ struct AdminChatView: View {
 }
 
 struct AdminChatView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager(uid: "test")
+    static let messagesManager = MessagesManager(uid: "test", isCustomer: false)
     
     static var previews: some View {
         AdminChatView()

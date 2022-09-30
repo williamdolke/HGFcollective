@@ -12,6 +12,7 @@ import SwiftUI
 
 class ArtistManager: ObservableObject {
     @Published var artists: [Artist]
+    @Published var featuredArtist: Artist
     
     // Create an instance of our Firestore database
     let db = Firestore.firestore()
@@ -19,6 +20,7 @@ class ArtistManager: ObservableObject {
     // On initialisation of the ArtistManager class, get the artists and artworks from Firestore
     init() {
         self.artists = []
+        self.featuredArtist = Artist(name: "", biography: "")
         self.getArtists()
     }
     
@@ -48,6 +50,7 @@ class ArtistManager: ObservableObject {
             }
             self.getArtworks()
         }
+        print("Successfully got \(self.artists.count) artists.")
     }
     
     func getArtworks() {
@@ -75,9 +78,11 @@ class ArtistManager: ObservableObject {
                             return nil
                         }
                     }
+                    print("Got \(self.artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
                 }
             }
             print("Successfully got artworks.")
+            self.featuredArtist = self.artists.randomElement()!
         }
     }
     

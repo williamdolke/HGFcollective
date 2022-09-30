@@ -50,7 +50,7 @@ struct LoginView: View {
                         Image(systemName: self.isSecured ? "eye.slash" : "eye")
                             .foregroundColor(Color.theme.accent)
                     }
-                    NavigationLink(destination: InboxView().environmentObject(MessagesManager(uid: "test")).navigationBarBackButtonHidden(true), isActive: $showInbox) {
+                    NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
                         Button {
                             handleAction()
                         } label: {

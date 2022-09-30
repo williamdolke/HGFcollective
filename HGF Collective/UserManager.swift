@@ -21,7 +21,7 @@ class UserManager: ObservableObject {
     }
     
     func getUsers() {
-        print("Getting users.")
+        //print("Getting users.")
         db.collection("users").addSnapshotListener { querySnapshot, error in
             
             // If we don't have documents, exit the function
@@ -47,4 +47,3 @@ class UserManager: ObservableObject {
         }
     }
 }
-

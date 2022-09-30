@@ -17,7 +17,7 @@ struct LaunchScreen: View {
         if isActive {
             ContentView()
                 .environmentObject(artistManager)
-                .environmentObject(MessagesManager(uid: "test"))
+                .environmentObject(MessagesManager(uid: UIDevice.current.identifierForVendor!.uuidString))
         } else {
             VStack {
                 VStack {

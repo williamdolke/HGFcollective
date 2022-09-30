@@ -19,7 +19,7 @@ struct ChatView: View {
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(messagesManager.messages, id: \.id) { message in
-                            MessageBubble(message: message)
+                            MessageBubble(message: message, isCustomer: message.isCustomer)
                         }
                     }
                     .padding(.top, 10)

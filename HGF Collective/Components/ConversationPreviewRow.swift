@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ConversationPreviewRow: View {
+    @State var user: User
+    
     var body: some View {
         VStack {
             HStack(spacing: 16) {
@@ -20,9 +22,9 @@ struct ConversationPreviewRow: View {
 
 
                 VStack(alignment: .leading) {
-                    Text("Username")
+                    Text(user.id.prefix(12) + "...")
                         .font(.system(size: 20, weight: .bold))
-                    Text("Message preview")
+                    Text(user.messagePreview.prefix(18) + "...")
                         .font(.system(size: 16))
                         .foregroundColor(Color(.lightGray))
                 }
@@ -38,7 +40,12 @@ struct ConversationPreviewRow: View {
 }
 
 struct ConversationPreviewRow_Previews: PreviewProvider {
+    static var user = User(id: UUID().uuidString, messagePreview: "This Is A Message Preview", latestTimestamp: Date.now)
+    
     static var previews: some View {
-        ConversationPreviewRow()
+        ConversationPreviewRow(user: user)
+        
+        ConversationPreviewRow(user: user)
+            .preferredColorScheme(.dark)
     }
 }

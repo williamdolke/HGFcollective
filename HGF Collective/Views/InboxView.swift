@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct InboxView: View {
-    @EnvironmentObject var messagesManager: MessagesManager
+    @State private var userManager = UserManager()
     @State var showLogOutOptions: Bool = false
     
     var body: some View {
@@ -54,9 +54,9 @@ struct InboxView: View {
 
     private var conversationsView: some View {
         ScrollView {
-            ForEach(0..<10, id: \.self) { num in
-                NavigationLink(destination: AdminChatView().environmentObject(messagesManager)) {
-                    ConversationPreviewRow()
+            ForEach(userManager.users) { user in
+                NavigationLink(destination: AdminChatView().environmentObject(MessagesManager(uid: user.id, isCustomer: false))) {
+                    ConversationPreviewRow(user: user)
                 }
                 .navigationBarTitle("")
             }
@@ -65,14 +65,10 @@ struct InboxView: View {
 }
 
 struct InboxView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager(uid: "test")
-    
     static var previews: some View {
         InboxView()
-            .environmentObject(messagesManager)
         
         InboxView()
-            .environmentObject(messagesManager)
             .preferredColorScheme(.dark)
     }
 }

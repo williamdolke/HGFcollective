@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var artistManager: ArtistManager
+    
     var body: some View {
         VStack {
             NavigationView {
@@ -33,7 +35,7 @@ struct HomeView: View {
                     }
                     .padding(.horizontal)
                     
-                    Text("Featured Artist")
+                    Text("Featured Artist - \(artistManager.featuredArtist.name)")
                         .font(.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
