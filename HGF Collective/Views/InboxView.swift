@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InboxView: View {
     @State private var userManager = UserManager()
-    @State var showLogOutOptions: Bool = false
+    @State private var showLogOutOptions: Bool = false
     
     var body: some View {
         NavigationView {
@@ -24,7 +24,6 @@ struct InboxView: View {
 
     private var conversationTitleRow: some View {
         HStack(spacing: 16) {
-
             Image(systemName: "person.fill")
                 .font(.system(size: 34, weight: .heavy))
 

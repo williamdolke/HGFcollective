@@ -30,7 +30,7 @@ struct ConversationPreviewRow: View {
                 }
                 Spacer()
 
-                Text("Just now")
+                Text(user.latestTimestamp.formattedDateString(format: "E, d MMM HH:mm:ss"))
                     .font(.system(size: 16, weight: .semibold))
             }
             Divider()
