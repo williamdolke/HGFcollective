@@ -12,15 +12,16 @@ import SwiftUI
 
 class ArtistManager: ObservableObject {
     @Published var artists: [Artist]
-    @Published var featuredArtist: Artist
-    
+    @Published var featuredArtistIndex: Int
+    let numDiscoverArtworks: Int = 3
+
     // Create an instance of our Firestore database
     let db = Firestore.firestore()
     
     // On initialisation of the ArtistManager class, get the artists and artworks from Firestore
     init() {
         self.artists = []
-        self.featuredArtist = Artist(name: "", biography: "")
+        self.featuredArtistIndex = 0
         self.getArtists()
     }
     
@@ -48,6 +49,7 @@ class ArtistManager: ObservableObject {
                     return nil
                 }
             }
+            self.featuredArtistIndex = Int(arc4random_uniform(UInt32(self.artists.count)))
             self.getArtworks()
         }
         print("Successfully got \(self.artists.count) artists.")
@@ -81,9 +83,17 @@ class ArtistManager: ObservableObject {
                     print("Got \(self.artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
                 }
             }
-            print("Successfully got artworks.")
-            self.featuredArtist = self.artists.randomElement()!
         }
+    }
+    
+    func getDiscoverArtworks() -> [Int] {
+        var indexes: [Int] = []
+        
+        for i in 0...self.numDiscoverArtworks-1 {
+            indexes.append(Int(arc4random_uniform(UInt32(self.artists.count))))
+            indexes.append(Int(arc4random_uniform(UInt32(self.artists[i].artworks!.count))))
+        }
+        return indexes
     }
     
     func getArtworkImages() {
@@ -123,7 +133,7 @@ class ArtistManager: ObservableObject {
         if let text = artwork.authenticity {
             info = info + Text("**Certificate of authenticity:** ") + Text(text)
         }
-        
+
         return info
     }
 }

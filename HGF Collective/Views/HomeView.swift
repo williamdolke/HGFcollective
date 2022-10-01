@@ -21,7 +21,7 @@ struct HomeView: View {
                     GeometryReader { geo in
                         ScrollView(.horizontal) {
                             HStack(spacing: geo.size.width*0.04) {
-                                ForEach(0..<3) {_ in
+                                ForEach(0..<artistManager.numDiscoverArtworks) {_ in
                                     Button {
                                         // action
                                     } label: {
@@ -35,14 +35,14 @@ struct HomeView: View {
                     }
                     .padding(.horizontal)
                     
-                    Text("Featured Artist - \(artistManager.featuredArtist.name)")
+                    Text("Featured Artist - \(artistManager.artists[artistManager.featuredArtistIndex].name)")
                         .font(.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     GeometryReader { geo in
                         ScrollView(.horizontal) {
                             HStack(spacing: geo.size.width * 0.04) {
-                                ForEach(0..<3) {_ in
+                                ForEach(0..<(artistManager.artists[artistManager.featuredArtistIndex].artworks?.count ?? 1)) {_ in
                                     Button {
                                         // action
                                     } label: {
