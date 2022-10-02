@@ -31,27 +31,31 @@ struct ArtworkView: View {
                 artistManager.getArtworkInfo(artwork: artwork)
                     .padding(.horizontal, 20)
             }
+            
+            VStack {
+                Text("Price: " + (artwork.price ?? "POA"))
+                    .font(.title)
                 
-            Button {
-                enquireClicked.toggle()
-            } label: {
-                HStack {
-                    Text("**Enquire**")
-                        .font(.title)
-                    Image(systemName: "envelope")
+                Button {
+                    enquireClicked.toggle()
+                } label: {
+                    HStack {
+                        Text("**Enquire**")
+                            .font(.title)
+                        Image(systemName: "envelope")
+                    }
+                    .padding()
+                    .background(Color.theme.accent)
+                    .cornerRadius(40)
+                    .foregroundColor(.white)
                 }
-                .padding()
-                .background(Color.theme.accent)
-                .cornerRadius(40)
-                .foregroundColor(.white)
-            }
-            .contentShape(Rectangle())
-            .padding(.bottom, 10)
-                
-            .sheet(isPresented: $enquireClicked) {
-                MailView(presentation: self.$enquireClicked, result: self.$result)
-                    .environmentObject(EnquiryManager())
-                    .disabled(!MFMailComposeViewController.canSendMail())
+                .contentShape(Rectangle())
+                .padding(.bottom, 10)
+                .sheet(isPresented: $enquireClicked) {
+                    MailView(presentation: self.$enquireClicked, result: self.$result)
+                        .environmentObject(EnquiryManager())
+                        .disabled(!MFMailComposeViewController.canSendMail())
+                }
             }
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
@@ -62,7 +66,7 @@ struct ArtworkView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
     
     static var previews: some View {
-        ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes"))
+        ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes", price: "£1000"))
             .environmentObject(artistManager)
         
         ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes"))

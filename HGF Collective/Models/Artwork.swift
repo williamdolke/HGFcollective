@@ -23,4 +23,5 @@ struct Artwork: Identifiable, Codable {
     var numbered: String?
     var stamped: String?
     var authenticity: String?
+    var price: String?
 }
