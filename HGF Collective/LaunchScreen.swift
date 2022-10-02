@@ -26,7 +26,7 @@ struct LaunchScreen: View {
                         .foregroundColor(Color.theme.accent)
                     Text("HGF Collective")
                         .font(Font.custom("Baskerville-Bold", size: 30))
-                        .foregroundColor(.black.opacity(0.8))
+                        .opacity(0.8)
                         .multilineTextAlignment(.center)
                 }
                 .scaleEffect(size)
@@ -56,5 +56,10 @@ struct LaunchScreen_Previews: PreviewProvider {
         LaunchScreen()
             .environmentObject(artistManager)
             .environmentObject(MessagesManager(uid: "test"))
+        
+        LaunchScreen()
+            .environmentObject(artistManager)
+            .environmentObject(MessagesManager(uid: "test"))
+            .preferredColorScheme(.dark)
     }
 }
