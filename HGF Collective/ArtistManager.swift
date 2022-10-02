@@ -12,7 +12,8 @@ import SwiftUI
 
 class ArtistManager: ObservableObject {
     @Published var artists: [Artist]
-    @Published var featuredArtistIndex: Int
+    @Published var featuredArtistIndex: Int?
+    @Published var featuredArtistName: String?
     let numDiscoverArtworks: Int = 3
 
     // Create an instance of our Firestore database
@@ -21,7 +22,6 @@ class ArtistManager: ObservableObject {
     // On initialisation of the ArtistManager class, get the artists and artworks from Firestore
     init() {
         self.artists = []
-        self.featuredArtistIndex = 0
         self.getArtists()
     }
     
@@ -50,6 +50,7 @@ class ArtistManager: ObservableObject {
                 }
             }
             self.featuredArtistIndex = Int(arc4random_uniform(UInt32(self.artists.count)))
+            self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
             self.getArtworks()
         }
         print("Successfully got \(self.artists.count) artists.")

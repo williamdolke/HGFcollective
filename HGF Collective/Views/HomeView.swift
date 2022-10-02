@@ -21,10 +21,8 @@ struct HomeView: View {
                     GeometryReader { geo in
                         ScrollView(.horizontal) {
                             HStack(spacing: geo.size.width*0.04) {
-                                ForEach(0..<artistManager.numDiscoverArtworks) {_ in
-                                    Button {
-                                        // action
-                                    } label: {
+                                ForEach(0..<artistManager.numDiscoverArtworks, id: \.self) {_ in
+                                    NavigationLink(destination: LoginView()) {
                                         ImageBubbleTall()
                                             .frame(width: geo.size.width * 0.48, height: geo.size.height)
                                             .cornerRadius(geo.size.width * 0.3)
@@ -34,18 +32,16 @@ struct HomeView: View {
                         }
                     }
                     .padding(.horizontal)
-                    
-                    Text("Featured Artist - \(artistManager.artists[artistManager.featuredArtistIndex].name)")
+                                        
+                    Text("Featured Artist - \(artistManager.featuredArtistName ?? "")")
                         .font(.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
                     GeometryReader { geo in
                         ScrollView(.horizontal) {
                             HStack(spacing: geo.size.width * 0.04) {
-                                ForEach(0..<(artistManager.artists[artistManager.featuredArtistIndex].artworks?.count ?? 1)) {_ in
-                                    Button {
-                                        // action
-                                    } label: {
+                                ForEach(0..<(artistManager.artists[artistManager.featuredArtistIndex!].artworks?.count ?? 0), id: \.self) {index in
+                                    NavigationLink(destination: ArtworkView(artwork: artistManager.artists[artistManager.featuredArtistIndex!].artworks![index])) {
                                         ImageBubbleWide()
                                             .frame(width: geo.size.width, height: geo.size.height)
                                             .cornerRadius(geo.size.width * 0.15)
@@ -73,10 +69,14 @@ struct HomeView: View {
 }
 
 struct HomeView_Previews: PreviewProvider {
+    static var artistManager = ArtistManager()
+    
     static var previews: some View {
         HomeView()
+            .environmentObject(artistManager)
         
         HomeView()
+            .environmentObject(artistManager)
             .preferredColorScheme(.dark)
     }
 }
