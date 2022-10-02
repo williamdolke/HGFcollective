@@ -30,6 +30,11 @@ struct AdminChatView: View {
                             proxy.scrollTo(id, anchor: .bottom)
                         }
                     }
+                    .onAppear {
+                        withAnimation {
+                            proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
+                        }
+                    }
                 }
             }
             .background(Color.theme.accent)

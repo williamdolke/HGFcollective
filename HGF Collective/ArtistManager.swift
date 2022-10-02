@@ -56,9 +56,8 @@ class ArtistManager: ObservableObject {
     }
     
     func getArtworks() {
-        print("Getting artworks.")
         for artist in self.artists {
-            print("Current artwork for \(artist.name).")
+            print("Getting artworks for \(artist.name).")
             db.collection("artists").document(artist.name).collection("artworks").addSnapshotListener { [self] querySnapshot, error in
                 
                 // If we don't have documents, exit the function
