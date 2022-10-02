@@ -13,9 +13,8 @@ struct ContactView: View {
     
     var body: some View {
         ZStack {
-            NavigationView {
                 VStack {
-                    Text("")
+                    NavigationView {
                     ChatView()
                         .environmentObject(messagesManager)
                         .environmentObject(EnquiryManager())

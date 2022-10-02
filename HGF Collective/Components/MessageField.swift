@@ -41,7 +41,7 @@ struct MessageField: View {
         .padding(.horizontal)
         .background(.gray)
         .cornerRadius(50)
-        .padding()
+        .padding(5)
     }
 }
 
@@ -49,6 +49,10 @@ struct MessageField_Previews: PreviewProvider {
     static var previews: some View {
         MessageField()
             .environmentObject(MessagesManager(uid: "test"))
+        
+        MessageField()
+            .environmentObject(MessagesManager(uid: "test"))
+            .preferredColorScheme(.dark)
     }
 }
 

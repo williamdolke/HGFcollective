@@ -48,13 +48,16 @@ struct ChatView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static let messagesManager = MessagesManager(uid: "test")
+    static let enquiryManager = EnquiryManager()
     
     static var previews: some View {
         ChatView()
             .environmentObject(messagesManager)
+            .environmentObject(enquiryManager)
         
         ChatView()
             .environmentObject(messagesManager)
+            .environmentObject(enquiryManager)
             .preferredColorScheme(.dark)
     }
 }

@@ -13,8 +13,6 @@ struct AdminChatView: View {
     var body: some View {
         VStack {
             VStack {
-                ChatTitleRow(username: messagesManager.uid.prefix(12) + "...", iconURL: "")
-                
                 ScrollViewReader { proxy in
                     ScrollView {
                         ForEach(messagesManager.messages, id: \.id) { message in
@@ -42,6 +40,7 @@ struct AdminChatView: View {
             MessageField()
                 .environmentObject(messagesManager)
         }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

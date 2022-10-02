@@ -17,65 +17,62 @@ struct LoginView: View {
     @State private var showInbox: Bool = false
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 16) {
-                    Picker(selection: $isLoginMode, label: Text("Login or create account?")) {
-                        Text("Login")
-                            .tag(true)
-                        Text("Create Account")
-                            .tag(false)
-                    }.pickerStyle(SegmentedPickerStyle())
+        ScrollView {
+            VStack(spacing: 16) {
+                Picker(selection: $isLoginMode, label: Text("Login or create account?")) {
+                    Text("Login")
+                        .tag(true)
+                    Text("Create Account")
+                        .tag(false)
+                }.pickerStyle(SegmentedPickerStyle())
 
-                    Image(systemName: "person.fill")
-                        .font(.system(size: 64))
-                        .padding()
-                        .foregroundColor(Color.theme.accent)
+                Image(systemName: "person.fill")
+                    .font(.system(size: 64))
+                    .padding()
+                    .foregroundColor(Color.theme.accent)
 
-                    Group {
-                        TextField("Email", text: $email)
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
-                        if isSecured {
-                            SecureField("Password", text: $password)
-                        } else {
-                            TextField("Password", text: $password)
-                        }
+                Group {
+                    TextField("Email", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                    if isSecured {
+                        SecureField("Password", text: $password)
+                    } else {
+                        TextField("Password", text: $password)
                     }
-                    .padding(12)
-                    
-                    Button(action: {
-                        isSecured.toggle()
-                    }) {
-                        Image(systemName: self.isSecured ? "eye.slash" : "eye")
-                            .foregroundColor(Color.theme.accent)
-                    }
-                    NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
-                        Button {
-                            handleAction()
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Text(isLoginMode ? "Log In" : "Create Account")
-                                    .foregroundColor(.white)
-                                    .padding(.vertical, 10)
-                                    .font(.system(size: 14, weight: .semibold))
-                                Spacer()
-                            }.background(Color.theme.accent)
-
-                        }
-                    }
-                    
-                    Text(self.loginStatusMessage)
-                        .foregroundColor(.red)
                 }
-                .padding()
-
+                .padding(12)
+                    
+                Button(action: {
+                    isSecured.toggle()
+                }) {
+                    Image(systemName: self.isSecured ? "eye.slash" : "eye")
+                        .foregroundColor(Color.theme.accent)
+                }
+                NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
+                    Button {
+                        handleAction()
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text(isLoginMode ? "Log In" : "Create Account")
+                                .foregroundColor(.white)
+                                .padding(.vertical, 10)
+                                .font(.system(size: 14, weight: .semibold))
+                            Spacer()
+                        }.background(Color.theme.accent)
+                    }
+                }
+                    
+                Text(self.loginStatusMessage)
+                    .foregroundColor(.red)
             }
-            .navigationTitle(isLoginMode ? "Log In" : "Create Account")
-            .background(Color(.init(white: 0, alpha: 0.05))
-                            .ignoresSafeArea())
+            .padding()
+
         }
+        .navigationTitle(isLoginMode ? "Log In" : "Create Account")
+        .background(Color(.init(white: 0, alpha: 0.05))
+                            .ignoresSafeArea())
     }
 
     private func handleAction() {

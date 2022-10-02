@@ -12,14 +12,11 @@ struct InboxView: View {
     @State private var showLogOutOptions: Bool = false
     
     var body: some View {
-        NavigationView {
-
-            VStack {
-                conversationTitleRow
-                conversationsView
-            }
-            .navigationBarHidden(true)
-        }.accentColor(.black)
+        VStack {
+            conversationTitleRow
+            conversationsView
+        }
+        .navigationBarHidden(true)
     }
 
     private var conversationTitleRow: some View {
@@ -57,7 +54,7 @@ struct InboxView: View {
                 NavigationLink(destination: AdminChatView().environmentObject(MessagesManager(uid: user.id, isCustomer: false))) {
                     ConversationPreviewRow(user: user)
                 }
-                .navigationBarTitle("")
+                .navigationTitle(user.id)
             }
         }
     }
