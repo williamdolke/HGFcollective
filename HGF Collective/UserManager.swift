@@ -44,6 +44,11 @@ class UserManager: ObservableObject {
                     return nil
                 }
             }
+            self.sortUsers()
         }
+    }
+    
+    func sortUsers() {
+        self.users.sort(by: { $0.latestTimestamp > $1.latestTimestamp })
     }
 }
