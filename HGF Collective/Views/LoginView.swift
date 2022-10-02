@@ -9,7 +9,6 @@ import SwiftUI
 import FirebaseAuth
 
 struct LoginView: View {
-    @State var isLoginMode = true
     @State private var email = ""
     @State private var password = ""
     @State private var loginStatusMessage = ""
@@ -19,13 +18,6 @@ struct LoginView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Picker(selection: $isLoginMode, label: Text("Login or create account?")) {
-                    Text("Login")
-                        .tag(true)
-                    Text("Create Account")
-                        .tag(false)
-                }.pickerStyle(SegmentedPickerStyle())
-
                 Image(systemName: "person.fill")
                     .font(.system(size: 64))
                     .padding()
@@ -42,25 +34,30 @@ struct LoginView: View {
                     }
                 }
                 .padding(12)
+                .background(.gray)
                     
                 Button(action: {
                     isSecured.toggle()
                 }) {
                     Image(systemName: self.isSecured ? "eye.slash" : "eye")
                         .foregroundColor(Color.theme.accent)
+                        .font(.system(size: 24))
                 }
                 NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
                     Button {
-                        handleAction()
+                        loginUser()
                     } label: {
                         HStack {
                             Spacer()
-                            Text(isLoginMode ? "Log In" : "Create Account")
-                                .foregroundColor(.white)
-                                .padding(.vertical, 10)
-                                .font(.system(size: 14, weight: .semibold))
+                            Text("Log In")
+                                .padding(.vertical, 12)
+                                .font(.system(size: 20, weight: .semibold))
+                            Image(systemName: "lock.fill")
+                                .font(.system(size: 22))
                             Spacer()
-                        }.background(Color.theme.accent)
+                        }
+                        .background(Color.theme.accent)
+                        .foregroundColor(.white)
                     }
                 }
                     
@@ -70,21 +67,11 @@ struct LoginView: View {
             .padding()
 
         }
-        .navigationTitle(isLoginMode ? "Log In" : "Create Account")
-        .background(Color(.init(white: 0, alpha: 0.05))
-                            .ignoresSafeArea())
-    }
-
-    private func handleAction() {
-        if isLoginMode {
-            print("Logging into Firebase with existing credentials")
-            loginUser()
-        } else {
-            print("Registering a new account")
-        }
+        .navigationTitle("Log In")
     }
     
     private func loginUser() {
+        print("Logging into Firebase with existing credentials")
         Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
             if let error = error {
                 print("Failed to login user:", error)
