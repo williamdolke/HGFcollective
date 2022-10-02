@@ -27,7 +27,6 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: handler) {
-            
             HomeView().id(id[self.selection])
                 .environmentObject(artistManager)
                 .tabItem() {

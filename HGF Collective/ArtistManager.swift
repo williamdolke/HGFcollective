@@ -14,6 +14,7 @@ class ArtistManager: ObservableObject {
     @Published var artists: [Artist]
     @Published var featuredArtistIndex: Int?
     @Published var featuredArtistName: String?
+    @Published var discoverArtworkIndex: Int?
     let numDiscoverArtworks: Int = 3
 
     // Create an instance of our Firestore database

@@ -20,9 +20,9 @@ struct HomeView: View {
                         .padding()
                     GeometryReader { geo in
                         ScrollView(.horizontal) {
-                            HStack(spacing: geo.size.width*0.04) {
-                                ForEach(0..<artistManager.numDiscoverArtworks, id: \.self) {_ in
-                                    NavigationLink(destination: LoginView()) {
+                            HStack(spacing: geo.size.width * 0.04) {
+                                ForEach(0..<artistManager.numDiscoverArtworks, id: \.self) {index in
+                                    NavigationLink(destination: ArtistView(artist: artistManager.artists[2*index+1])) {
                                         ImageBubbleTall()
                                             .frame(width: geo.size.width * 0.48, height: geo.size.height)
                                             .cornerRadius(geo.size.width * 0.3)
