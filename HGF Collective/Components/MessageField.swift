@@ -14,6 +14,18 @@ struct MessageField: View {
 
     var body: some View {
         HStack {
+            Button {
+                //
+            } label: {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .foregroundColor(.white)
+                    .font(.system(size: 25))
+                    .padding(10)
+                    .background(Color.theme.accent)
+                    .cornerRadius(50)
+            }
+            .padding([.top, .bottom], 10)
+            
             // Custom text field created below
             CustomTextField(placeholder: Text("Enter your message here"), text: $message)
                 .frame(height: 60)
@@ -32,10 +44,12 @@ struct MessageField: View {
                 } label: {
                     Image(systemName: "paperplane.fill")
                         .foregroundColor(.white)
+                        .font(.system(size: 25))
                         .padding(10)
                         .background(Color.theme.accent)
                         .cornerRadius(50)
                 }
+                .padding([.top, .bottom], 10)
             }
         }
         .padding(.horizontal)
