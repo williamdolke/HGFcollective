@@ -13,8 +13,12 @@ struct ImageView: View {
     
     @State private var scale = 1.0
     @State private var lastScale = 1.0
+    @State private var location = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
+    @GestureState private var locationState = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
+    
     private let minScale = 1.0
     private let maxScale = 5.0
+    private let defaultLocation = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
     
     var magnificationGesture: some Gesture {
         MagnificationGesture()
@@ -26,6 +30,21 @@ struct ImageView: View {
                     validateScaleLimits()
                 }
                 lastScale = 1.0
+                maybeResetLocation()
+            }
+    }
+    
+    var dragGesture: some Gesture {
+        DragGesture()
+            .onChanged { state in
+                location.x = location.x + (state.predictedEndLocation.x - state.startLocation.x)/(0.1*defaultLocation.x)
+                location.y = location.y + (state.predictedEndLocation.y - state.startLocation.y)/(0.1*defaultLocation.y)
+                limitLocation()
+            }
+            .onEnded { state in
+                withAnimation {
+                    maybeResetLocation()
+                }
             }
     }
     
@@ -34,18 +53,15 @@ struct ImageView: View {
             Color.black
                 .ignoresSafeArea()
             
-            TabView(selection: .constant(true)) {
-                ForEach(["person.crop.artframe","person.crop.artframe"], id: \.self) {image in
-                    Image(systemName: image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .scaleEffect(scale)
-                        .gesture(magnificationGesture)
-                        .font(.system(size: 80))
-                        .foregroundColor(.white)
-                }
-            }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+            Image(systemName: "person.crop.artframe")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .position(location)
+                .scaleEffect(scale)
+                .gesture(dragGesture)
+                .gesture(magnificationGesture)
+                .font(.system(size: 80))
+                .foregroundColor(.white)
             
             // Close view button
             .overlay(
@@ -79,6 +95,26 @@ struct ImageView: View {
     func validateScaleLimits() {
         scale = getMinimumScaleAllowed()
         scale = getMaximumScaleAllowed()
+    }
+    
+    func maybeResetLocation() {
+        if (scale <= 1.0) {
+            location = defaultLocation
+        }
+    }
+    
+    func limitLocation() {
+        if location.x >= defaultLocation.x {
+            location.x = min(location.x, 1.5*defaultLocation.x)
+        } else {
+            location.x = max(location.x, 0.5*defaultLocation.x)
+        }
+        
+        if location.y >= defaultLocation.y {
+            location.y = min(location.y, 1.25*defaultLocation.y)
+        } else {
+            location.y = max(location.y, 0.75*defaultLocation.y)
+        }
     }
 }
 
