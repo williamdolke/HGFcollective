@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ImageView: View {
     @EnvironmentObject var artistManager: ArtistManager
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    @Environment(\.dismiss) private var dismiss
     
     @State private var scale = 1.0
     @State private var lastScale = 1.0
@@ -65,7 +65,7 @@ struct ImageView: View {
             
             // Close view button
             .overlay(
-                Button(action: { self.presentationMode.wrappedValue.dismiss() }) {
+                Button(action: { dismiss() }) {
                     Image(systemName: "xmark")
                         .foregroundColor(.white)
                         .padding()

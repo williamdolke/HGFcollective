@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct ContactView: View {
     @EnvironmentObject var messagesManager: MessagesManager

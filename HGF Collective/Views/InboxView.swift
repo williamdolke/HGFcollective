@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct InboxView: View {
+    @Environment(\.dismiss) private var dismiss
+    
     @State private var userManager = UserManager()
     @State private var showLogOutOptions: Bool = false
     
@@ -18,7 +21,7 @@ struct InboxView: View {
         }
         .navigationBarHidden(true)
     }
-
+    
     private var conversationTitleRow: some View {
         HStack(spacing: 16) {
             Image(systemName: "person.fill")
@@ -26,7 +29,7 @@ struct InboxView: View {
 
             Text("Admin Account")
                 .font(.system(size: 24, weight: .bold))
-
+            
             Spacer()
             Button {
                 showLogOutOptions.toggle()
@@ -40,14 +43,14 @@ struct InboxView: View {
         .actionSheet(isPresented: $showLogOutOptions) {
             .init(title: Text("Sign out?"), buttons: [
                 .destructive(Text("Yes"), action: {
-                    print("Handle sign out")
+                    signOutUser()
                 }),
-                    .cancel()
+                .cancel()
             ])
         }
         .background(Color.theme.accent)
     }
-
+    
     private var conversationsView: some View {
         ScrollView {
             ForEach(userManager.users) { user in
@@ -57,6 +60,17 @@ struct InboxView: View {
                 .navigationTitle(user.id)
             }
         }
+    }
+    
+    private func signOutUser() {
+        print("Logging out of Firebase with existing credentials.")
+        do {
+            try Auth.auth().signOut()
+            dismiss()
+        } catch let signOutError as NSError {
+            print("Error signing out: \(signOutError)")
+        }
+        print("Successfully logged out.")
     }
 }
 

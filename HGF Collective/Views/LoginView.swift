@@ -35,6 +35,7 @@ struct LoginView: View {
                 }
                 .padding(12)
                 .background(.gray)
+                .cornerRadius(25)
                     
                 Button(action: {
                     isSecured.toggle()
@@ -58,6 +59,7 @@ struct LoginView: View {
                         }
                         .background(Color.theme.accent)
                         .foregroundColor(.white)
+                        .cornerRadius(10)
                     }
                 }
                     
