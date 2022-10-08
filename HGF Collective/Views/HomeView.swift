@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var artistManager: ArtistManager
-    
+
     var body: some View {
         VStack {
             NavigationView {
@@ -32,7 +32,7 @@ struct HomeView: View {
                         }
                     }
                     .padding(.horizontal)
-                                        
+
                     Text("Featured Artist - \(artistManager.featuredArtistName ?? "")")
                         .font(.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -51,9 +51,9 @@ struct HomeView: View {
                         }
                     }
                     .padding([.horizontal, .bottom])
-                    
+
                     Spacer()
-                    
+
                 }
                 .navigationTitle("Home")
                 .navigationBarItems(trailing:
@@ -70,11 +70,11 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var artistManager = ArtistManager()
-    
+
     static var previews: some View {
         HomeView()
             .environmentObject(artistManager)
-        
+
         HomeView()
             .environmentObject(artistManager)
             .preferredColorScheme(.dark)

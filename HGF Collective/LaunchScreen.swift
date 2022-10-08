@@ -12,7 +12,7 @@ struct LaunchScreen: View {
     @State private var isActive = false
     @State private var size = 0.8
     @State private var opacity = 0.5
-    
+
     var body: some View {
         if isActive {
             ContentView()
@@ -51,12 +51,12 @@ struct LaunchScreen: View {
 
 struct LaunchScreen_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
-    
+
     static var previews: some View {
         LaunchScreen()
             .environmentObject(artistManager)
             .environmentObject(MessagesManager(uid: "test"))
-        
+
         LaunchScreen()
             .environmentObject(artistManager)
             .environmentObject(MessagesManager(uid: "test"))

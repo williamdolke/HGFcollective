@@ -9,8 +9,8 @@ import MessageUI
 import SwiftUI
 
 struct EnquireView: View {
-    @State private var result: Result<MFMailComposeResult, Error>? = nil
-    
+    @State private var result: Result<MFMailComposeResult, Error> = nil
+
     var body: some View {
         ZStack(alignment: .top) {
             Capsule()
@@ -18,7 +18,7 @@ struct EnquireView: View {
                 .opacity(0.5)
                 .frame(width: 35, height: 5)
                 .padding(6)
-            
+
             Spacer()
         }
     }

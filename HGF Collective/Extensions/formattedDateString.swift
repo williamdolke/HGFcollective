@@ -16,7 +16,7 @@ extension Date {
         dateFormatter.pmSymbol = "PM"
         dateFormatter.calendar = Calendar(identifier: .gregorian)
         dateFormatter.dateFormat = format
-        
+
         return dateFormatter.string(from: self)
     }
 }

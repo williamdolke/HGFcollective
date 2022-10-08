@@ -11,21 +11,21 @@ import FirebaseFirestoreSwift
 
 class ContactManager: ObservableObject {
     @Published var contact: Contact
-    
+
     // Create an instance of our Firestore database
-    let db = Firestore.firestore()
-    
+    let firestoreDB = Firestore.firestore()
+
     init() {
         self.contact = Contact(name: "", imageURL: "")
         Task(priority: .high) {
             await self.getContactInfo()
         }
     }
-    
+
     func getContactInfo() async {
         do {
-            let document = try await db.collection("enquiries").document("chat").getDocument()
-            
+            let document = try await firestoreDB.collection("enquiries").document("chat").getDocument()
+
             if let contactInfo = try? document.data(as: Contact.self) {
                 DispatchQueue.main.async {
                     self.contact = contactInfo
@@ -36,4 +36,3 @@ class ContactManager: ObservableObject {
         }
     }
 }
-

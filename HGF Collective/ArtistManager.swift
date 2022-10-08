@@ -18,24 +18,24 @@ class ArtistManager: ObservableObject {
     let numDiscoverArtworks: Int = 3
 
     // Create an instance of our Firestore database
-    let db = Firestore.firestore()
-    
+    let firestoreDB = Firestore.firestore()
+
     // On initialisation of the ArtistManager class, get the artists and artworks from Firestore
     init() {
         self.artists = []
         self.getArtists()
     }
-    
+
     func getArtists() {
         print("Getting artists.")
-        db.collection("artists").addSnapshotListener { querySnapshot, error in
-            
+        firestoreDB.collection("artists").addSnapshotListener { querySnapshot, error in
+
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
                 print("Error fetching documents: \(String(describing: error))")
                 return
             }
-            
+
             // Mapping through the documents
             self.artists = documents.compactMap { document -> Artist? in
                 do {
@@ -45,29 +45,30 @@ class ArtistManager: ObservableObject {
                 } catch {
                     // If we run into an error, print the error in the console
                     print("Error decoding document into Artist: \(error)")
-                    
+
                     // Return nil if we run into an error - but the compactMap will not include it in the final array
                     return nil
                 }
             }
-            self.featuredArtistIndex = Int(arc4random_uniform(UInt32(self.artists.count)))
+            self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
             self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
             self.getArtworks()
         }
         print("Successfully got \(self.artists.count) artists.")
     }
-    
+
     func getArtworks() {
         for artist in self.artists {
             print("Getting artworks for \(artist.name).")
-            db.collection("artists").document(artist.name).collection("artworks").addSnapshotListener { [self] querySnapshot, error in
-                
+            firestoreDB.collection("artists").document(artist.name).collection("artworks")
+                .addSnapshotListener { [self] querySnapshot, error in
+
                 // If we don't have documents, exit the function
                 guard let documents = querySnapshot?.documents else {
                     print("Error fetching documents: \(String(describing: error))")
                     return
                 }
-                
+
                 if let idx = self.artists.firstIndex(where: { $0.name == artist.name }) {
                     self.artists[idx].artworks = documents.compactMap { document -> Artwork? in
                         do {
@@ -76,8 +77,9 @@ class ArtistManager: ObservableObject {
                         } catch {
                             // If we run into an error, print the error in the console
                             print("Error decoding document into Artwork: \(error)")
-                            
-                            // Return nil if we run into an error - but the compactMap will not include it in the final array
+
+                            // Return nil if we run into an error - but the compactMap will not include it in the final
+                            // array
                             return nil
                         }
                     }
@@ -86,55 +88,62 @@ class ArtistManager: ObservableObject {
             }
         }
     }
-    
+
     func getDiscoverArtworks() -> [Int] {
         var indexes: [Int] = []
-        
-        for i in 0...self.numDiscoverArtworks-1 {
-            indexes.append(Int(arc4random_uniform(UInt32(self.artists.count))))
-            indexes.append(Int(arc4random_uniform(UInt32(self.artists[i].artworks!.count))))
+
+        for num in 0...self.numDiscoverArtworks-1 {
+            indexes.append(Int.random(in: 0..<self.artists.count))
+            indexes.append(Int.random(in: 0..<self.artists[num].artworks!.count))
         }
         return indexes
     }
-    
+
     func getArtworkImages() {
-        
+
     }
-    
+
     func getArtworkInfo(artwork: Artwork) -> Text {
-        var info = Text("")
-        
+        var info = ""
+
         if let text = artwork.editionNumber {
-            info = info + Text("**Edition Number:** ") + Text("\(text)\n")
+            info += "**Edition Number:** \(text)\n"
         }
         if let text = artwork.editionSize {
-            info = info + Text("**Edition Size:** ") + Text("\(text)\n")
+            info += "**Edition Size:** \(text)\n"
         }
         if let text = artwork.material {
-            info = info + Text("**Materials:** ") + Text("\(text)\n")
+            info += "**Materials:** \(text)\n"
         }
         if let text = artwork.dimensionUnframed {
-            info = info + Text("**Dimensions Unframed:** ") + Text("\(text)\n")
+            info += "**Dimensions Unframed:** \(text)\n"
         }
         if let text = artwork.dimensionFramed {
-            info = info + Text("Dimensions Framed: ") + Text("\(text)\n")
+            info += "Dimensions Framed: \(text)\n"
         }
         if let text = artwork.year {
-            info = info + Text("**Year of release:** ") + Text("\(text)\n")
+            info += "**Year of release:** \(text)\n"
         }
         if let text = artwork.signed {
-            info = info + Text("**Signed:** ") + Text("\(text)\n")
+            info += "**Signed:** \(text)\n"
         }
         if let text = artwork.numbered {
-            info = info + Text("**Numbered:** ") + Text("\(text)\n")
+            info += "**Numbered:** \(text)\n"
         }
         if let text = artwork.stamped {
-            info = info + Text("**Stamped:** ") + Text("\(text)\n")
+            info += "**Stamped:** \(text)\n"
         }
         if let text = artwork.authenticity {
-            info = info + Text("**Certificate of authenticity:** ") + Text(text)
+            info += "**Certificate of authenticity:** \(text)"
         }
 
-        return info
+        do {
+            return try Text(AttributedString(markdown: info,
+                                             options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
+                                                    .inlineOnlyPreservingWhitespace)))
+        } catch {
+            print("Couldn't convert artwork info to bold.")
+            return Text(info)
+        }
     }
 }

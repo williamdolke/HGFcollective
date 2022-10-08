@@ -10,10 +10,10 @@ import FirebaseAuth
 
 struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
-    
+
     @State private var userManager = UserManager()
     @State private var showLogOutOptions: Bool = false
-    
+
     var body: some View {
         VStack {
             conversationTitleRow
@@ -21,7 +21,7 @@ struct InboxView: View {
         }
         .navigationBarHidden(true)
     }
-    
+
     private var conversationTitleRow: some View {
         HStack(spacing: 16) {
             Image(systemName: "person.fill")
@@ -29,7 +29,7 @@ struct InboxView: View {
 
             Text("Admin Account")
                 .font(.system(size: 24, weight: .bold))
-            
+
             Spacer()
             Button {
                 showLogOutOptions.toggle()
@@ -50,7 +50,7 @@ struct InboxView: View {
         }
         .background(Color.theme.accent)
     }
-    
+
     private var conversationsView: some View {
         ScrollView {
             ForEach(userManager.users) { user in
@@ -61,7 +61,7 @@ struct InboxView: View {
             }
         }
     }
-    
+
     private func signOutUser() {
         print("Logging out of Firebase with existing credentials.")
         do {
@@ -77,7 +77,7 @@ struct InboxView: View {
 struct InboxView_Previews: PreviewProvider {
     static var previews: some View {
         InboxView()
-        
+
         InboxView()
             .preferredColorScheme(.dark)
     }

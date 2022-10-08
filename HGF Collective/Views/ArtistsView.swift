@@ -10,7 +10,7 @@ import SwiftUI
 struct ArtistsView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @State var searchQuery = ""
-    
+
     var body: some View {
         ZStack {
             NavigationView {
@@ -26,7 +26,7 @@ struct ArtistsView: View {
             }
         }
     }
-    
+
     var filteredArtists: [Artist] {
         var filteredArtists: [Artist] = []
         artistManager.artists.forEach { artist in
@@ -40,11 +40,11 @@ struct ArtistsView: View {
 
 struct ArtistsView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
-    
+
     static var previews: some View {
         ArtistsView()
             .environmentObject(artistManager)
-        
+
         ArtistsView()
             .environmentObject(artistManager)
             .preferredColorScheme(.dark)

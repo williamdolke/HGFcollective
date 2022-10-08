@@ -25,13 +25,13 @@ struct MessageField: View {
                     .cornerRadius(50)
             }
             .padding([.top, .bottom], 10)
-            
+
             // Custom text field created below
             CustomTextField(placeholder: Text("Enter your message here"), text: $message)
                 .frame(height: 60)
                 .contentShape(Rectangle())
                 .disableAutocorrection(true)
-            
+
             NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
                 Button {
                     if message == "admin login" {
@@ -63,7 +63,7 @@ struct MessageField_Previews: PreviewProvider {
     static var previews: some View {
         MessageField()
             .environmentObject(MessagesManager(uid: "test"))
-        
+
         MessageField()
             .environmentObject(MessagesManager(uid: "test"))
             .preferredColorScheme(.dark)
@@ -73,8 +73,8 @@ struct MessageField_Previews: PreviewProvider {
 struct CustomTextField: View {
     var placeholder: Text
     @Binding var text: String
-    var editingChanged: (Bool)->() = { _ in }
-    var commit: ()->() = { }
+    var editingChanged: (Bool) -> Void = { _ in }
+    var commit: () -> Void = { }
 
     var body: some View {
         ZStack(alignment: .leading) {

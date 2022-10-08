@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var messagesManager: MessagesManager
-    
+
     @State private var selection = 0
     @State var id: [Bool] = [false, false, false, false]
 
@@ -24,30 +24,30 @@ struct ContentView: View {
             self.selection = $0
         }
     )}
-    
+
     var body: some View {
         TabView(selection: handler) {
             HomeView().id(id[self.selection])
                 .environmentObject(artistManager)
-                .tabItem() {
+                .tabItem {
                     Label("Home", systemImage: "house")
                 }
                 .tag(0)
             ArtistsView().id(id[self.selection])
                 .environmentObject(artistManager)
-                .tabItem() {
+                .tabItem {
                     Label("Artists", systemImage: "person.3")
                 }
                 .tag(1)
             ArtworksView().id(id[self.selection])
                 .environmentObject(artistManager)
-                .tabItem() {
+                .tabItem {
                     Label("Artworks", systemImage: "photo.artframe")
                 }
                 .tag(2)
             ContactView().id(id[self.selection])
                 .environmentObject(messagesManager)
-                .tabItem() {
+                .tabItem {
                     Label("Chat", systemImage: "bubble.left")
                 }
                 .tag(3)
@@ -58,7 +58,7 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
     static let messagesManager = MessagesManager(uid: "test")
-    
+
     static var previews: some View {
         ContentView()
             .environmentObject(artistManager)

@@ -11,25 +11,24 @@ import FirebaseFirestoreSwift
 
 class UserManager: ObservableObject {
     @Published private(set) var users: [User] = []
-    
+
     // Create an instance of our Firestore database
-    let db = Firestore.firestore()
-    
+    let firestoreDB = Firestore.firestore()
+
     // On initialisation of the UserManager class, get the users from Firestore
     init() {
         self.getUsers()
     }
-    
+
     func getUsers() {
-        //print("Getting users.")
-        db.collection("users").addSnapshotListener { querySnapshot, error in
-            
+        firestoreDB.collection("users").addSnapshotListener { querySnapshot, error in
+
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
                 print("Error fetching documents: \(String(describing: error))")
                 return
             }
-            
+
             // Mapping through the documents
             self.users = documents.compactMap { document -> User? in
                 do {
@@ -39,7 +38,7 @@ class UserManager: ObservableObject {
                 } catch {
                     // If we run into an error, print the error in the console
                     print("Error decoding document into User: \(error)")
-                    
+
                     // Return nil if we run into an error - but the compactMap will not include it in the final array
                     return nil
                 }
@@ -47,7 +46,7 @@ class UserManager: ObservableObject {
             self.sortUsers()
         }
     }
-    
+
     func sortUsers() {
         self.users.sort(by: { $0.latestTimestamp > $1.latestTimestamp })
     }

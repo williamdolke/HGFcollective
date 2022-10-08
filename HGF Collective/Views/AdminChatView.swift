@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
-    
+
     var body: some View {
         VStack {
             VStack {
@@ -21,7 +21,7 @@ struct AdminChatView: View {
                     }
                     .padding(.top, 10)
                     .background(Color(UIColor.systemBackground))
-                    .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier added in Extensions file
+                    .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier
                     .onChange(of: messagesManager.lastMessageId) { id in
                         // When the lastMessageId changes, scroll to the bottom of the conversation
                         withAnimation {
@@ -36,7 +36,7 @@ struct AdminChatView: View {
                 }
             }
             .background(Color.theme.accent)
-            
+
             MessageField()
                 .environmentObject(messagesManager)
         }
@@ -46,11 +46,11 @@ struct AdminChatView: View {
 
 struct AdminChatView_Previews: PreviewProvider {
     static let messagesManager = MessagesManager(uid: "test", isCustomer: false)
-    
+
     static var previews: some View {
         AdminChatView()
             .environmentObject(messagesManager)
-        
+
         AdminChatView()
             .environmentObject(messagesManager)
             .preferredColorScheme(.dark)

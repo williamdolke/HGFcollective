@@ -13,7 +13,7 @@ import FirebaseAuth
 struct HGFcollectiveApp: App {
     init() {
         FirebaseApp.configure()
-        
+
         if UserDefaults.standard.string(forKey: "uid") == nil {
             Auth.auth().signInAnonymously { authResult, error in
                 if let error = error {
@@ -27,7 +27,7 @@ struct HGFcollectiveApp: App {
             }
         }
     }
-    
+
     var body: some Scene {
         WindowGroup {
             LaunchScreen()

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ConversationPreviewRow: View {
     @State var user: User
-    
+
     var body: some View {
         VStack {
             HStack(spacing: 16) {
@@ -19,7 +19,6 @@ struct ConversationPreviewRow: View {
                     .overlay(RoundedRectangle(cornerRadius: 44)
                                 .stroke(Color(.label), lineWidth: 1)
                     )
-
 
                 VStack(alignment: .leading) {
                     Text(user.id.prefix(12) + "...")
@@ -40,11 +39,13 @@ struct ConversationPreviewRow: View {
 }
 
 struct ConversationPreviewRow_Previews: PreviewProvider {
-    static var user = User(id: UUID().uuidString, messagePreview: "This Is A Message Preview", latestTimestamp: Date.now)
-    
+    static var user = User(id: UUID().uuidString,
+                           messagePreview: "This Is A Message Preview",
+                           latestTimestamp: Date.now)
+
     static var previews: some View {
         ConversationPreviewRow(user: user)
-        
+
         ConversationPreviewRow(user: user)
             .preferredColorScheme(.dark)
     }

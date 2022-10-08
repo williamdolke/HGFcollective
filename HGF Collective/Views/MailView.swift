@@ -14,12 +14,12 @@ struct MailView: UIViewControllerRepresentable {
     @EnvironmentObject var enquiryManager: EnquiryManager
     @Binding var presentation: Bool
     @Binding var result: Result<MFMailComposeResult, Error>?
-    
+
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
 
         @Binding var presentation: Bool
         @Binding var result: Result<MFMailComposeResult, Error>?
-        
+
         init(presentation: Binding<Bool>,
              result: Binding<Result<MFMailComposeResult, Error>?>) {
             _presentation = presentation
@@ -47,14 +47,14 @@ struct MailView: UIViewControllerRepresentable {
     }
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
-        let vc = MFMailComposeViewController()
-        vc.mailComposeDelegate = context.coordinator
+        let mailVC = MFMailComposeViewController()
+        mailVC.mailComposeDelegate = context.coordinator
         print("Setting recipient")
-        vc.setToRecipients(enquiryManager.mail.recipients)
+        mailVC.setToRecipients(enquiryManager.mail.recipients)
         print("Set recipient")
-        vc.setSubject(enquiryManager.mail.subject ?? "")
-        vc.setMessageBody(enquiryManager.mail.msgBody ?? "", isHTML: false)
-        return vc
+        mailVC.setSubject(enquiryManager.mail.subject ?? "")
+        mailVC.setMessageBody(enquiryManager.mail.msgBody ?? "", isHTML: false)
+        return mailVC
     }
 
     func updateUIViewController(_ uiViewController: MFMailComposeViewController,

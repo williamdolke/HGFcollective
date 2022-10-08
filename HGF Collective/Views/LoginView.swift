@@ -36,10 +36,10 @@ struct LoginView: View {
                 .padding(12)
                 .background(.gray)
                 .cornerRadius(25)
-                    
-                Button(action: {
+
+                Button {
                     isSecured.toggle()
-                }) {
+                } label: {
                     Image(systemName: self.isSecured ? "eye.slash" : "eye")
                         .foregroundColor(Color.theme.accent)
                         .font(.system(size: 24))
@@ -62,7 +62,7 @@ struct LoginView: View {
                         .cornerRadius(10)
                     }
                 }
-                    
+
                 Text(self.loginStatusMessage)
                     .foregroundColor(.red)
             }
@@ -71,7 +71,7 @@ struct LoginView: View {
         }
         .navigationTitle("Log In")
     }
-    
+
     private func loginUser() {
         print("Logging into Firebase with existing credentials")
         Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
@@ -90,7 +90,7 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
-        
+
         LoginView()
             .preferredColorScheme(.dark)
     }

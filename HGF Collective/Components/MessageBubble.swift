@@ -11,7 +11,7 @@ struct MessageBubble: View {
     var message: Message
     @State private var showTime = false
     @State var isCustomer: Bool
-    
+
     var body: some View {
         VStack(alignment: isCustomer ? .trailing: .leading) {
             HStack {
@@ -24,7 +24,7 @@ struct MessageBubble: View {
             .onTapGesture {
                 showTime.toggle()
             }
-            
+
             if showTime {
                 Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
                     .font(.caption2)
@@ -39,8 +39,12 @@ struct MessageBubble: View {
 }
 
 struct MessageBubble_Previews: PreviewProvider {
-    static let message = Message(id: "12345", content: "I've been coding applications from scratch in SwiftUI and it's so much fun!", isCustomer: true, timestamp: Date(), type: "text")
-    
+    static let message = Message(id: "12345",
+                                 content: "I've been coding applications from scratch in SwiftUI and it's so much fun!",
+                                 isCustomer: true,
+                                 timestamp: Date(),
+                                 type: "text")
+
     static var previews: some View {
         MessageBubble(message: message, isCustomer: message.isCustomer)
     }

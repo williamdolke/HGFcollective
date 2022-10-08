@@ -13,9 +13,9 @@ struct ArtworkView: View {
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var enquireClicked = false
     var artwork: Artwork
-    
+
     var body: some View {
-        VStack{
+        VStack {
             NavigationLink(destination: ImageView().navigationBarBackButtonHidden(true)) {
                 GeometryReader { geo in
                     Image(systemName: "person.crop.artframe")
@@ -26,16 +26,16 @@ struct ArtworkView: View {
                         .frame(width: geo.size.width, height: geo.size.height)
                 }
             }
-                
+
             ScrollView {
                 artistManager.getArtworkInfo(artwork: artwork)
                     .padding(.horizontal, 20)
             }
-            
+
             VStack {
                 Text("Price: " + (artwork.price ?? "POA"))
                     .font(.title)
-                
+
                 Button {
                     enquireClicked.toggle()
                 } label: {
@@ -64,12 +64,21 @@ struct ArtworkView: View {
 
 struct ArtworkView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
-    
+
     static var previews: some View {
-        ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes", price: "£1000"))
+        ArtworkView(artwork: Artwork(name: "Artwork",
+                                     editionNumber: "1",
+                                     editionSize: "Original",
+                                     material: "Oil paint on canvas",
+                                     signed: "Yes",
+                                     price: "£1000"))
             .environmentObject(artistManager)
-        
-        ArtworkView(artwork: Artwork(name: "Artwork", editionNumber: "1", editionSize: "Original", material: "Oil paint on canvas", signed: "Yes"))
+
+        ArtworkView(artwork: Artwork(name: "Artwork",
+                                     editionNumber: "1",
+                                     editionSize: "Original",
+                                     material: "Oil paint on canvas",
+                                     signed: "Yes"))
             .environmentObject(artistManager)
             .preferredColorScheme(.dark)
     }

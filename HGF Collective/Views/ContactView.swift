@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContactView: View {
     @EnvironmentObject var messagesManager: MessagesManager
-    
+
     var body: some View {
         ZStack {
                 VStack {
@@ -17,7 +17,7 @@ struct ContactView: View {
                     ChatView()
                         .environmentObject(messagesManager)
                         .environmentObject(EnquiryManager())
-                        .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier added in Extensions file
+                        .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier
                         .navigationTitle("Contact Us")
                         .navigationBarItems(trailing:
                                                 Image(systemName: "person.crop.circle")
@@ -38,7 +38,7 @@ struct ContactView_Previews: PreviewProvider {
     static var previews: some View {
         ContactView()
             .environmentObject(messagesManager)
-        
+
         ContactView()
             .environmentObject(messagesManager)
             .preferredColorScheme(.dark)

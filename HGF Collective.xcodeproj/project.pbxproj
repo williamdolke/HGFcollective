@@ -250,6 +250,7 @@
 				6032FF0028CD5E7200C4F22C /* Frameworks */,
 				6032FF0128CD5E7200C4F22C /* Resources */,
 				3EB7CC3B7F010777EDEC155A /* [CP] Copy Pods Resources */,
+				609FB29428F2225900734CDF /* Run SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -333,6 +334,24 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HGF Collective/Pods-HGF Collective-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		609FB29428F2225900734CDF /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
 		EF6986240F5B881E21FC81CD /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -7,9 +7,15 @@ PODS:
   - FirebaseFirestore/Base (9.6.0)
   - FirebaseFirestore/WithLeveldb (9.6.0):
     - FirebaseFirestore/Base
+  - SwiftLint (0.49.1)
 
 DEPENDENCIES:
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `9.6.0`)
+  - SwiftLint
+
+SPEC REPOS:
+  trunk:
+    - SwiftLint
 
 EXTERNAL SOURCES:
   FirebaseFirestore:
@@ -23,7 +29,8 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   FirebaseFirestore: 9bfe2e814686fb3ba2495b97618b38987e4c8526
+  SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: 309686697e3cec56403ca685158760c88dde1680
+PODFILE CHECKSUM: 5b8fc6261203f64e5f3ee84c87f326e53528ed70
 
 COCOAPODS: 1.11.3
