@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ImageView: View {
-    @EnvironmentObject var artistManager: ArtistManager
     @Environment(\.dismiss) private var dismiss
 
     @State private var scale = 1.0

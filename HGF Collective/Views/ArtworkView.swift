@@ -10,6 +10,8 @@ import SwiftUI
 
 struct ArtworkView: View {
     @EnvironmentObject var artistManager: ArtistManager
+    @EnvironmentObject var favourites: Favourites
+
     @State var result: Result<MFMailComposeResult, Error>? = nil
     @State var enquireClicked = false
     var artwork: Artwork
@@ -30,6 +32,16 @@ struct ArtworkView: View {
             ScrollView {
                 artistManager.getArtworkInfo(artwork: artwork)
                     .padding(.horizontal, 20)
+
+                Button(favourites.contains(artwork.name) ? "Remove from Favourites" : "Add to Favourites") {
+                    if favourites.contains(artwork.name) {
+                        favourites.remove(artwork.name)
+                    } else {
+                        favourites.add(artwork.name)
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
             }
 
             VStack {
@@ -64,6 +76,7 @@ struct ArtworkView: View {
 
 struct ArtworkView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
+    static let favourites = Favourites()
 
     static var previews: some View {
         ArtworkView(artwork: Artwork(name: "Artwork",
@@ -73,6 +86,7 @@ struct ArtworkView_Previews: PreviewProvider {
                                      signed: "Yes",
                                      price: "£1000"))
             .environmentObject(artistManager)
+            .environmentObject(favourites)
 
         ArtworkView(artwork: Artwork(name: "Artwork",
                                      editionNumber: "1",
@@ -80,6 +94,7 @@ struct ArtworkView_Previews: PreviewProvider {
                                      material: "Oil paint on canvas",
                                      signed: "Yes"))
             .environmentObject(artistManager)
+            .environmentObject(favourites)
             .preferredColorScheme(.dark)
     }
 }

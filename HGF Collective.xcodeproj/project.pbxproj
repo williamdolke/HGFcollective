@@ -27,6 +27,7 @@
 		6032FF1C28CD5EAC00C4F22C /* ArtworksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF1B28CD5EAC00C4F22C /* ArtworksView.swift */; };
 		6032FF2028CD7F9600C4F22C /* ArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */; };
 		6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF2128CD7FCC00C4F22C /* ArtistView.swift */; };
+		60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60339F9728F3531B00E7E1C8 /* Favourites.swift */; };
 		604557F228E24190003EB09B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F128E24190003EB09B /* UserManager.swift */; };
 		604557F428E24857003EB09B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F328E24857003EB09B /* User.swift */; };
 		60496E4228D4FBDC003465EF /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60496E4128D4FBDC003465EF /* Mail.swift */; };
@@ -74,6 +75,7 @@
 		6032FF1B28CD5EAC00C4F22C /* ArtworksView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworksView.swift; sourceTree = "<group>"; };
 		6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkView.swift; sourceTree = "<group>"; };
 		6032FF2128CD7FCC00C4F22C /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
+		60339F9728F3531B00E7E1C8 /* Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourites.swift; sourceTree = "<group>"; };
 		604557F128E24190003EB09B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		604557F328E24857003EB09B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		60496E4128D4FBDC003465EF /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 				607391AD28D136C6009BBFBD /* ArtistManager.swift */,
 				60496E4328D53476003465EF /* EnquiryManager.swift */,
 				604557F128E24190003EB09B /* UserManager.swift */,
+				60339F9728F3531B00E7E1C8 /* Favourites.swift */,
 			);
 			path = "HGF Collective";
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				6032FF1828CD5E9F00C4F22C /* HomeView.swift in Sources */,
 				6032FF1C28CD5EAC00C4F22C /* ArtworksView.swift in Sources */,
 				6003C20028CEA92200ABA79E /* MessageField.swift in Sources */,
+				60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */,
 				6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */,
 				607391B228D29A5D009BBFBD /* Artwork.swift in Sources */,
 				607391AE28D136C6009BBFBD /* ArtistManager.swift in Sources */,

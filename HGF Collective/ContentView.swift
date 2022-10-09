@@ -11,6 +11,8 @@ struct ContentView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var messagesManager: MessagesManager
 
+    @StateObject var favourites = Favourites()
+
     @State private var selection = 0
     @State var id: [Bool] = [false, false, false, false]
 
@@ -28,19 +30,16 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: handler) {
             HomeView().id(id[self.selection])
-                .environmentObject(artistManager)
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
                 .tag(0)
             ArtistsView().id(id[self.selection])
-                .environmentObject(artistManager)
                 .tabItem {
                     Label("Artists", systemImage: "person.3")
                 }
                 .tag(1)
             ArtworksView().id(id[self.selection])
-                .environmentObject(artistManager)
                 .tabItem {
                     Label("Artworks", systemImage: "photo.artframe")
                 }
@@ -51,7 +50,10 @@ struct ContentView: View {
                     Label("Chat", systemImage: "bubble.left")
                 }
                 .tag(3)
-        }.accentColor(Color.theme.accent)
+        }
+        .environmentObject(artistManager)
+        .environmentObject(favourites)
+        .accentColor(Color.theme.accent)
     }
 }
 

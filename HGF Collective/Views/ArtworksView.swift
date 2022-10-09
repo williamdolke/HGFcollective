@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ArtworksView: View {
     @EnvironmentObject var artistManager: ArtistManager
+    @EnvironmentObject var favourites: Favourites
+
     @State var searchQuery = ""
 
     var body: some View {
@@ -19,7 +21,20 @@ struct ArtworksView: View {
                         Section {
                             ForEach(filteredArtist.artworks!) { artwork in
                                 if filteredArtists.1.contains(artwork.name) {
-                                    NavigationLink(artwork.name, destination: ArtworkView(artwork: artwork))
+                                    NavigationLink {
+                                        ArtworkView(artwork: artwork)
+                                    } label: {
+                                        HStack {
+                                            Text(artwork.name)
+
+                                            if favourites.contains(artwork.name) {
+                                                Spacer()
+                                                Image(systemName: "heart.fill")
+                                                    .accessibilityLabel("This is a favourite artwork")
+                                                    .foregroundColor(.red)
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         } header: {
@@ -57,13 +72,16 @@ struct ArtworksView: View {
 
 struct ArtworksView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
+    static let favourites = Favourites()
 
     static var previews: some View {
         ArtworksView()
             .environmentObject(artistManager)
+            .environmentObject(favourites)
 
         ArtworksView()
             .environmentObject(artistManager)
+            .environmentObject(favourites)
             .preferredColorScheme(.dark)
     }
 }
