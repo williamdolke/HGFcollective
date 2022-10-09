@@ -10,7 +10,7 @@ import SwiftUI
 struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @State private var message = ""
-    @State var showLogin: Bool = false
+    @State private var showLogin: Bool = false
 
     var body: some View {
         HStack {

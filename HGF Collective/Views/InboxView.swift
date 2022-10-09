@@ -11,7 +11,8 @@ import FirebaseAuth
 struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var userManager = UserManager()
+    @EnvironmentObject var userManager: UserManager
+
     @State private var showLogOutOptions: Bool = false
 
     var body: some View {

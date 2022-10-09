@@ -12,7 +12,7 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var loginStatusMessage = ""
-    @State var isSecured: Bool = true
+    @State private var isSecured: Bool = true
     @State private var showInbox: Bool = false
 
     var body: some View {
@@ -44,7 +44,7 @@ struct LoginView: View {
                         .foregroundColor(Color.theme.accent)
                         .font(.system(size: 24))
                 }
-                NavigationLink(destination: InboxView().navigationBarBackButtonHidden(true), isActive: $showInbox) {
+                NavigationLink(destination: InboxView().environmentObject(UserManager() ).navigationBarBackButtonHidden(true), isActive: $showInbox) {
                     Button {
                         loginUser()
                     } label: {

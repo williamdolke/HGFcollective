@@ -14,7 +14,7 @@ struct ContentView: View {
     @StateObject var favourites = Favourites()
 
     @State private var selection = 0
-    @State var id: [Bool] = [false, false, false, false]
+    @State private var id: [Bool] = [false, false, false, false]
 
     var handler: Binding<Int> { Binding(
         get: { self.selection },

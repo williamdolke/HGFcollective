@@ -9,8 +9,8 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ChatTitleRow: View {
-    @State var username: String
-    @State var iconURL: String
+    var username: String
+    var iconURL: String
 
     var body: some View {
         VStack {

@@ -11,7 +11,7 @@ struct ArtworksView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var favourites: Favourites
 
-    @State var searchQuery = ""
+    @State private var searchQuery = ""
 
     var body: some View {
         ZStack {

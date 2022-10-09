@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct MessageBubble: View {
-    var message: Message
     @State private var showTime = false
-    @State var isCustomer: Bool
+
+    var message: Message
+    var isCustomer: Bool
 
     var body: some View {
         VStack(alignment: isCustomer ? .trailing: .leading) {

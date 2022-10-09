@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ConversationPreviewRow: View {
-    @State var user: User
+    var user: User
 
     var body: some View {
         VStack {

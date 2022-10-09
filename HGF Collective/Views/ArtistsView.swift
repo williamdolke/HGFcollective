@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ArtistsView: View {
     @EnvironmentObject var artistManager: ArtistManager
-    @State var searchQuery = ""
+
+    @State private var searchQuery = ""
 
     var body: some View {
         ZStack {
