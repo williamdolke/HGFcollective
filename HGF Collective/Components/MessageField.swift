@@ -6,16 +6,22 @@
 //
 
 import SwiftUI
+import PhotosUI
 
+@available(iOS 16.0, *)
 struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
+    
+    @State private var image: UIImage?
     @State private var message = ""
+    @State private var showImagePicker = false
     @State private var showLogin: Bool = false
+    @State private var selectedItem: PhotosPickerItem? = nil
 
     var body: some View {
         HStack {
             Button {
-                //
+                showImagePicker.toggle()
             } label: {
                 Image(systemName: "photo.on.rectangle.angled")
                     .foregroundColor(.white)
@@ -27,8 +33,8 @@ struct MessageField: View {
             .padding([.top, .bottom], 10)
 
             // Custom text field created below
-            CustomTextField(placeholder: Text("Enter your message here"), text: $message)
-                .frame(height: 60)
+            CustomTextField(text: $message, image: $image, placeholder: Text("Enter your message here"))
+                .frame(height: 160)
                 .contentShape(Rectangle())
                 .disableAutocorrection(true)
 
@@ -37,9 +43,14 @@ struct MessageField: View {
                     if message == "admin login" {
                         message = ""
                         self.showLogin = true
-                    } else {
-                        messagesManager.sendMessage(text: message)
+                    } else if message != "" {
+                        messagesManager.sendMessage(text: message, type: "text")
                         message = ""
+                    }
+                    
+                    if image != nil {
+                        messagesManager.sendImage(image: image!)
+                        image = nil
                     }
                 } label: {
                     Image(systemName: "paperplane.fill")
@@ -56,6 +67,12 @@ struct MessageField: View {
         .background(.gray)
         .cornerRadius(50)
         .padding(5)
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
+            
+            // For camera use
+            // ImagePicker(sourceType: .camera, selectedImage: self.$image)
+        }
     }
 }
 
@@ -71,8 +88,10 @@ struct MessageField_Previews: PreviewProvider {
 }
 
 struct CustomTextField: View {
-    var placeholder: Text
     @Binding var text: String
+    @Binding var image: UIImage?
+    
+    var placeholder: Text
     var editingChanged: (Bool) -> Void = { _ in }
     var commit: () -> Void = { }
 
@@ -84,6 +103,13 @@ struct CustomTextField: View {
                 .opacity(0.5)
             }
             TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
+            
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .aspectRatio(contentMode: .fill)
+            }
         }
     }
 }

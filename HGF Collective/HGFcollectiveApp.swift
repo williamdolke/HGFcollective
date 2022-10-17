@@ -12,6 +12,7 @@ import FirebaseAuth
 @main
 struct HGFcollectiveApp: App {
     init() {
+        // Use Firebase library to configure APIs
         FirebaseApp.configure()
 
         if UserDefaults.standard.string(forKey: "uid") == nil {
