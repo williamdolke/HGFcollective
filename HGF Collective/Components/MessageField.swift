@@ -30,11 +30,10 @@ struct MessageField: View {
                     .background(Color.theme.accent)
                     .cornerRadius(50)
             }
-            .padding([.top, .bottom], 10)
 
             // Custom text field created below
             CustomTextField(text: $message, image: $image, placeholder: Text("Enter your message here"))
-                .frame(height: 160)
+                .padding()
                 .contentShape(Rectangle())
                 .disableAutocorrection(true)
 
@@ -94,21 +93,25 @@ struct CustomTextField: View {
     var placeholder: Text
     var editingChanged: (Bool) -> Void = { _ in }
     var commit: () -> Void = { }
-
+    
     var body: some View {
         ZStack(alignment: .leading) {
-            // If text is empty, show the placeholder on top of the TextField
-            if text.isEmpty {
-                placeholder
-                .opacity(0.5)
-            }
-            TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
-            
-            if let image {
-                Image(uiImage: image)
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                    .aspectRatio(contentMode: .fill)
+            VStack {
+                ZStack(alignment: .leading) {
+                    // If text is empty, show the placeholder on top of the TextField
+                    if text.isEmpty {
+                        placeholder
+                            .opacity(0.5)
+                    }
+                    TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
+                }
+                
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .frame(width: 100, height: 100)
+                        .aspectRatio(contentMode: .fill)
+                }
             }
         }
     }
