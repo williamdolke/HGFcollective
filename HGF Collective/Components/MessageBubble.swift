@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct MessageBubble: View {
     @State private var showTime = false
@@ -16,10 +17,19 @@ struct MessageBubble: View {
     var body: some View {
         VStack(alignment: isCustomer ? .trailing: .leading) {
             HStack {
-                Text(message.content)
-                    .padding()
-                    .background(isCustomer ? Color.theme.accent: .gray)
-                    .cornerRadius(30)
+                if (message.type == "text") {
+                    Text(message.content)
+                        .padding()
+                        .background(isCustomer ? Color.theme.accent: .gray)
+                        .cornerRadius(30)
+                } else if (message.type == "image") {
+                    NavigationLink(destination: ImageView().navigationBarBackButtonHidden(true)) {
+                        WebImage(url: URL(string: message.content))
+                            .resizable()
+                            .cornerRadius(30)
+                            .frame(width: 200, height: 200)
+                    }
+                }
             }
             .frame(maxWidth: 300, alignment: isCustomer ? .trailing: .leading)
             .onTapGesture {
@@ -45,8 +55,16 @@ struct MessageBubble_Previews: PreviewProvider {
                                  isCustomer: true,
                                  timestamp: Date(),
                                  type: "text")
+    
+    static let image = Message(id: "12345",
+                               content: "https://firebasestorage.googleapis.com/v0/b/artapp-28386.appspot.com/o/test.png?alt=media&token=d9d3e8d3-724d-4233-9636-3382cd276749",
+                               isCustomer: true,
+                               timestamp: Date(),
+                               type: "image")
 
     static var previews: some View {
         MessageBubble(message: message, isCustomer: message.isCustomer)
+        
+        MessageBubble(message: image, isCustomer: message.isCustomer)
     }
 }

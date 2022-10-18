@@ -97,8 +97,7 @@ class MessagesManager: ObservableObject {
     
     // Add an image in Firestore
     func sendImage(image: UIImage) {
-        let imageID = UUID().uuidString
-        let ref = Storage.storage().reference(withPath: imageID)
+        let ref = Storage.storage().reference(withPath: UUID().uuidString)
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
         ref.putData(imageData, metadata: nil) { metadata, err in
             if let err = err {
@@ -111,9 +110,8 @@ class MessagesManager: ObservableObject {
                     return
                 }
                 print("Successfully stored image with url: \(url?.absoluteString ?? "")")
+                self.sendMessage(text: url!.absoluteString, type: "image")
             }
-            
-            self.sendMessage(text: imageID, type: "image")
         }
     }
 }
