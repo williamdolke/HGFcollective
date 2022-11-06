@@ -97,8 +97,11 @@ class MessagesManager: ObservableObject {
 
     // Add an image in Firestore
     func sendImage(image: UIImage) {
-        let ref = Storage.storage().reference(withPath: UUID().uuidString)
+        let storagePath = "users/" + uid + "/" + UUID().uuidString
+        let ref = Storage.storage().reference(withPath: storagePath)
+
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
+
         ref.putData(imageData, metadata: nil) { _, err in
             if let err = err {
                 print("Failed to push image to Storage: \(err)")

@@ -37,30 +37,7 @@ struct MessageField: View {
                 .contentShape(Rectangle())
                 .disableAutocorrection(true)
 
-            NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
-                Button {
-                    if message == "admin login" {
-                        message = ""
-                        self.showLogin = true
-                    } else if message != "" {
-                        messagesManager.sendMessage(text: message, type: "text")
-                        message = ""
-                    }
-
-                    if image != nil {
-                        messagesManager.sendImage(image: image!)
-                        image = nil
-                    }
-                } label: {
-                    Image(systemName: "paperplane.fill")
-                        .foregroundColor(.white)
-                        .font(.system(size: 25))
-                        .padding(10)
-                        .background(Color.theme.accent)
-                        .cornerRadius(50)
-                }
-                .padding([.top, .bottom], 10)
-            }
+            sendButton
         }
         .padding(.horizontal)
         .background(.gray)
@@ -71,6 +48,33 @@ struct MessageField: View {
 
             // For camera use
             // ImagePicker(sourceType: .camera, selectedImage: self.$image)
+        }
+    }
+
+    private var sendButton: some View {
+        NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
+            Button {
+                if message == "admin login" {
+                    message = ""
+                    self.showLogin = true
+                } else if message != "" {
+                    messagesManager.sendMessage(text: message, type: "text")
+                    message = ""
+                }
+
+                if image != nil {
+                    messagesManager.sendImage(image: image!)
+                    image = nil
+                }
+            } label: {
+                Image(systemName: "paperplane.fill")
+                    .foregroundColor(.white)
+                    .font(.system(size: 25))
+                    .padding(10)
+                    .background(Color.theme.accent)
+                    .cornerRadius(50)
+            }
+            .padding([.top, .bottom], 10)
         }
     }
 }
