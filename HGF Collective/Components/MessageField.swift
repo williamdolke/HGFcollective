@@ -11,12 +11,12 @@ import PhotosUI
 @available(iOS 16.0, *)
 struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
-    
+
     @State private var image: UIImage?
     @State private var message = ""
     @State private var showImagePicker = false
     @State private var showLogin: Bool = false
-    @State private var selectedItem: PhotosPickerItem? = nil
+    @State private var selectedItem: PhotosPickerItem?
 
     var body: some View {
         HStack {
@@ -46,7 +46,7 @@ struct MessageField: View {
                         messagesManager.sendMessage(text: message, type: "text")
                         message = ""
                     }
-                    
+
                     if image != nil {
                         messagesManager.sendImage(image: image!)
                         image = nil
@@ -68,7 +68,7 @@ struct MessageField: View {
         .padding(5)
         .sheet(isPresented: $showImagePicker) {
             ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
-            
+
             // For camera use
             // ImagePicker(sourceType: .camera, selectedImage: self.$image)
         }
@@ -89,11 +89,11 @@ struct MessageField_Previews: PreviewProvider {
 struct CustomTextField: View {
     @Binding var text: String
     @Binding var image: UIImage?
-    
+
     var placeholder: Text
     var editingChanged: (Bool) -> Void = { _ in }
     var commit: () -> Void = { }
-    
+
     var body: some View {
         ZStack(alignment: .leading) {
             VStack {
@@ -105,7 +105,7 @@ struct CustomTextField: View {
                     }
                     TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
                 }
-                
+
                 if let image {
                     Image(uiImage: image)
                         .resizable()

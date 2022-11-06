@@ -18,39 +18,13 @@ struct HomeView: View {
                         .font(.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
-                    GeometryReader { geo in
-                        ScrollView(.horizontal) {
-                            HStack(spacing: geo.size.width * 0.04) {
-                                ForEach(0..<artistManager.numDiscoverArtworks, id: \.self) {index in
-                                    NavigationLink(destination: ArtistView(artist: artistManager.artists[2*index+1])) {
-                                        ImageBubbleTall()
-                                            .frame(width: geo.size.width * 0.48, height: geo.size.height)
-                                            .cornerRadius(geo.size.width * 0.3)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
+                    discoverPictures
 
                     Text("Featured Artist - \(artistManager.featuredArtistName ?? "")")
                         .font(.title)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding()
-                    GeometryReader { geo in
-                        ScrollView(.horizontal) {
-                            HStack(spacing: geo.size.width * 0.04) {
-                                ForEach(0..<(artistManager.artists[artistManager.featuredArtistIndex!].artworks?.count ?? 0), id: \.self) {index in
-                                    NavigationLink(destination: ArtworkView(artwork: artistManager.artists[artistManager.featuredArtistIndex!].artworks![index])) {
-                                        ImageBubbleWide()
-                                            .frame(width: geo.size.width, height: geo.size.height)
-                                            .cornerRadius(geo.size.width * 0.15)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .padding([.horizontal, .bottom])
+                    featuredPictures
 
                     Spacer()
 
@@ -65,6 +39,43 @@ struct HomeView: View {
                     .padding(.top, 90))
             }
         }
+    }
+
+    private var discoverPictures: some View {
+        GeometryReader { geo in
+            ScrollView(.horizontal) {
+                HStack(spacing: geo.size.width * 0.04) {
+                    ForEach(0..<artistManager.numDiscoverArtworks, id: \.self) {index in
+                        NavigationLink(destination: ArtistView(artist: artistManager.artists[2*index+1])) {
+                            ImageBubbleTall(artwork: Artwork(name: "Artwork"))
+                                .frame(width: geo.size.width * 0.48, height: geo.size.height)
+                                .cornerRadius(geo.size.width * 0.15)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    private var featuredPictures: some View {
+        GeometryReader { geo in
+            ScrollView(.horizontal) {
+                HStack(spacing: geo.size.width * 0.04) {
+                    let featuredArtist = artistManager.artists[artistManager.featuredArtistIndex!]
+                    ForEach(0..<(featuredArtist.artworks?.count ?? 0),
+                            id: \.self) {index in
+                        let artwork = featuredArtist.artworks![index]
+                        NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                            ImageBubbleWide(artwork: artwork)
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                .cornerRadius(geo.size.width * 0.15)
+                        }
+                    }
+                }
+            }
+        }
+        .padding([.horizontal, .bottom])
     }
 }
 

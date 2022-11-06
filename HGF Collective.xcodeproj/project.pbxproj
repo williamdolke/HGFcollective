@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		078B3D1846BB27A0B4FB65A8 /* libPods-HGF Collective.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9BA0CC7C25DDDE319E0D9D /* libPods-HGF Collective.a */; };
 		6003C1F028CE55B200ABA79E /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1EF28CE55B200ABA79E /* ContactView.swift */; };
 		6003C1F428CE751900ABA79E /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F328CE751900ABA79E /* MailView.swift */; };
 		6003C1F728CEA35300ABA79E /* ChatTitleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F628CEA35300ABA79E /* ChatTitleRow.swift */; };
@@ -51,13 +52,9 @@
 		60A103B028E0781100DB6A00 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 60A103AF28E0781100DB6A00 /* SDWebImageSwiftUI */; };
 		60A103B228E0863E00DB6A00 /* ConversationPreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A103B128E0863E00DB6A00 /* ConversationPreviewRow.swift */; };
 		60A103B428E08B4400DB6A00 /* AdminChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A103B328E08B4400DB6A00 /* AdminChatView.swift */; };
-		A04B7B0DCF561A013BBDB090 /* libPods-HGF Collective.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F28DCBC8FD4137AC5EAC0E5 /* libPods-HGF Collective.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		10C89D842421C460124DB60F /* Pods-HGF Collective.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGF Collective.debug.xcconfig"; path = "Target Support Files/Pods-HGF Collective/Pods-HGF Collective.debug.xcconfig"; sourceTree = "<group>"; };
-		23E127A76E73BD87B5701A6D /* Pods-HGF Collective.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGF Collective.release.xcconfig"; path = "Target Support Files/Pods-HGF Collective/Pods-HGF Collective.release.xcconfig"; sourceTree = "<group>"; };
-		3F28DCBC8FD4137AC5EAC0E5 /* libPods-HGF Collective.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HGF Collective.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003C1EF28CE55B200ABA79E /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
 		6003C1F328CE751900ABA79E /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		6003C1F628CEA35300ABA79E /* ChatTitleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTitleRow.swift; sourceTree = "<group>"; };
@@ -98,6 +95,9 @@
 		60A103A928E00EF800DB6A00 /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		60A103B128E0863E00DB6A00 /* ConversationPreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationPreviewRow.swift; sourceTree = "<group>"; };
 		60A103B328E08B4400DB6A00 /* AdminChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminChatView.swift; sourceTree = "<group>"; };
+		7959D5448BA646F586628209 /* Pods-HGF Collective.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGF Collective.debug.xcconfig"; path = "Target Support Files/Pods-HGF Collective/Pods-HGF Collective.debug.xcconfig"; sourceTree = "<group>"; };
+		7C9BA0CC7C25DDDE319E0D9D /* libPods-HGF Collective.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HGF Collective.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FDD35D78F0342E5EF5AB1CE1 /* Pods-HGF Collective.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGF Collective.release.xcconfig"; path = "Target Support Files/Pods-HGF Collective/Pods-HGF Collective.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,14 +109,22 @@
 				6003C20728CEAE2B00ABA79E /* FirebaseDatabaseSwift in Frameworks */,
 				6055E91328D64A7300968099 /* FirebaseAuth in Frameworks */,
 				6003C20528CEAE2B00ABA79E /* FirebaseDatabase in Frameworks */,
-				A04B7B0DCF561A013BBDB090 /* libPods-HGF Collective.a in Frameworks */,
 				602BCA3228FCC0360096E607 /* FirebaseStorage in Frameworks */,
+				078B3D1846BB27A0B4FB65A8 /* libPods-HGF Collective.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		36421121A70B0B0FAD7A386A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7C9BA0CC7C25DDDE319E0D9D /* libPods-HGF Collective.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6003C1F528CEA33800ABA79E /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -148,8 +156,8 @@
 			children = (
 				6032FF0528CD5E7200C4F22C /* HGF Collective */,
 				6032FF0428CD5E7200C4F22C /* Products */,
-				6055E91128D64A7300968099 /* Frameworks */,
 				FBE1C62F8367A7251F8B75C1 /* Pods */,
+				36421121A70B0B0FAD7A386A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -212,14 +220,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		6055E91128D64A7300968099 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				3F28DCBC8FD4137AC5EAC0E5 /* libPods-HGF Collective.a */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		6079AE0028D8D61800725F73 /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,8 +240,8 @@
 		FBE1C62F8367A7251F8B75C1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				10C89D842421C460124DB60F /* Pods-HGF Collective.debug.xcconfig */,
-				23E127A76E73BD87B5701A6D /* Pods-HGF Collective.release.xcconfig */,
+				7959D5448BA646F586628209 /* Pods-HGF Collective.debug.xcconfig */,
+				FDD35D78F0342E5EF5AB1CE1 /* Pods-HGF Collective.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -253,12 +253,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6032FF1128CD5E7300C4F22C /* Build configuration list for PBXNativeTarget "HGF Collective" */;
 			buildPhases = (
-				EF6986240F5B881E21FC81CD /* [CP] Check Pods Manifest.lock */,
+				E93207F779557D117489DF52 /* [CP] Check Pods Manifest.lock */,
+				60A45BED2901ACA2009C3155 /* Run SwiftLint */,
 				6032FEFF28CD5E7200C4F22C /* Sources */,
 				6032FF0028CD5E7200C4F22C /* Frameworks */,
 				6032FF0128CD5E7200C4F22C /* Resources */,
-				3EB7CC3B7F010777EDEC155A /* [CP] Copy Pods Resources */,
-				609FB29428F2225900734CDF /* Run SwiftLint */,
+				8D9BE49703976E5E45F69920 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -327,7 +327,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3EB7CC3B7F010777EDEC155A /* [CP] Copy Pods Resources */ = {
+		60A45BED2901ACA2009C3155 /* Run SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run SwiftLint";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		8D9BE49703976E5E45F69920 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -344,25 +362,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HGF Collective/Pods-HGF Collective-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		609FB29428F2225900734CDF /* Run SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftLint";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
-		};
-		EF6986240F5B881E21FC81CD /* [CP] Check Pods Manifest.lock */ = {
+		E93207F779557D117489DF52 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -549,7 +549,7 @@
 		};
 		6032FF1228CD5E7300C4F22C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 10C89D842421C460124DB60F /* Pods-HGF Collective.debug.xcconfig */;
+			baseConfigurationReference = 7959D5448BA646F586628209 /* Pods-HGF Collective.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -582,7 +582,7 @@
 		};
 		6032FF1328CD5E7300C4F22C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 23E127A76E73BD87B5701A6D /* Pods-HGF Collective.release.xcconfig */;
+			baseConfigurationReference = FDD35D78F0342E5EF5AB1CE1 /* Pods-HGF Collective.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

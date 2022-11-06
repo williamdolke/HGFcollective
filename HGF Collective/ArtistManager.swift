@@ -15,6 +15,7 @@ class ArtistManager: ObservableObject {
     @Published var featuredArtistIndex: Int?
     @Published var featuredArtistName: String?
     @Published var discoverArtworkIndex: Int?
+
     let numDiscoverArtworks: Int = 3
 
     // Create an instance of our Firestore database
@@ -119,7 +120,7 @@ class ArtistManager: ObservableObject {
             info += "**Dimensions Unframed:** \(text)\n"
         }
         if let text = artwork.dimensionFramed {
-            info += "Dimensions Framed: \(text)\n"
+            info += "**Dimensions Framed:** \(text)\n"
         }
         if let text = artwork.year {
             info += "**Year of release:** \(text)\n"

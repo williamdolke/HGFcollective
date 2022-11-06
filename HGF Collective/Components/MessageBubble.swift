@@ -55,16 +55,20 @@ struct MessageBubble_Previews: PreviewProvider {
                                  isCustomer: true,
                                  timestamp: Date(),
                                  type: "text")
-    
+
     static let image = Message(id: "12345",
-                               content: "https://firebasestorage.googleapis.com/v0/b/artapp-28386.appspot.com/o/test.png?alt=media&token=d9d3e8d3-724d-4233-9636-3382cd276749",
+                               content:
+                               """
+                               https://firebasestorage.googleapis.com/v0/b/artapp-28386.appspot
+                               .com/o/test.png?alt=media&token=d9d3e8d3-724d-4233-9636-3382cd276749
+                               """,
                                isCustomer: true,
                                timestamp: Date(),
                                type: "image")
 
     static var previews: some View {
         MessageBubble(message: message, isCustomer: message.isCustomer)
-        
+
         MessageBubble(message: image, isCustomer: message.isCustomer)
     }
 }

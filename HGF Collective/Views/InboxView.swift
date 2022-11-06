@@ -55,7 +55,8 @@ struct InboxView: View {
     private var conversationsView: some View {
         ScrollView {
             ForEach(userManager.users) { user in
-                NavigationLink(destination: AdminChatView().environmentObject(MessagesManager(uid: user.id, isCustomer: false))) {
+                NavigationLink(destination: AdminChatView().environmentObject(MessagesManager(uid: user.id,
+                                                                                              isCustomer: false))) {
                     ConversationPreviewRow(user: user)
                 }
                 .navigationTitle(user.id)

@@ -94,12 +94,12 @@ class MessagesManager: ObservableObject {
             print("Error adding message to Firestore: \(error)")
         }
     }
-    
+
     // Add an image in Firestore
     func sendImage(image: UIImage) {
         let ref = Storage.storage().reference(withPath: UUID().uuidString)
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
-        ref.putData(imageData, metadata: nil) { metadata, err in
+        ref.putData(imageData, metadata: nil) { _, err in
             if let err = err {
                 print("Failed to push image to Storage: \(err)")
                 return

@@ -44,24 +44,8 @@ struct LoginView: View {
                         .foregroundColor(Color.theme.accent)
                         .font(.system(size: 24))
                 }
-                NavigationLink(destination: InboxView().environmentObject(UserManager() ).navigationBarBackButtonHidden(true), isActive: $showInbox) {
-                    Button {
-                        loginUser()
-                    } label: {
-                        HStack {
-                            Spacer()
-                            Text("Log In")
-                                .padding(.vertical, 12)
-                                .font(.system(size: 20, weight: .semibold))
-                            Image(systemName: "lock.fill")
-                                .font(.system(size: 22))
-                            Spacer()
-                        }
-                        .background(Color.theme.accent)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                    }
-                }
+
+                loginButton
 
                 Text(self.loginStatusMessage)
                     .foregroundColor(.red)
@@ -70,6 +54,28 @@ struct LoginView: View {
 
         }
         .navigationTitle("Log In")
+    }
+
+    private var loginButton: some View {
+        NavigationLink(destination: InboxView().environmentObject(UserManager()).navigationBarBackButtonHidden(true),
+                       isActive: $showInbox) {
+            Button {
+                loginUser()
+            } label: {
+                HStack {
+                    Spacer()
+                    Text("Log In")
+                        .padding(.vertical, 12)
+                        .font(.system(size: 20, weight: .semibold))
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 22))
+                    Spacer()
+                }
+                .background(Color.theme.accent)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+            }
+        }
     }
 
     private func loginUser() {

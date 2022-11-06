@@ -12,7 +12,7 @@ struct ArtworkView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var favourites: Favourites
 
-    @State private var result: Result<MFMailComposeResult, Error>? = nil
+    @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
 
     var artwork: Artwork

@@ -50,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/GoogleUtilities.git",
       "state" : {
-        "revision" : "22907832079d808e82f1182b21af58ef3880666f",
-        "version" : "7.8.0"
+        "revision" : "68ea347bdb1a69e2d2ae2e25cd085b6ef92f64cb",
+        "version" : "7.9.0"
       }
     },
     {
@@ -68,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/gtm-session-fetcher.git",
       "state" : {
-        "revision" : "d4289da23e978f37c344ea6a386e5546e2466294",
-        "version" : "2.1.0"
+        "revision" : "b32617f389716af5082df5f6efa89135c87578a8",
+        "version" : "2.2.0"
       }
     },
     {
@@ -102,10 +102,10 @@
     {
       "identity" : "sdwebimage",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDWebImage/SDWebImage",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
       "state" : {
-        "revision" : "484bc774e1091f622c4856e576ff957b29403676",
-        "version" : "5.13.3"
+        "revision" : "318cca556b0489aede0cd98d8d0c7f1408ab7bd6",
+        "version" : "5.13.5"
       }
     },
     {
