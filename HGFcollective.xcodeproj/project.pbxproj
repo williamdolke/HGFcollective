@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		078B3D1846BB27A0B4FB65A8 /* libPods-HGF Collective.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C9BA0CC7C25DDDE319E0D9D /* libPods-HGF Collective.a */; };
+		0EDA7BBC4F31A69C2214AA19 /* libPods-HGFcollective.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F48C33326FDA7104ACABEAFC /* libPods-HGFcollective.a */; };
 		6003C1F028CE55B200ABA79E /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1EF28CE55B200ABA79E /* ContactView.swift */; };
 		6003C1F428CE751900ABA79E /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F328CE751900ABA79E /* MailView.swift */; };
 		6003C1F728CEA35300ABA79E /* ChatTitleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F628CEA35300ABA79E /* ChatTitleRow.swift */; };
@@ -65,7 +65,7 @@
 		6003C20128CEA97C00ABA79E /* MessagesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesManager.swift; sourceTree = "<group>"; };
 		6003C20C28CEB1C200ABA79E /* cornerRadius.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cornerRadius.swift; sourceTree = "<group>"; };
 		602BCA3328FCC75F0096E607 /* ImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerView.swift; sourceTree = "<group>"; };
-		6032FF0328CD5E7200C4F22C /* HGF Collective.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "HGF Collective.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6032FF0328CD5E7200C4F22C /* HGFcollective.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HGFcollective.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6032FF0628CD5E7200C4F22C /* HGFcollectiveApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HGFcollectiveApp.swift; sourceTree = "<group>"; };
 		6032FF0828CD5E7200C4F22C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		6032FF0A28CD5E7300C4F22C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -95,8 +95,10 @@
 		60A103A928E00EF800DB6A00 /* InboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		60A103B128E0863E00DB6A00 /* ConversationPreviewRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationPreviewRow.swift; sourceTree = "<group>"; };
 		60A103B328E08B4400DB6A00 /* AdminChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminChatView.swift; sourceTree = "<group>"; };
+		74D3A776C8FF1DC341819156 /* Pods-HGFcollective.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGFcollective.release.xcconfig"; path = "Target Support Files/Pods-HGFcollective/Pods-HGFcollective.release.xcconfig"; sourceTree = "<group>"; };
 		7959D5448BA646F586628209 /* Pods-HGF Collective.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGF Collective.debug.xcconfig"; path = "Target Support Files/Pods-HGF Collective/Pods-HGF Collective.debug.xcconfig"; sourceTree = "<group>"; };
-		7C9BA0CC7C25DDDE319E0D9D /* libPods-HGF Collective.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HGF Collective.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFC927929D0330792E7C1F02 /* Pods-HGFcollective.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGFcollective.debug.xcconfig"; path = "Target Support Files/Pods-HGFcollective/Pods-HGFcollective.debug.xcconfig"; sourceTree = "<group>"; };
+		F48C33326FDA7104ACABEAFC /* libPods-HGFcollective.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HGFcollective.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDD35D78F0342E5EF5AB1CE1 /* Pods-HGF Collective.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HGF Collective.release.xcconfig"; path = "Target Support Files/Pods-HGF Collective/Pods-HGF Collective.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -110,7 +112,7 @@
 				6055E91328D64A7300968099 /* FirebaseAuth in Frameworks */,
 				6003C20528CEAE2B00ABA79E /* FirebaseDatabase in Frameworks */,
 				602BCA3228FCC0360096E607 /* FirebaseStorage in Frameworks */,
-				078B3D1846BB27A0B4FB65A8 /* libPods-HGF Collective.a in Frameworks */,
+				0EDA7BBC4F31A69C2214AA19 /* libPods-HGFcollective.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +122,7 @@
 		36421121A70B0B0FAD7A386A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7C9BA0CC7C25DDDE319E0D9D /* libPods-HGF Collective.a */,
+				F48C33326FDA7104ACABEAFC /* libPods-HGFcollective.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -154,7 +156,7 @@
 		6032FEFA28CD5E7200C4F22C = {
 			isa = PBXGroup;
 			children = (
-				6032FF0528CD5E7200C4F22C /* HGF Collective */,
+				6032FF0528CD5E7200C4F22C /* HGFcollective */,
 				6032FF0428CD5E7200C4F22C /* Products */,
 				FBE1C62F8367A7251F8B75C1 /* Pods */,
 				36421121A70B0B0FAD7A386A /* Frameworks */,
@@ -164,12 +166,12 @@
 		6032FF0428CD5E7200C4F22C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6032FF0328CD5E7200C4F22C /* HGF Collective.app */,
+				6032FF0328CD5E7200C4F22C /* HGFcollective.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		6032FF0528CD5E7200C4F22C /* HGF Collective */ = {
+		6032FF0528CD5E7200C4F22C /* HGFcollective */ = {
 			isa = PBXGroup;
 			children = (
 				6079AE0128D8DC4C00725F73 /* Extensions */,
@@ -189,7 +191,7 @@
 				604557F128E24190003EB09B /* UserManager.swift */,
 				60339F9728F3531B00E7E1C8 /* Favourites.swift */,
 			);
-			path = "HGF Collective";
+			path = HGFcollective;
 			sourceTree = "<group>";
 		};
 		6032FF0C28CD5E7300C4F22C /* Preview Content */ = {
@@ -242,6 +244,8 @@
 			children = (
 				7959D5448BA646F586628209 /* Pods-HGF Collective.debug.xcconfig */,
 				FDD35D78F0342E5EF5AB1CE1 /* Pods-HGF Collective.release.xcconfig */,
+				DFC927929D0330792E7C1F02 /* Pods-HGFcollective.debug.xcconfig */,
+				74D3A776C8FF1DC341819156 /* Pods-HGFcollective.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -249,9 +253,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		6032FF0228CD5E7200C4F22C /* HGF Collective */ = {
+		6032FF0228CD5E7200C4F22C /* HGFcollective */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6032FF1128CD5E7300C4F22C /* Build configuration list for PBXNativeTarget "HGF Collective" */;
+			buildConfigurationList = 6032FF1128CD5E7300C4F22C /* Build configuration list for PBXNativeTarget "HGFcollective" */;
 			buildPhases = (
 				E93207F779557D117489DF52 /* [CP] Check Pods Manifest.lock */,
 				60A45BED2901ACA2009C3155 /* Run SwiftLint */,
@@ -264,7 +268,7 @@
 			);
 			dependencies = (
 			);
-			name = "HGF Collective";
+			name = HGFcollective;
 			packageProductDependencies = (
 				6003C20428CEAE2B00ABA79E /* FirebaseDatabase */,
 				6003C20628CEAE2B00ABA79E /* FirebaseDatabaseSwift */,
@@ -273,7 +277,7 @@
 				602BCA3128FCC0360096E607 /* FirebaseStorage */,
 			);
 			productName = ArtApp;
-			productReference = 6032FF0328CD5E7200C4F22C /* HGF Collective.app */;
+			productReference = 6032FF0328CD5E7200C4F22C /* HGFcollective.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -291,7 +295,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 6032FEFE28CD5E7200C4F22C /* Build configuration list for PBXProject "HGF Collective" */;
+			buildConfigurationList = 6032FEFE28CD5E7200C4F22C /* Build configuration list for PBXProject "HGFcollective" */;
 			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -308,7 +312,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				6032FF0228CD5E7200C4F22C /* HGF Collective */,
+				6032FF0228CD5E7200C4F22C /* HGFcollective */,
 			);
 		};
 /* End PBXProject section */
@@ -351,15 +355,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HGF Collective/Pods-HGF Collective-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-HGFcollective/Pods-HGFcollective-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HGF Collective/Pods-HGF Collective-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-HGFcollective/Pods-HGFcollective-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HGF Collective/Pods-HGF Collective-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HGFcollective/Pods-HGFcollective-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E93207F779557D117489DF52 /* [CP] Check Pods Manifest.lock */ = {
@@ -377,7 +381,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HGF Collective-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-HGFcollective-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -483,10 +487,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "HGF Collective";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -537,9 +543,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "HGF Collective";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -549,16 +557,17 @@
 		};
 		6032FF1228CD5E7300C4F22C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7959D5448BA646F586628209 /* Pods-HGF Collective.debug.xcconfig */;
+			baseConfigurationReference = DFC927929D0330792E7C1F02 /* Pods-HGFcollective.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HGF Collective/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"HGFcollective/Preview Content\"";
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -582,16 +591,17 @@
 		};
 		6032FF1328CD5E7300C4F22C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FDD35D78F0342E5EF5AB1CE1 /* Pods-HGF Collective.release.xcconfig */;
+			baseConfigurationReference = 74D3A776C8FF1DC341819156 /* Pods-HGFcollective.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"HGF Collective/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"HGFcollective/Preview Content\"";
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -616,7 +626,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		6032FEFE28CD5E7200C4F22C /* Build configuration list for PBXProject "HGF Collective" */ = {
+		6032FEFE28CD5E7200C4F22C /* Build configuration list for PBXProject "HGFcollective" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6032FF0F28CD5E7300C4F22C /* Debug */,
@@ -625,7 +635,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6032FF1128CD5E7300C4F22C /* Build configuration list for PBXNativeTarget "HGF Collective" */ = {
+		6032FF1128CD5E7300C4F22C /* Build configuration list for PBXNativeTarget "HGFcollective" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				6032FF1228CD5E7300C4F22C /* Debug */,
