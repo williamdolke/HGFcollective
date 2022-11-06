@@ -22,13 +22,9 @@ struct LaunchScreen: View {
         } else {
             VStack {
                 VStack {
-                    Image(systemName: "paintbrush")
-                        .font(.system(size: 80))
-                        .foregroundColor(Color.theme.accent)
-                    Text("HGF Collective")
-                        .font(Font.custom("Baskerville-Bold", size: 30))
-                        .opacity(0.8)
-                        .multilineTextAlignment(.center)
+                    Image("HGF")
+                        .resizable()
+                        .frame(width: 250, height: 250)
                 }
                 .scaleEffect(size)
                 .opacity(opacity)

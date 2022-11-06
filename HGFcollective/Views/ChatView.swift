@@ -14,7 +14,7 @@ struct ChatView: View {
     var body: some View {
         VStack {
             VStack {
-                ChatTitleRow(username: enquiryManager.chat.name, iconURL: enquiryManager.chat.iconURL)
+                ChatTitleRow()
 
                 ScrollViewReader { proxy in
                     ScrollView {

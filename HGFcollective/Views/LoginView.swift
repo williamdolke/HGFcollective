@@ -18,10 +18,9 @@ struct LoginView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Image(systemName: "person.fill")
-                    .font(.system(size: 64))
-                    .padding()
-                    .foregroundColor(Color.theme.accent)
+                Image("HGF")
+                    .resizable()
+                    .frame(width: 150, height: 150)
 
                 Group {
                     TextField("Email", text: $email)

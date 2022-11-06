@@ -19,13 +19,6 @@ struct ContactView: View {
                         .environmentObject(EnquiryManager())
                         .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier
                         .navigationTitle("Contact Us")
-                        .navigationBarItems(trailing:
-                                                Image(systemName: "person.crop.circle")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 50, height: 50)
-                            .clipShape(Circle())
-                            .padding(.top, 90))
                 }
             }
         }

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct ImageBubbleWide: View {
     let artwork: Artwork
-    var imageURL = "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fit&width=800&height=800&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2Fp0hK-VVvk0WQVXlfweVzLw%2Fnormalized.jpg"
 
     var body: some View {
         HStack {

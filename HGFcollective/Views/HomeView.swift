@@ -30,11 +30,10 @@ struct HomeView: View {
 
                 }
                 .navigationTitle("Home")
-                .navigationBarItems(trailing:
-                                        Image(systemName: "person.crop.circle")
+                .navigationBarItems(trailing: Image("HGF Circle")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 50, height: 50)
+                    .frame(width: 100, height: 100)
                     .clipShape(Circle())
                     .padding(.top, 90))
             }
