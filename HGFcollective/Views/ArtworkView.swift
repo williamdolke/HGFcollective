@@ -15,15 +15,15 @@ struct ArtworkView: View {
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
 
-    var artwork: Artwork
+    let artwork: Artwork
 
     var body: some View {
         VStack {
-            NavigationLink(destination: ImageView().navigationBarBackButtonHidden(true)) {
+            NavigationLink(destination: ImageView(artwork: artwork).navigationBarBackButtonHidden(true)) {
                 GeometryReader { geo in
-                    Image(systemName: "person.crop.artframe")
-                        .resizable()
-                        .scaledToFit()
+                    ImageBubble(artwork: artwork,
+                                height: geo.size.height,
+                                width: geo.size.width * 0.9)
                         .frame(width: geo.size.width, height: geo.size.height)
                         // Repeat to center the image
                         .frame(width: geo.size.width, height: geo.size.height)

@@ -14,8 +14,8 @@ struct ChatTitleRow: View {
             HStack(spacing: 20) {
                 Image("HGF Circle")
                     .resizable()
-                    .frame(width: 50, height: 50)
-                    .cornerRadius(50)
+                    .frame(width: 60, height: 60)
+                    .cornerRadius(60)
 
                 Text("HGF Collective Team")
                     .font(.title).bold()

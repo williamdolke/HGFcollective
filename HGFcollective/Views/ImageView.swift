@@ -20,6 +20,8 @@ struct ImageView: View {
     private let maxScale = 5.0
     private let defaultLocation = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
 
+    let artwork: Artwork
+
     var magnificationGesture: some Gesture {
         MagnificationGesture()
             .onChanged { state in
@@ -53,15 +55,15 @@ struct ImageView: View {
             Color.black
                 .ignoresSafeArea()
 
-            Image(systemName: "person.crop.artframe")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .position(location)
-                .scaleEffect(scale)
-                .gesture(dragGesture)
-                .gesture(magnificationGesture)
-                .font(.system(size: 80))
-                .foregroundColor(.white)
+            GeometryReader { geo in
+                ImageBubble(artwork: artwork, height: geo.size.height, width: geo.size.width)
+                    .aspectRatio(contentMode: .fit)
+                    .position(location)
+                    .scaleEffect(scale)
+                    .gesture(dragGesture)
+                    .gesture(magnificationGesture)
+                    .foregroundColor(.white)
+            }
 
             // Close view button
             .overlay(
@@ -122,9 +124,9 @@ struct ImageView: View {
 
 struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageView()
+        ImageView(artwork: Artwork(name: "Artwork"))
 
-        ImageView()
+        ImageView(artwork: Artwork(name: "Artwork"))
             .preferredColorScheme(.dark)
     }
 }

@@ -19,8 +19,7 @@ struct ImageBubble: View {
             if (artwork.url != nil) {
                 AsyncImage(url: URL(string: artwork.url!)) { image in
                     image.resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: width, height: height)
+                        .aspectRatio(contentMode: .fit)
                         .frame(width: width, height: height)
                 } placeholder: {
                     ProgressView()
@@ -28,14 +27,12 @@ struct ImageBubble: View {
             } else if (UIImage(named: artworkAssetName) != nil) {
                 Image(artworkAssetName)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: width, height: height)
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: width, height: height)
             } else {
                 Image(systemName: "photo.circle.fill")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: width, height: height)
                     .frame(width: width, height: height)
             }
         }
