@@ -42,6 +42,6 @@ struct ImageBubbleWide: View {
 
 struct ImageBubbleWide_Previews: PreviewProvider {
     static var previews: some View {
-        ImageBubbleWide(artwork: Artwork(name: "Artwork"))
+        ImageBubble(artwork: Artwork(name: "Artwork"), height: 300, width: 400)
     }
 }

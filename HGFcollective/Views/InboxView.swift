@@ -25,8 +25,10 @@ struct InboxView: View {
 
     private var conversationTitleRow: some View {
         HStack(spacing: 16) {
-            Image(systemName: "person.fill")
-                .font(.system(size: 34, weight: .heavy))
+            Image("HGF Circle")
+                .resizable()
+                .frame(width: 34, height: 34)
+                .cornerRadius(34)
 
             Text("Admin Account")
                 .font(.system(size: 24, weight: .bold))

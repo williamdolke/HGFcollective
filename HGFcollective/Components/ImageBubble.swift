@@ -1,5 +1,5 @@
 //
-//  ImageBubbleTall.swift
+//  ImageBubble.swift
 //  HGF Collective
 //
 //  Created by William Dolke on 18/09/2022.
@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct ImageBubbleTall: View {
+struct ImageBubble: View {
     let artwork: Artwork
+    let height: CGFloat
+    let width: CGFloat
 
     var body: some View {
         HStack {
@@ -18,8 +20,8 @@ struct ImageBubbleTall: View {
                 AsyncImage(url: URL(string: artwork.url!)) { image in
                     image.resizable()
                         .aspectRatio(contentMode: .fill)
-                        .frame(width: 300, height: 400)
-                        .frame(width: 300, height: 400)
+                        .frame(width: width, height: height)
+                        .frame(width: width, height: height)
                 } placeholder: {
                     ProgressView()
                 }
@@ -27,14 +29,14 @@ struct ImageBubbleTall: View {
                 Image(artworkAssetName)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
-                    .frame(width: 300, height: 400)
-                    .frame(width: 300, height: 400)
+                    .frame(width: width, height: height)
+                    .frame(width: width, height: height)
             } else {
-                Image(systemName: "person.crop.artframe")
+                Image(systemName: "photo.circle.fill")
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 300, height: 400)
-                    .frame(width: 300, height: 400)
+                    .scaledToFit()
+                    .frame(width: width, height: height)
+                    .frame(width: width, height: height)
             }
         }
     }
@@ -42,6 +44,6 @@ struct ImageBubbleTall: View {
 
 struct ImageBubble_Previews: PreviewProvider {
     static var previews: some View {
-        ImageBubbleTall(artwork: Artwork(name: "Artwork"))
+        ImageBubble(artwork: Artwork(name: "Artwork"), height: 400, width: 300)
     }
 }
