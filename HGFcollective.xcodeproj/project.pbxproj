@@ -51,6 +51,7 @@
 		60A103B028E0781100DB6A00 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 60A103AF28E0781100DB6A00 /* SDWebImageSwiftUI */; };
 		60A103B228E0863E00DB6A00 /* ConversationPreviewRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A103B128E0863E00DB6A00 /* ConversationPreviewRow.swift */; };
 		60A103B428E08B4400DB6A00 /* AdminChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60A103B328E08B4400DB6A00 /* AdminChatView.swift */; };
+		60FBD7FE2919AFFE007CB313 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 60FBD7FD2919AFFE007CB313 /* Logging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -107,6 +108,7 @@
 			files = (
 				60A103B028E0781100DB6A00 /* SDWebImageSwiftUI in Frameworks */,
 				6003C20728CEAE2B00ABA79E /* FirebaseDatabaseSwift in Frameworks */,
+				60FBD7FE2919AFFE007CB313 /* Logging in Frameworks */,
 				6055E91328D64A7300968099 /* FirebaseAuth in Frameworks */,
 				6003C20528CEAE2B00ABA79E /* FirebaseDatabase in Frameworks */,
 				602BCA3228FCC0360096E607 /* FirebaseStorage in Frameworks */,
@@ -272,6 +274,7 @@
 				6055E91228D64A7300968099 /* FirebaseAuth */,
 				60A103AF28E0781100DB6A00 /* SDWebImageSwiftUI */,
 				602BCA3128FCC0360096E607 /* FirebaseStorage */,
+				60FBD7FD2919AFFE007CB313 /* Logging */,
 			);
 			productName = ArtApp;
 			productReference = 6032FF0328CD5E7200C4F22C /* HGFcollective.app */;
@@ -304,6 +307,7 @@
 			packageReferences = (
 				6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				60A103AE28E0781100DB6A00 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				60FBD7FC2919AFFD007CB313 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = 6032FF0428CD5E7200C4F22C /* Products */;
 			projectDirPath = "";
@@ -567,6 +571,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -601,6 +606,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -659,6 +665,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		60FBD7FC2919AFFD007CB313 /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-log.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -686,6 +700,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60A103AE28E0781100DB6A00 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		60FBD7FD2919AFFE007CB313 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60FBD7FC2919AFFD007CB313 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

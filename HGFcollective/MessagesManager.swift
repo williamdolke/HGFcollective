@@ -34,7 +34,7 @@ class MessagesManager: ObservableObject {
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
-                print("Error fetching documents: \(String(describing: error))")
+                logger.error("Error fetching documents: \(String(describing: error))")
                 return
             }
 
@@ -45,8 +45,7 @@ class MessagesManager: ObservableObject {
                     // Note that data(as:) is a function available only in FirebaseFirestoreSwift package
                     return try document.data(as: Message.self)
                 } catch {
-                    // If we run into an error, print the error in the console
-                    print("Error decoding document into Message: \(error)")
+                    logger.error("Error decoding document into Message: \(error)")
 
                     // Return nil if we run into an error - but the compactMap will not include it in the final array
                     return nil
@@ -84,14 +83,13 @@ class MessagesManager: ObservableObject {
             // import it at the top
             try firestoreDB.collection("users").document(uid).collection("messages").document(messageID)
                 .setData(from: newMessage)
-            print("Successfully sent message to database.")
+            logger.info("Successfully sent chat message to database.")
 
             try firestoreDB.collection("users").document(uid)
                 .setData(from: userUpdate)
-            print("Successfully sent update to user.")
+            logger.info("Successfully sent update to user document.")
         } catch {
-            // If we run into an error, print the error in the console
-            print("Error adding message to Firestore: \(error)")
+            logger.error("Error adding message to Firestore: \(error)")
         }
     }
 
@@ -104,15 +102,15 @@ class MessagesManager: ObservableObject {
 
         ref.putData(imageData, metadata: nil) { _, err in
             if let err = err {
-                print("Failed to push image to Storage: \(err)")
+                logger.error("Failed to push image to Storage: \(err)")
                 return
             }
             ref.downloadURL { url, err in
                 if let err = err {
-                    print("Failed to retrieve downloadURL: \(err)")
+                    logger.error("Failed to retrieve downloadURL: \(err)")
                     return
                 }
-                print("Successfully stored image with url: \(url?.absoluteString ?? "")")
+                logger.info("Successfully stored image with url: \(url?.absoluteString ?? "")")
                 self.sendMessage(text: url!.absoluteString, type: "image")
             }
         }

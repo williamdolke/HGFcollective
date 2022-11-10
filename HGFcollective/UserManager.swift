@@ -25,7 +25,7 @@ class UserManager: ObservableObject {
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
-                print("Error fetching documents: \(String(describing: error))")
+                logger.error("Error fetching user documents: \(String(describing: error))")
                 return
             }
 
@@ -36,8 +36,7 @@ class UserManager: ObservableObject {
                     // Note that data(as:) is a function available only in FirebaseFirestoreSwift package
                     return try document.data(as: User.self)
                 } catch {
-                    // If we run into an error, print the error in the console
-                    print("Error decoding document into User: \(error)")
+                    logger.error("Error decoding document into User: \(error)")
 
                     // Return nil if we run into an error - but the compactMap will not include it in the final array
                     return nil

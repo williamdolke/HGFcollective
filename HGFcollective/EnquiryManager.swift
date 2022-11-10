@@ -22,25 +22,7 @@ class EnquiryManager: ObservableObject {
         self.mail = Mail(recipients: [])
 
         Task(priority: .high) {
-            await self.getChatEnquiryInfo()
-        }
-
-        Task(priority: .high) {
             await self.getMailEnquiryInfo()
-        }
-    }
-
-    func getChatEnquiryInfo() async {
-        do {
-            let document = try await firestoreDB.collection("enquiries").document("chat").getDocument()
-
-            if let chatInfo = try? document.data(as: Chat.self) {
-                DispatchQueue.main.async {
-                    self.chat = chatInfo
-                }
-            }
-        } catch {
-            print(error)
         }
     }
 
@@ -54,7 +36,7 @@ class EnquiryManager: ObservableObject {
                 }
             }
         } catch {
-            print(error)
+            logger.info("Error fetching email enquiry information: \(error)")
         }
     }
 }

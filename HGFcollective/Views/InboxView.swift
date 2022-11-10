@@ -67,14 +67,14 @@ struct InboxView: View {
     }
 
     private func signOutUser() {
-        print("Logging out of Firebase with existing credentials.")
+        logger.info("Logging out of Firebase with existing credentials.")
         do {
             try Auth.auth().signOut()
             dismiss()
         } catch let signOutError as NSError {
-            print("Error signing out: \(signOutError)")
+            logger.error("Error signing out: \(signOutError)")
         }
-        print("Successfully logged out.")
+        logger.info("Successfully logged out.")
     }
 }
 

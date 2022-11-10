@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import Logging
 import Firebase
 import FirebaseAuth
+
+let logger = Logger(label: "")
 
 @main
 struct HGFcollectiveApp: App {
@@ -17,14 +20,15 @@ struct HGFcollectiveApp: App {
 
         if UserDefaults.standard.string(forKey: "uid") == nil {
             Auth.auth().signInAnonymously { authResult, error in
-                if let error = error {
-                    print(error.localizedDescription)
+                if let err = error {
+                    logger.error("Error signing into database: \(err.localizedDescription)")
                 } else {
-                    print("Sucessfully signed in anonymously")
+                    logger.info("Sucessfully signed in to database anonymously.")
                 }
                 guard let user = authResult?.user else { return }
+
                 UserDefaults.standard.set(user.uid, forKey: "uid")
-                print("UID: \(user.uid)")
+                logger.info("Anonymous login UID: \(user.uid)")
             }
         }
     }

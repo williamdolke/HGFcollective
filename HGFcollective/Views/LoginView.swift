@@ -78,15 +78,15 @@ struct LoginView: View {
     }
 
     private func loginUser() {
-        print("Logging into Firebase with existing credentials")
+        logger.info("Logging into Firebase with existing credentials.")
         Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
             if let error = error {
-                print("Failed to login user:", error)
+                logger.error("Failed to login user: ", error)
                 self.loginStatusMessage = "Failed to login user: \(error)"
                 return
             }
 
-            print("Successfully logged in as user: \(result?.user.uid ?? "")")
+            logger.info("Successfully logged in as user: \(result?.user.uid ?? "nil")")
             self.showInbox = true
         }
     }

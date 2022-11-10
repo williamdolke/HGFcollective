@@ -28,12 +28,12 @@ class ArtistManager: ObservableObject {
     }
 
     func getArtists() {
-        print("Getting artists.")
+        logger.info("Retrieving artists from database.")
         firestoreDB.collection("artists").addSnapshotListener { querySnapshot, error in
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
-                print("Error fetching documents: \(String(describing: error))")
+                logger.error("Error fetching documents: \(String(describing: error))")
                 return
             }
 
@@ -44,8 +44,7 @@ class ArtistManager: ObservableObject {
                     // Note that data(as:) is a function available only in FirebaseFirestoreSwift package
                     return try document.data(as: Artist.self)
                 } catch {
-                    // If we run into an error, print the error in the console
-                    print("Error decoding document into Artist: \(error)")
+                    logger.error("Error decoding document into Artist: \(error)")
 
                     // Return nil if we run into an error - but the compactMap will not include it in the final array
                     return nil
@@ -55,18 +54,18 @@ class ArtistManager: ObservableObject {
             self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
             self.getArtworks()
         }
-        print("Successfully got \(self.artists.count) artists.")
+        logger.info("Successfully retrieved \(self.artists.count) artists.")
     }
 
     func getArtworks() {
         for artist in self.artists {
-            print("Getting artworks for \(artist.name).")
+            logger.info("Retrieving artworks for \(artist.name).")
             firestoreDB.collection("artists").document(artist.name).collection("artworks")
                 .addSnapshotListener { [self] querySnapshot, error in
 
                 // If we don't have documents, exit the function
                 guard let documents = querySnapshot?.documents else {
-                    print("Error fetching documents: \(String(describing: error))")
+                    logging.error("Error fetching documents: \(String(describing: error))")
                     return
                 }
 
@@ -76,15 +75,14 @@ class ArtistManager: ObservableObject {
                             // Converting each document into the Artwork model
                             return try document.data(as: Artwork.self)
                         } catch {
-                            // If we run into an error, print the error in the console
-                            print("Error decoding document into Artwork: \(error)")
+                            logger.error("Error decoding document into Artwork: \(error)")
 
                             // Return nil if we run into an error - but the compactMap will not include it in the final
                             // array
                             return nil
                         }
                     }
-                    print("Got \(self.artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
+                    logger.info("Retrieved \(self.artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
                 }
             }
         }
@@ -143,7 +141,7 @@ class ArtistManager: ObservableObject {
                                              options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
                                                     .inlineOnlyPreservingWhitespace)))
         } catch {
-            print("Couldn't convert artwork info to bold.")
+            logger.error("Couldn't convert artwork info to bold.")
             return Text(info)
         }
     }
