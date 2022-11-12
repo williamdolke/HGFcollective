@@ -65,7 +65,7 @@ class ArtistManager: ObservableObject {
 
                 // If we don't have documents, exit the function
                 guard let documents = querySnapshot?.documents else {
-                    logging.error("Error fetching documents: \(String(describing: error))")
+                    logger.error("Error fetching documents: \(String(describing: error))")
                     return
                 }
 

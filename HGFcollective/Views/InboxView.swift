@@ -18,7 +18,7 @@ struct InboxView: View {
     var body: some View {
         VStack {
             conversationTitleRow
-            conversationsView
+            conversationRows
         }
         .navigationBarHidden(true)
     }
@@ -27,8 +27,8 @@ struct InboxView: View {
         HStack(spacing: 16) {
             Image("HGF Circle")
                 .resizable()
-                .frame(width: 34, height: 34)
-                .cornerRadius(34)
+                .frame(width: 40, height: 40)
+                .cornerRadius(40)
 
             Text("Admin Account")
                 .font(.system(size: 24, weight: .bold))
@@ -54,13 +54,15 @@ struct InboxView: View {
         .background(Color.theme.accent)
     }
 
-    private var conversationsView: some View {
+    private var conversationRows: some View {
         ScrollView {
             ForEach(userManager.users) { user in
-                NavigationLink(destination: AdminChatView().environmentObject(MessagesManager(uid: user.id,
-                                                                                              isCustomer: false))) {
+                let messagesManager = MessagesManager(uid: user.id, isCustomer: false)
+                NavigationLink(destination: AdminChatView().environmentObject(messagesManager)) {
                     ConversationPreviewRow(user: user)
-                }
+                }.simultaneousGesture(TapGesture().onEnded {
+                    messagesManager.setAsRead()
+                })
                 .navigationTitle(user.id)
             }
         }

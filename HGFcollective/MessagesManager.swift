@@ -75,7 +75,8 @@ class MessagesManager: ObservableObject {
                                      type: type)
             let userUpdate = User(id: uid,
                                   messagePreview: String(text.prefix(30)),
-                                  latestTimestamp: date)
+                                  latestTimestamp: date,
+                                  unread: true)
 
             // Create a new document in Firestore with the newMessage and userUpdate variable above, and use
             // setData(from:) to convert the Message into Firestore data
@@ -113,6 +114,18 @@ class MessagesManager: ObservableObject {
                 logger.info("Successfully stored image with url: \(url?.absoluteString ?? "")")
                 self.sendMessage(text: url!.absoluteString, type: "image")
             }
+        }
+    }
+
+    // Set messages as read for user, locally and in Firestore
+    func setAsRead() {
+        do {
+            // Update the user's document in Firestore
+            try firestoreDB.collection("users").document(uid)
+                .updateData(["unread": false])
+            logger.info("Successfully set message as read.")
+        } catch {
+            logger.error("Error setting message as read in Firestore: \(error)")
         }
     }
 }

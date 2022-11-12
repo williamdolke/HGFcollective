@@ -11,4 +11,5 @@ struct User: Identifiable, Codable {
     var id: String
     var messagePreview: String
     var latestTimestamp: Date
+    var unread: Bool
 }

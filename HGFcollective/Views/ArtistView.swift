@@ -12,7 +12,8 @@ struct ArtistView: View {
 
     var body: some View {
         VStack {
-            NavigationLink(destination: ImageView(artwork: Artwork(name: "Artwork")).navigationBarBackButtonHidden(true)) {
+            NavigationLink(destination: ImageView(artwork: Artwork(name: "Artwork"))
+                .navigationBarBackButtonHidden(true)) {
                 GeometryReader { geo in
                     Image(systemName: "person.crop.artframe")
                         .resizable()
