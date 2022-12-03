@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct ImageBubble: View {
     let artwork: Artwork
@@ -17,13 +18,13 @@ struct ImageBubble: View {
             let artworkAssetName = artwork.name + " 1"
 
             if (artwork.url != nil) {
-                AsyncImage(url: URL(string: artwork.url!)) { image in
-                    image.resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: width, height: height)
-                } placeholder: {
-                    ProgressView()
-                }
+                WebImage(url: URL(string: artwork.url!))
+                    .resizable()
+                    .placeholder {
+                        ProgressView()
+                    }
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: width, height: height)
             } else if (UIImage(named: artworkAssetName) != nil) {
                 Image(artworkAssetName)
                     .resizable()

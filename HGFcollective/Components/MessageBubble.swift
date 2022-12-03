@@ -23,15 +23,17 @@ struct MessageBubble: View {
                         .background(isCustomer ? Color.theme.accent: .gray)
                         .cornerRadius(30)
                 } else if (message.type == "image") {
-                    NavigationLink(destination: ImageView(artwork: Artwork(name: "Artwork"))
+                    NavigationLink(destination: ImageView(artwork: Artwork(name: "Image sent via chat",
+                                                                           url: message.content))
                         .navigationBarBackButtonHidden(true)) {
                         WebImage(url: URL(string: message.content))
                             .resizable()
                             .placeholder {
                                 ProgressView()
                             }
+                            .aspectRatio(contentMode: .fit)
                             .cornerRadius(30)
-                            .frame(width: 200, height: 200)
+                            .frame(width: 200)
                     }
                 }
             }
