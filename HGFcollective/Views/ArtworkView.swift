@@ -19,14 +19,24 @@ struct ArtworkView: View {
 
     var body: some View {
         VStack {
-            NavigationLink(destination: ImageView(artwork: artwork).navigationBarBackButtonHidden(true)) {
-                GeometryReader { geo in
-                    ImageBubble(artwork: artwork,
-                                height: geo.size.height,
-                                width: geo.size.width * 0.9)
-                        .frame(width: geo.size.width, height: geo.size.height)
-                        // Repeat to center the image
-                        .frame(width: geo.size.width, height: geo.size.height)
+            GeometryReader { geo in
+                ScrollView(.horizontal) {
+                    HStack {
+                        ForEach((1...10), id: \.self) {
+                            let artworkAssetName = artwork.name + " " + String($0)
+                            if (UIImage(named: artworkAssetName) != nil) {
+                                NavigationLink(destination: ImageView(artwork: artwork, imageNum: String($0))
+                                    .navigationBarBackButtonHidden(true)) {
+                                    ImageBubble(assetName: artworkAssetName,
+                                                height: geo.size.height,
+                                                width: geo.size.width * 0.9)
+                                    .frame(width: geo.size.width, height: geo.size.height)
+                                    // Repeat to center the image
+                                    .frame(width: geo.size.width, height: geo.size.height)
+                                }
+                            }
+                        }
+                    }
                 }
             }
 

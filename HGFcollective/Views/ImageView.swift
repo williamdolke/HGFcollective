@@ -20,7 +20,9 @@ struct ImageView: View {
     private let maxScale = 5.0
     private let defaultLocation = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
 
-    let artwork: Artwork
+    var artwork: Artwork?
+    var imageNum: String? = nil
+    var url: String?
 
     var magnificationGesture: some Gesture {
         MagnificationGesture()
@@ -56,7 +58,10 @@ struct ImageView: View {
                 .ignoresSafeArea()
 
             GeometryReader { geo in
-                ImageBubble(artwork: artwork, height: geo.size.height, width: geo.size.width)
+                ImageBubble(assetName: (artwork?.name ?? "") + " " + (imageNum ?? "1"),
+                            url: url,
+                            height: geo.size.height,
+                            width: geo.size.width)
                     .aspectRatio(contentMode: .fit)
                     .position(location)
                     .scaleEffect(scale)

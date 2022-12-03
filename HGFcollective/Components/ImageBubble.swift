@@ -9,24 +9,23 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ImageBubble: View {
-    let artwork: Artwork
+    let assetName: String
+    var url: String? = nil
     let height: CGFloat
     let width: CGFloat
 
     var body: some View {
         HStack {
-            let artworkAssetName = artwork.name + " 1"
-
-            if (artwork.url != nil) {
-                WebImage(url: URL(string: artwork.url!))
+            if (url != nil) {
+                WebImage(url: URL(string: url!))
                     .resizable()
                     .placeholder {
                         ProgressView()
                     }
                     .aspectRatio(contentMode: .fit)
                     .frame(width: width, height: height)
-            } else if (UIImage(named: artworkAssetName) != nil) {
-                Image(artworkAssetName)
+            } else if (UIImage(named: assetName) != nil) {
+                Image(assetName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: width, height: height)
@@ -42,6 +41,8 @@ struct ImageBubble: View {
 
 struct ImageBubble_Previews: PreviewProvider {
     static var previews: some View {
-        ImageBubble(artwork: Artwork(name: "Artwork"), height: 400, width: 300)
+        ImageBubble(assetName: "Artwork 1",
+                    height: 400,
+                    width: 300)
     }
 }
