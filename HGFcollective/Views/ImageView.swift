@@ -21,7 +21,7 @@ struct ImageView: View {
     private let defaultLocation = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
 
     var artwork: Artwork?
-    var imageNum: String? = nil
+    var imageNum: String?
     var url: String?
 
     var magnificationGesture: some Gesture {

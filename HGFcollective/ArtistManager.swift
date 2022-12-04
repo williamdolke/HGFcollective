@@ -14,9 +14,9 @@ class ArtistManager: ObservableObject {
     @Published var artists: [Artist]
     @Published var featuredArtistIndex: Int?
     @Published var featuredArtistName: String?
-    @Published var discoverArtworkIndex: Int?
+    @Published var discoverArtistIndexes: [Int]?
 
-    let numDiscoverArtworks: Int = 3
+    let numDiscoverArtists: Int = 3
 
     // Create an instance of our Firestore database
     let firestoreDB = Firestore.firestore()
@@ -52,6 +52,7 @@ class ArtistManager: ObservableObject {
             }
             self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
             self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
+            self.getDiscoverArtists()
             self.getArtworks()
         }
         logger.info("Successfully retrieved \(self.artists.count) artists.")
@@ -88,18 +89,16 @@ class ArtistManager: ObservableObject {
         }
     }
 
-    func getDiscoverArtworks() -> [Int] {
-        var indexes: [Int] = []
-
-        for num in 0...self.numDiscoverArtworks-1 {
-            indexes.append(Int.random(in: 0..<self.artists.count))
-            indexes.append(Int.random(in: 0..<self.artists[num].artworks!.count))
-        }
-        return indexes
+    func getDiscoverArtists() {
+        discoverArtistIndexes = getUniqueRandomNumbers(min: 0, max: artists.count-1, count: numDiscoverArtists)
     }
 
-    func getArtworkImages() {
-
+    func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
+        var set = Set<Int>()
+        while set.count < count {
+            set.insert(Int.random(in: min...max))
+        }
+        return Array(set)
     }
 
     func getArtworkInfo(artwork: Artwork) -> Text {

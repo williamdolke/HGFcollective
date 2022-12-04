@@ -10,7 +10,7 @@ import SDWebImageSwiftUI
 
 struct ImageBubble: View {
     let assetName: String
-    var url: String? = nil
+    var url: String?
     let height: CGFloat
     let width: CGFloat
 

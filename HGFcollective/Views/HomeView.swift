@@ -44,9 +44,10 @@ struct HomeView: View {
         GeometryReader { geo in
             ScrollView(.horizontal) {
                 HStack(spacing: geo.size.width * 0.04) {
-                    ForEach(0..<artistManager.numDiscoverArtworks, id: \.self) {index in
-                        NavigationLink(destination: ArtistView(artist: artistManager.artists[2*index+1])) {
-                            ImageBubble(assetName: "Artwork 1",
+                    ForEach(0..<artistManager.numDiscoverArtists, id: \.self) {index in
+                        let artistIndex = artistManager.discoverArtistIndexes![index]
+                        NavigationLink(destination: ArtistView(artist: artistManager.artists[artistIndex])) {
+                            ImageBubble(assetName: (artistManager.artists[artistIndex].artworks?[0].name ?? "") + " 1",
                                         height: geo.size.height,
                                         width: geo.size.width * 0.48)
                                 .cornerRadius(geo.size.width * 0.15)
