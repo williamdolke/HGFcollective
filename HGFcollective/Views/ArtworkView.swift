@@ -42,7 +42,8 @@ struct ArtworkView: View {
 
             ScrollView {
                 artistManager.getArtworkInfo(artwork: artwork)
-                    .padding(.horizontal, 20)
+                    .padding()
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
 
                 Button(favourites.contains(artwork.name) ? "Remove from Favourites" : "Add to Favourites") {
                     if favourites.contains(artwork.name) {

@@ -87,7 +87,7 @@ struct HomeView: View {
 }
 
 struct HomeView_Previews: PreviewProvider {
-    static var artistManager = ArtistManager()
+    static let artistManager = ArtistManager()
 
     static var previews: some View {
         HomeView()

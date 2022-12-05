@@ -83,8 +83,10 @@ struct InboxView: View {
 struct InboxView_Previews: PreviewProvider {
     static var previews: some View {
         InboxView()
+            .environmentObject(UserManager())
 
         InboxView()
+            .environmentObject(UserManager())
             .preferredColorScheme(.dark)
     }
 }

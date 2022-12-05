@@ -17,7 +17,9 @@ struct ArtistView: View {
             ScrollView {
                 Text(artist.biography)
                     .padding()
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
+            .padding()
         }
         .navigationBarTitle(artist.name, displayMode: .inline)
     }
@@ -49,15 +51,15 @@ struct ArtistView: View {
 }
 
 struct ArtistView_Previews: PreviewProvider {
-    static var previews: some View {
-        let artist = Artist(name: "Artist",
-                            biography: """
-                            I am an artist that likes to paint with oil paints.
-                            My favourite thing to paint is the sea!
-                            """,
-                            artworks: [Artwork(name: "Mr monopoly man"),
-                                       Artwork(name: "Mr monopoly man vinyl and opening night memorabilia")])
+    static let artist = Artist(name: "Artist",
+                        biography: """
+                        I am an artist that likes to paint with oil paints.
+                        My favourite thing to paint is the sea!
+                        """,
+                        artworks: [Artwork(name: "Mr monopoly man"),
+                                   Artwork(name: "Mr monopoly man vinyl and opening night memorabilia")])
 
+    static var previews: some View {
         ArtistView(artist: artist)
 
         ArtistView(artist: artist)

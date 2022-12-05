@@ -65,5 +65,10 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
             .environmentObject(artistManager)
             .environmentObject(messagesManager)
+
+        ContentView()
+            .environmentObject(artistManager)
+            .environmentObject(messagesManager)
+            .preferredColorScheme(.dark)
     }
 }
