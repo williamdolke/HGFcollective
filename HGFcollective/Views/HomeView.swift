@@ -46,8 +46,11 @@ struct HomeView: View {
                 HStack(spacing: geo.size.width * 0.04) {
                     ForEach(0..<artistManager.numDiscoverArtists, id: \.self) {index in
                         let artistIndex = artistManager.discoverArtistIndexes![index]
+                        let artistArtwork = artistManager.artists[artistIndex].artworks
+                        let artworkAssetName = (artistArtwork?.isEmpty == false) ? artistArtwork![0].name : ""
+
                         NavigationLink(destination: ArtistView(artist: artistManager.artists[artistIndex])) {
-                            ImageBubble(assetName: (artistManager.artists[artistIndex].artworks?[0].name ?? "") + " 1",
+                            ImageBubble(assetName: artworkAssetName + " 1",
                                         height: geo.size.height,
                                         width: geo.size.width * 0.48)
                                 .cornerRadius(geo.size.width * 0.15)
