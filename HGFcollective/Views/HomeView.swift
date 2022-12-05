@@ -53,6 +53,7 @@ struct HomeView: View {
                             ImageBubble(assetName: artworkAssetName + " 1",
                                         height: geo.size.height,
                                         width: geo.size.width * 0.48)
+                                .background(Color.theme.accent)
                                 .cornerRadius(geo.size.width * 0.15)
                         }
                     }
@@ -74,6 +75,7 @@ struct HomeView: View {
                             ImageBubble(assetName: artwork.name + " 1",
                                         height:geo.size.height,
                                         width:geo.size.width)
+                                .background(Color.theme.accent)
                                 .cornerRadius(geo.size.width * 0.15)
                         }
                     }
