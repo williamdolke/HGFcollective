@@ -44,45 +44,53 @@ struct ArtworkView: View {
                 artistManager.getArtworkInfo(artwork: artwork)
                     .padding()
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-
-                Button(favourites.contains(artwork.name) ? "Remove from Favourites" : "Add to Favourites") {
-                    if favourites.contains(artwork.name) {
-                        favourites.remove(artwork.name)
-                    } else {
-                        favourites.add(artwork.name)
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
             }
 
             VStack {
                 Text("Price: " + (artwork.price ?? "POA"))
                     .font(.title)
 
-                Button {
-                    enquireClicked.toggle()
-                } label: {
-                    HStack {
-                        Text("**Enquire**")
-                            .font(.title)
-                        Image(systemName: "envelope")
+                HStack {
+                    enquireButton
+
+                    Button {
+                        if favourites.contains(artwork.name) {
+                            favourites.remove(artwork.name)
+                        } else {
+                            favourites.add(artwork.name)
+                        }
+                    } label: {
+                        Image(systemName: favourites.contains(artwork.name) ? "heart.fill" : "heart")
+                            .font(.system(size: 50))
+                            .foregroundColor(.red)
                     }
-                    .padding()
-                    .background(Color.theme.accent)
-                    .cornerRadius(40)
-                    .foregroundColor(.white)
-                }
-                .contentShape(Rectangle())
-                .padding(.bottom, 10)
-                .sheet(isPresented: $enquireClicked) {
-                    MailView(presentation: self.$enquireClicked, result: self.$result)
-                        .environmentObject(EnquiryManager())
-                        .disabled(!MFMailComposeViewController.canSendMail())
                 }
             }
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
+    }
+
+    var enquireButton: some View {
+        Button {
+            enquireClicked.toggle()
+        } label: {
+            HStack {
+                Text("**Enquire**")
+                    .font(.title)
+                Image(systemName: "envelope")
+            }
+            .padding()
+            .background(Color.theme.accent)
+            .cornerRadius(40)
+            .foregroundColor(.white)
+        }
+        .contentShape(Rectangle())
+        .padding(.bottom, 10)
+        .sheet(isPresented: $enquireClicked) {
+            MailView(presentation: self.$enquireClicked, result: self.$result)
+                .environmentObject(EnquiryManager())
+                .disabled(!MFMailComposeViewController.canSendMail())
+        }
     }
 }
 
