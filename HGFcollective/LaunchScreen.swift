@@ -36,7 +36,7 @@ struct LaunchScreen: View {
     private var logoAnimation: some View {
         VStack {
             VStack {
-                Image("HGF")
+                Image("IconSquare")
                     .resizable()
                     .frame(width: 250, height: 250)
             }

@@ -45,6 +45,7 @@ struct ArtworkView: View {
                     .padding()
                     .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
+            .padding()
 
             VStack {
                 Text("Price: " + (artwork.price ?? "POA"))
@@ -62,7 +63,7 @@ struct ArtworkView: View {
                     } label: {
                         Image(systemName: favourites.contains(artwork.name) ? "heart.fill" : "heart")
                             .font(.system(size: 50))
-                            .foregroundColor(.red)
+                            .foregroundColor(Color.theme.favourite)
                     }
                 }
             }
@@ -82,7 +83,7 @@ struct ArtworkView: View {
             .padding()
             .background(Color.theme.accent)
             .cornerRadius(40)
-            .foregroundColor(.white)
+            .foregroundColor(Color.theme.buttonForeground)
         }
         .contentShape(Rectangle())
         .padding(.bottom, 10)

@@ -30,7 +30,7 @@ struct HomeView: View {
 
                 }
                 .navigationTitle("Home")
-                .navigationBarItems(trailing: Image("HGF Circle")
+                .navigationBarItems(trailing: Image("IconCircle")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
@@ -53,8 +53,8 @@ struct HomeView: View {
                             ImageBubble(assetName: artworkAssetName + " 1",
                                         height: geo.size.height,
                                         width: geo.size.width * 0.48)
-                                .background(Color.theme.accent)
-                                .cornerRadius(geo.size.width * 0.15)
+                            .background(Color.theme.bubble)
+                            .cornerRadius(geo.size.width * 0.15)
                         }
                     }
                 }
@@ -75,7 +75,7 @@ struct HomeView: View {
                             ImageBubble(assetName: artwork.name + " 1",
                                         height:geo.size.height,
                                         width:geo.size.width)
-                                .background(Color.theme.accent)
+                                .background(Color.theme.bubble)
                                 .cornerRadius(geo.size.width * 0.15)
                         }
                     }

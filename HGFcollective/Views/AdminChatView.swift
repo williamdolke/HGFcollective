@@ -20,7 +20,7 @@ struct AdminChatView: View {
                         }
                     }
                     .padding(.top, 10)
-                    .background(Color(UIColor.systemBackground))
+                    .background(Color.theme.systemBackground)
                     .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier
                     .onChange(of: messagesManager.lastMessageId) { id in
                         // When the lastMessageId changes, scroll to the bottom of the conversation

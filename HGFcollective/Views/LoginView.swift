@@ -18,7 +18,7 @@ struct LoginView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                Image("HGF")
+                Image("IconSquare")
                     .resizable()
                     .frame(width: 150, height: 150)
 
@@ -33,7 +33,7 @@ struct LoginView: View {
                     }
                 }
                 .padding(12)
-                .background(.gray)
+                .background(Color.theme.bubble)
                 .cornerRadius(25)
 
                 Button {
@@ -47,7 +47,7 @@ struct LoginView: View {
                 loginButton
 
                 Text(self.loginStatusMessage)
-                    .foregroundColor(.red)
+                    .foregroundColor(Color.theme.favourite)
             }
             .padding()
 
@@ -71,7 +71,7 @@ struct LoginView: View {
                     Spacer()
                 }
                 .background(Color.theme.accent)
-                .foregroundColor(.white)
+                .foregroundColor(Color.theme.buttonForeground)
                 .cornerRadius(10)
             }
         }

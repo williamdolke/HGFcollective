@@ -54,7 +54,7 @@ struct ImageView: View {
 
     var body: some View {
         ZStack {
-            Color.black
+            Color.theme.imageBackground
                 .ignoresSafeArea()
 
             GeometryReader { geo in
@@ -67,7 +67,7 @@ struct ImageView: View {
                     .scaleEffect(scale)
                     .gesture(dragGesture)
                     .gesture(magnificationGesture)
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.theme.buttonForeground)
             }
 
             // Close view button
@@ -76,9 +76,9 @@ struct ImageView: View {
                     dismiss()
                 } label: {
                     Image(systemName: "xmark")
-                        .foregroundColor(.white)
+                        .foregroundColor(Color.theme.buttonForeground)
                         .padding()
-                        .background(Color.white.opacity(0.35))
+                        .background(Color.theme.buttonForeground.opacity(0.35))
                         .clipShape(Circle())
                 }
                 .padding()

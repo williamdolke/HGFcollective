@@ -25,7 +25,7 @@ struct InboxView: View {
 
     private var conversationTitleRow: some View {
         HStack(spacing: 16) {
-            Image("HGF Circle")
+            Image("IconCircle")
                 .resizable()
                 .frame(width: 40, height: 40)
                 .cornerRadius(40)
@@ -41,7 +41,7 @@ struct InboxView: View {
                     .font(.system(size: 28, weight: .bold))
             }
         }
-        .foregroundColor(Color(UIColor.systemBackground))
+        .foregroundColor(Color.theme.systemBackground)
         .padding()
         .actionSheet(isPresented: $showLogOutOptions) {
             .init(title: Text("Sign out?"), buttons: [

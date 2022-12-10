@@ -31,7 +31,7 @@ struct ArtworksView: View {
                                                 Spacer()
                                                 Image(systemName: "heart.fill")
                                                     .accessibilityLabel("This is a favourite artwork")
-                                                    .foregroundColor(.red)
+                                                    .foregroundColor(Color.theme.favourite)
                                             }
                                         }
                                     }

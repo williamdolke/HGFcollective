@@ -20,7 +20,7 @@ struct MessageBubble: View {
                 if (message.type == "text") {
                     Text(message.content)
                         .padding()
-                        .background(isCustomer ? Color.theme.accent: .gray)
+                        .background(isCustomer ? Color.theme.accent: Color.theme.accentSecondary)
                         .cornerRadius(30)
                 } else if (message.type == "image") {
                     NavigationLink(destination: ImageView(url: message.content)
@@ -44,7 +44,7 @@ struct MessageBubble: View {
             if showTime {
                 Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
                     .font(.caption2)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color.theme.accentSecondary)
                     .padding(isCustomer ? .trailing: .leading, 25)
             }
         }

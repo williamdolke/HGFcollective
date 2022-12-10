@@ -25,7 +25,7 @@ struct ConversationPreviewRow: View {
                         .font(.system(size: 20, weight: .bold))
                     Text(user.messagePreview.prefix(18) + "...")
                         .font(.system(size: 16))
-                        .foregroundColor(Color(.gray))
+                        .foregroundColor(Color.theme.accentSecondary)
                 }
                 Spacer()
 

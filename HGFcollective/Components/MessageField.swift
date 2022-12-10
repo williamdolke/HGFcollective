@@ -24,7 +24,7 @@ struct MessageField: View {
                 showImagePicker.toggle()
             } label: {
                 Image(systemName: "photo.on.rectangle.angled")
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.theme.buttonForeground)
                     .font(.system(size: 25))
                     .padding(10)
                     .background(Color.theme.accent)
@@ -40,14 +40,12 @@ struct MessageField: View {
             sendButton
         }
         .padding(.horizontal)
-        .background(.gray)
+        .background(Color.theme.bubble)
         .cornerRadius(50)
         .padding(5)
         .sheet(isPresented: $showImagePicker) {
+            // For camera, use .camera
             ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
-
-            // For camera use
-            // ImagePicker(sourceType: .camera, selectedImage: self.$image)
         }
     }
 
@@ -68,7 +66,7 @@ struct MessageField: View {
                 }
             } label: {
                 Image(systemName: "paperplane.fill")
-                    .foregroundColor(.white)
+                    .foregroundColor(Color.theme.buttonForeground)
                     .font(.system(size: 25))
                     .padding(10)
                     .background(Color.theme.accent)

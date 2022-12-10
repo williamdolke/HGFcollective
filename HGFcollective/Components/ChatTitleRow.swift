@@ -12,7 +12,7 @@ struct ChatTitleRow: View {
     var body: some View {
         VStack {
             HStack(spacing: 20) {
-                Image("HGF Circle")
+                Image("IconCircle")
                     .resizable()
                     .frame(width: 60, height: 60)
                     .cornerRadius(60)
