@@ -11,9 +11,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: |
-       xcodebuild clean -workspace "HGF Collective.xcworkspace" -scheme "HGF Collective"
-       cp ~/Downloads/HGFCollective/HGF\ Collective/GoogleService-Info.plist ~/Downloads/HGFCollective/_work/HGFcollective/HGFcollective/HGF\ Collective/GoogleService-Info.plist
-       xcodebuild -workspace "HGF Collective.xcworkspace" -scheme "HGF Collective"
+       xcodebuild clean -workspace "HGFcollective.xcworkspace" -scheme "HGF Collective"
+       cp ~/Downloads/HGFCollective/HGFcollective/GoogleService-Info.plist ~/Downloads/HGFCollective/actions-runner/_work/HGFcollective/HGFcollective/HGFcollective/GoogleService-Info.plist
+       xcodebuild -workspace "HGFcollective.xcworkspace" -scheme "HGF Collective"
   lint:
   
     runs-on: self-hosted
