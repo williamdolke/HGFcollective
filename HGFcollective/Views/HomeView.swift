@@ -11,32 +11,29 @@ struct HomeView: View {
     @EnvironmentObject var artistManager: ArtistManager
 
     var body: some View {
-        VStack {
-            NavigationView {
-                VStack {
-                    Text("Discover")
-                        .font(.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                    discoverPictures
+        NavigationView {
+            VStack {
+                Text("Discover")
+                    .font(.title)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                discoverPictures
 
-                    Text("Featured Artist - \(artistManager.featuredArtistName ?? "")")
-                        .font(.title)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                    featuredPictures
+                Text("Featured Artist - \(artistManager.featuredArtistName ?? "")")
+                    .font(.title)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                featuredPictures
 
-                    Spacer()
-
-                }
-                .navigationTitle("Home")
-                .navigationBarItems(trailing: Image("IconCircle")
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 100, height: 100)
-                    .clipShape(Circle())
-                    .padding(.top, 90))
+                Spacer()
             }
+            .navigationTitle("Home")
+            .navigationBarItems(trailing: Image("IconCircle")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
+                .padding(.top, 90))
         }
     }
 

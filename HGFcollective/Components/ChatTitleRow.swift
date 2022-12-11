@@ -17,7 +17,8 @@ struct ChatTitleRow: View {
                     .frame(width: 60, height: 60)
                     .cornerRadius(60)
 
-                Text("HGF Collective Team")
+                let chatName = Bundle.main.object(forInfoDictionaryKey: "Chat name") as? String ?? ""
+                Text(chatName)
                     .font(.title).bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }

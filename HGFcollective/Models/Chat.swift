@@ -7,6 +7,10 @@
 
 import Foundation
 
+/// - Parameters
+///   - id: identifier
+///   - name: Contact name
+///   - iconURL: URL of the contact icon/avatar
 struct Chat: Identifiable, Codable {
     var id: String {
         self.name

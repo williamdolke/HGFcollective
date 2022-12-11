@@ -14,16 +14,19 @@ struct ContentView: View {
     @StateObject var favourites = Favourites()
 
     @State private var selection = 0
+    //
     @State private var id: [Bool] = [false, false, false, false]
 
     var handler: Binding<Int> { Binding(
         get: { self.selection },
         set: {
+            // Reset the view of the selected tab when the user
+            // taps the active tab in the tab bar
             if $0 == self.selection {
-                // Reset view
                 id[self.selection].toggle()
+            } else {
+                self.selection = $0
             }
-            self.selection = $0
         }
     )}
 

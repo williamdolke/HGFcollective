@@ -19,33 +19,10 @@ struct ArtworkView: View {
 
     var body: some View {
         VStack {
-            GeometryReader { geo in
-                ScrollView(.horizontal) {
-                    HStack {
-                        ForEach((1...10), id: \.self) {
-                            let artworkAssetName = artwork.name + " " + String($0)
-                            if (UIImage(named: artworkAssetName) != nil) {
-                                NavigationLink(destination: ImageView(artwork: artwork, imageNum: String($0))
-                                    .navigationBarBackButtonHidden(true)) {
-                                    ImageBubble(assetName: artworkAssetName,
-                                                height: geo.size.height,
-                                                width: geo.size.width * 0.9)
-                                    .frame(width: geo.size.width, height: geo.size.height)
-                                    // Repeat to center the image
-                                    .frame(width: geo.size.width, height: geo.size.height)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            artworkImages
 
-            ScrollView {
-                artistManager.getArtworkInfo(artwork: artwork)
-                    .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-            }
-            .padding()
+            artworkInfo
+                .padding()
 
             VStack {
                 Text("Price: " + (artwork.price ?? "POA"))
@@ -53,25 +30,45 @@ struct ArtworkView: View {
 
                 HStack {
                     enquireButton
-
-                    Button {
-                        if favourites.contains(artwork.name) {
-                            favourites.remove(artwork.name)
-                        } else {
-                            favourites.add(artwork.name)
-                        }
-                    } label: {
-                        Image(systemName: favourites.contains(artwork.name) ? "heart.fill" : "heart")
-                            .font(.system(size: 50))
-                            .foregroundColor(Color.theme.favourite)
-                    }
+                    favouriteButton
                 }
             }
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
     }
 
-    var enquireButton: some View {
+    private var artworkImages: some View {
+        GeometryReader { geo in
+            ScrollView(.horizontal) {
+                HStack {
+                    ForEach((1...10), id: \.self) {
+                        let artworkAssetName = artwork.name + " " + String($0)
+                        if (UIImage(named: artworkAssetName) != nil) {
+                            NavigationLink(destination: ImageView(artwork: artwork, imageNum: String($0))
+                                .navigationBarBackButtonHidden(true)) {
+                                ImageBubble(assetName: artworkAssetName,
+                                            height: geo.size.height,
+                                            width: geo.size.width * 0.9)
+                                .frame(width: geo.size.width, height: geo.size.height)
+                                // Repeat to center the image
+                                .frame(width: geo.size.width, height: geo.size.height)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private var artworkInfo: some View {
+        ScrollView {
+            artistManager.getArtworkInfo(artwork: artwork)
+                .padding()
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+    }
+
+    private var enquireButton: some View {
         Button {
             enquireClicked.toggle()
         } label: {
@@ -91,6 +88,20 @@ struct ArtworkView: View {
             MailView(presentation: self.$enquireClicked, result: self.$result)
                 .environmentObject(EnquiryManager())
                 .disabled(!MFMailComposeViewController.canSendMail())
+        }
+    }
+
+    private var favouriteButton: some View {
+        Button {
+            if favourites.contains(artwork.name) {
+                favourites.remove(artwork.name)
+            } else {
+                favourites.add(artwork.name)
+            }
+        } label: {
+            Image(systemName: favourites.contains(artwork.name) ? "heart.fill" : "heart")
+                .font(.system(size: 50))
+                .foregroundColor(Color.theme.favourite)
         }
     }
 }

@@ -11,16 +11,12 @@ struct ContactView: View {
     @EnvironmentObject var messagesManager: MessagesManager
 
     var body: some View {
-        ZStack {
-                VStack {
-                    NavigationView {
-                    ChatView()
-                        .environmentObject(messagesManager)
-                        .environmentObject(EnquiryManager())
-                        .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier
-                        .navigationTitle("Contact Us")
-                }
-            }
+        NavigationView {
+            ChatView()
+                .environmentObject(messagesManager)
+                .environmentObject(EnquiryManager())
+                .cornerRadius(30, corners: [.topLeft, .topRight])
+                .navigationTitle("Contact Us")
         }
     }
 }

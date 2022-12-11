@@ -13,18 +13,16 @@ struct ArtistsView: View {
     @State private var searchQuery = ""
 
     var body: some View {
-        ZStack {
-            NavigationView {
-                Form {
-                    Section {
-                        ForEach(filteredArtists) { artist in
-                            NavigationLink(artist.name, destination: ArtistView(artist: artist))
-                        }
+        NavigationView {
+            Form {
+                Section {
+                    ForEach(filteredArtists) { artist in
+                        NavigationLink(artist.name, destination: ArtistView(artist: artist))
                     }
                 }
-                .navigationTitle("Artists")
-                .searchable(text: $searchQuery, prompt: "Search By Artist Name")
             }
+            .navigationTitle("Artists")
+            .searchable(text: $searchQuery, prompt: "Search By Artist Name")
         }
     }
 

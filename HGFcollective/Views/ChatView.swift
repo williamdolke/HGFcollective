@@ -16,32 +16,37 @@ struct ChatView: View {
             VStack {
                 ChatTitleRow()
 
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        ForEach(messagesManager.messages, id: \.id) { message in
-                            MessageBubble(message: message, isCustomer: message.isCustomer)
-                        }
-                    }
-                    .padding(.top, 10)
-                    .background(Color.theme.systemBackground)
-                    .cornerRadius(30, corners: [.topLeft, .topRight]) // Custom cornerRadius modifier
-                    .onChange(of: messagesManager.lastMessageId) { id in
-                        // When the lastMessageId changes, scroll to the bottom of the conversation
-                        withAnimation {
-                            proxy.scrollTo(id, anchor: .bottom)
-                        }
-                    }
-                    .onAppear {
-                        withAnimation {
-                            proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
-                        }
-                    }
-                }
+                sentMessages
             }
             .background(Color.theme.accent)
 
             MessageField()
                 .environmentObject(messagesManager)
+        }
+    }
+
+    private var sentMessages: some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                ForEach(messagesManager.messages, id: \.id) { message in
+                    MessageBubble(message: message, isCustomer: message.isCustomer)
+                }
+            }
+            .padding(.top, 10)
+            .background(Color.theme.systemBackground)
+            .cornerRadius(30, corners: [.topLeft, .topRight])
+            .onChange(of: messagesManager.lastMessageId) { id in
+                // When the lastMessageId changes, scroll to the bottom of the conversation
+                withAnimation {
+                    proxy.scrollTo(id, anchor: .bottom)
+                }
+            }
+            .onAppear {
+                // When the view appears, scroll to the bottom of the conversation
+                withAnimation {
+                    proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
+                }
+            }
         }
     }
 }

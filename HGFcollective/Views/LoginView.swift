@@ -16,46 +16,50 @@ struct LoginView: View {
     @State private var showInbox: Bool = false
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                Image("IconSquare")
-                    .resizable()
-                    .frame(width: 150, height: 150)
+        VStack(spacing: 16) {
+            Image("IconSquare")
+                .resizable()
+                .frame(width: 150, height: 150)
 
-                Group {
-                    TextField("Email", text: $email)
-                        .keyboardType(.emailAddress)
-                        .autocapitalization(.none)
-                    if isSecured {
-                        SecureField("Password", text: $password)
-                    } else {
-                        TextField("Password", text: $password)
-                    }
-                }
-                .padding(12)
-                .background(Color.theme.bubble)
-                .cornerRadius(25)
+            textFields
+            hiddenButton
+            loginButton
 
-                Button {
-                    isSecured.toggle()
-                } label: {
-                    Image(systemName: self.isSecured ? "eye.slash" : "eye")
-                        .foregroundColor(Color.theme.accent)
-                        .font(.system(size: 24))
-                }
-
-                loginButton
-
-                Text(self.loginStatusMessage)
-                    .foregroundColor(Color.theme.favourite)
-            }
-            .padding()
-
+            Text(self.loginStatusMessage)
+                .foregroundColor(Color.theme.favourite)
         }
+        .padding()
         .navigationTitle("Log In")
     }
 
+    private var textFields: some View {
+        Group {
+            TextField("Email", text: $email)
+                .keyboardType(.emailAddress)
+                .autocapitalization(.none)
+            if isSecured {
+                SecureField("Password", text: $password)
+            } else {
+                TextField("Password", text: $password)
+            }
+        }
+        .padding(12)
+        .background(Color.theme.bubble)
+        .cornerRadius(25)
+    }
+
+    private var hiddenButton: some View {
+        Button {
+            isSecured.toggle()
+        } label: {
+            Image(systemName: self.isSecured ? "eye.slash" : "eye")
+                .foregroundColor(Color.theme.accent)
+                .font(.system(size: 24))
+        }
+    }
+
     private var loginButton: some View {
+        // Create the UserManager and consequently fetch all messages with users when the admin successfully logs in
         NavigationLink(destination: InboxView().environmentObject(UserManager()).navigationBarBackButtonHidden(true),
                        isActive: $showInbox) {
             Button {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Format timestamps
 extension Date {
     func formattedDateString(format: String? = "MMM d, h:mm a") -> String {
         let dateFormatter = DateFormatter()

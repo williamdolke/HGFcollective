@@ -30,7 +30,7 @@ struct InboxView: View {
                 .frame(width: 40, height: 40)
                 .cornerRadius(40)
 
-            Text("Admin Account")
+            Text("Administrator")
                 .font(.system(size: 24, weight: .bold))
 
             Spacer()

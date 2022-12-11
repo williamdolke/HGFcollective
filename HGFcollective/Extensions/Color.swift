@@ -14,6 +14,7 @@ extension Color {
 }
 
 struct ColorTheme {
+    // Mappings from color sets defined in Assets.xcassets to color theme properties
     let accent = Color("AccentColor")
     let accentSecondary = Color("AccentColorSecondary")
     let bubble = Color("BubbleColor")

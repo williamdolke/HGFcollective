@@ -24,6 +24,48 @@ struct ImageView: View {
     var imageNum: String?
     var url: String?
 
+    var body: some View {
+        ZStack {
+            Color.theme.imageBackground
+                .ignoresSafeArea()
+
+            fullScreenImage
+            // Overlay a button to close the view
+            .overlay(
+                closeButton
+                .padding()
+                , alignment: .topTrailing
+            )
+        }
+    }
+
+    private var fullScreenImage: some View {
+        GeometryReader { geo in
+            ImageBubble(assetName: (artwork?.name ?? "") + " " + (imageNum ?? "1"),
+                        url: url,
+                        height: geo.size.height,
+                        width: geo.size.width)
+                .aspectRatio(contentMode: .fit)
+                .position(location)
+                .scaleEffect(scale)
+                .gesture(dragGesture)
+                .gesture(magnificationGesture)
+                .foregroundColor(Color.theme.buttonForeground)
+        }
+    }
+
+    private var closeButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "xmark")
+                .foregroundColor(Color.theme.buttonForeground)
+                .padding()
+                .background(Color.theme.buttonForeground.opacity(0.35))
+                .clipShape(Circle())
+        }
+    }
+
     var magnificationGesture: some Gesture {
         MagnificationGesture()
             .onChanged { state in
@@ -31,10 +73,12 @@ struct ImageView: View {
             }
             .onEnded { _ in
                 withAnimation {
+                    // When the gesture ends, check that the
+                    // image is in an allowed state
                     validateScaleLimits()
+                    lastScale = 1.0
+                    maybeResetLocation()
                 }
-                lastScale = 1.0
-                maybeResetLocation()
             }
     }
 
@@ -46,47 +90,15 @@ struct ImageView: View {
                 limitLocation()
             }
             .onEnded { _ in
+                // When the gesture ends, check that the
+                // image is in an allowed state
                 withAnimation {
                     maybeResetLocation()
                 }
             }
     }
 
-    var body: some View {
-        ZStack {
-            Color.theme.imageBackground
-                .ignoresSafeArea()
-
-            GeometryReader { geo in
-                ImageBubble(assetName: (artwork?.name ?? "") + " " + (imageNum ?? "1"),
-                            url: url,
-                            height: geo.size.height,
-                            width: geo.size.width)
-                    .aspectRatio(contentMode: .fit)
-                    .position(location)
-                    .scaleEffect(scale)
-                    .gesture(dragGesture)
-                    .gesture(magnificationGesture)
-                    .foregroundColor(Color.theme.buttonForeground)
-            }
-
-            // Close view button
-            .overlay(
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark")
-                        .foregroundColor(Color.theme.buttonForeground)
-                        .padding()
-                        .background(Color.theme.buttonForeground.opacity(0.35))
-                        .clipShape(Circle())
-                }
-                .padding()
-                , alignment: .topTrailing
-            )
-        }
-    }
-
+    /// Scale the image when the user perform the magnification gesture
     func adjustScale(from state: MagnificationGesture.Value) {
         let delta = state / lastScale
         scale *= delta
@@ -101,24 +113,29 @@ struct ImageView: View {
         return min(maxScale, scale)
     }
 
+    /// Ensure the image scale is within the allowed range
     func validateScaleLimits() {
         scale = getMinimumScaleAllowed()
         scale = getMaximumScaleAllowed()
     }
 
+    /// Reset the image location if the user zooms out and releases
     func maybeResetLocation() {
         if scale <= 1.0 {
             location = defaultLocation
         }
     }
 
+    /// Ensure the image location coordinates are within the allowed ranges
     func limitLocation() {
+        // Bound the x coordinate
         if location.x >= defaultLocation.x {
             location.x = min(location.x, 1.5*defaultLocation.x)
         } else {
             location.x = max(location.x, 0.5*defaultLocation.x)
         }
 
+        // Bound the y coordinate
         if location.y >= defaultLocation.y {
             location.y = min(location.y, 1.25*defaultLocation.y)
         } else {

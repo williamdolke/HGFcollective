@@ -8,43 +8,41 @@
 import Foundation
 
 class Favourites: ObservableObject {
-    private var artworkNames: Set<String>
+    private var artworkNames: Set<String> = []
 
-    // the key used to read/write in UserDefaults
+    // The key used to read/write to UserDefaults
     private let saveKey = "Favourites"
 
     init() {
-        // load our saved data
+        // Load saved data from UserDefaults
         if let data = UserDefaults.standard.data(forKey: saveKey) {
             if let decoded = try? JSONDecoder().decode(Set<String>.self, from: data) {
                 artworkNames = decoded
                 return
             }
         }
-
-        // Only executed if there is no saved data
-        artworkNames = []
     }
 
-    // returns true if our set contains this artwork
+    /// Returns true if our set contains this artwork
     func contains(_ artworkName: String) -> Bool {
         artworkNames.contains(artworkName)
     }
 
-    // adds the artwork to our set, updates all views, and saves the change
+    /// Adds the artwork to our set, updates all views and saves the change
     func add(_ artworkName: String) {
         objectWillChange.send()
         artworkNames.insert(artworkName)
         save()
     }
 
-    // removes the artwork from our set, updates all views, and saves the change
+    /// Removes the artwork from our set, updates all views, and saves the change
     func remove(_ artworkName: String) {
         objectWillChange.send()
         artworkNames.remove(artworkName)
         save()
     }
 
+    /// Save the set of artwork names to UserDefaults
     private func save() {
         if let encoded = try? JSONEncoder().encode(artworkNames) {
             UserDefaults.standard.set(encoded, forKey: saveKey)

@@ -7,6 +7,10 @@
 
 import Foundation
 
+/// - Parameters
+///   - id: identifier
+///   - messagePreview: Preview of the most recent chat
+///   - latestTimestamp: The time that the latest message was sent
 struct User: Identifiable, Codable {
     var id: String
     var messagePreview: String

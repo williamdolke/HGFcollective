@@ -17,7 +17,8 @@ struct ArtistView: View {
             ScrollView {
                 Text(artist.biography)
                     .padding()
-                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .background(.ultraThinMaterial,
+                                in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
             .padding()
         }

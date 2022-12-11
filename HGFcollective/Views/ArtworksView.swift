@@ -14,37 +14,43 @@ struct ArtworksView: View {
     @State private var searchQuery = ""
 
     var body: some View {
-        ZStack {
-            NavigationView {
-                Form {
-                    ForEach(filteredArtists.0) { filteredArtist in
-                        Section {
-                            ForEach(filteredArtist.artworks!) { artwork in
-                                if filteredArtists.1.contains(artwork.name) {
-                                    NavigationLink {
-                                        ArtworkView(artwork: artwork)
-                                    } label: {
-                                        HStack {
-                                            Text(artwork.name)
+        NavigationView {
+            Form {
+                artistSections
+            }
+            .navigationTitle("Artworks")
+            .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
+            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+        }
+    }
 
-                                            if favourites.contains(artwork.name) {
-                                                Spacer()
-                                                Image(systemName: "heart.fill")
-                                                    .accessibilityLabel("This is a favourite artwork")
-                                                    .foregroundColor(Color.theme.favourite)
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        } header: {
-                            Text(filteredArtist.name)
+    private var artistSections: some View {
+        ForEach(filteredArtists.0) { filteredArtist in
+            Section {
+                ForEach(filteredArtist.artworks!) { artwork in
+                    if filteredArtists.1.contains(artwork.name) {
+                        NavigationLink {
+                            ArtworkView(artwork: artwork)
+                        } label: {
+                            artworkLabel(artworkName: artwork.name)
                         }
                     }
                 }
-                .navigationTitle("Artworks")
-                .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
-                .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+            } header: {
+                Text(filteredArtist.name)
+            }
+        }
+    }
+
+    private func artworkLabel(artworkName: String) -> some View {
+        HStack {
+            Text(artworkName)
+
+            if favourites.contains(artworkName) {
+                Spacer()
+                Image(systemName: "heart.fill")
+                    .accessibilityLabel("This is a favourite artwork")
+                    .foregroundColor(Color.theme.favourite)
             }
         }
     }

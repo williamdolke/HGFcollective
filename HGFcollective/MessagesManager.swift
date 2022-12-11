@@ -16,19 +16,21 @@ class MessagesManager: ObservableObject {
     @Published var isCustomer: Bool
     var uid: String = ""
 
-    // Create an instance of our Firestore database
+    // Create an instance of our Firestore database and Firebase Storage
     let firestoreDB = Firestore.firestore()
     let storage = Storage.storage()
 
-    // On initialisation of the MessagesManager class, get the messages for a particular user id from Firestore
     init(uid: String, isCustomer: Bool = true) {
         self.uid = uid
         self.isCustomer = isCustomer
+
+        // On initialisation of the MessagesManager class, get the messages
+        // for a particular user id from Firestore
         self.getMessages()
     }
 
-    // Read message from Firestore in real-time with the addSnapShotListener
     func getMessages() {
+        // Read message from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("users").document(uid).collection("messages")
             .addSnapshotListener { querySnapshot, error in
 
@@ -38,34 +40,35 @@ class MessagesManager: ObservableObject {
                 return
             }
 
-            // Mapping through the documents
+            // Map the documents to Message instances
             self.messages = documents.compactMap { document -> Message? in
                 do {
-                    // Converting each document into the Message model
-                    // Note that data(as:) is a function available only in FirebaseFirestoreSwift package
+                    // Convert each document into the Message model
                     return try document.data(as: Message.self)
                 } catch {
                     logger.error("Error decoding document into Message: \(error)")
 
-                    // Return nil if we run into an error - but the compactMap will not include it in the final array
+                    // Return nil if we run into an error - the compactMap will
+                    // not include it in the final array
                     return nil
                 }
             }
 
-            // Sorting the messages by sent date
+            // Sort the messages by sent date
             self.messages.sort { $0.timestamp < $1.timestamp }
 
-            // Getting the ID of the last message so we automatically scroll to it in ChatView
+            // Get the ID of the last message so we can automatically scroll to it in ChatView
             if let id = self.messages.last?.id {
                 self.lastMessageId = id
             }
         }
     }
 
-    // Add a message in Firestore
+    /// Add a message to the Firestore database
     func sendMessage(text: String, type: String) {
         do {
-            // Create a new Message instance, with a unique ID, the text we passed, a received value and a timestamp
+            // Create a new Message instance, with a unique ID, the text we passed,
+            // a received value and a timestamp
             let date = Date()
             let messageID = UUID().uuidString
             let newMessage = Message(id: messageID,
@@ -73,15 +76,14 @@ class MessagesManager: ObservableObject {
                                      isCustomer: isCustomer,
                                      timestamp: date,
                                      type: type)
+            // Also update the user document with a preview of the latest message
             let userUpdate = User(id: uid,
                                   messagePreview: String(text.prefix(30)),
                                   latestTimestamp: date,
                                   unread: true)
 
-            // Create a new document in Firestore with the newMessage and userUpdate variable above, and use
-            // setData(from:) to convert the Message into Firestore data
-            // Note that setData(from:) is a function available only in FirebaseFirestoreSwift package - remember to
-            // import it at the top
+            // Create a new document in Firestore with the newMessage and userUpdate variable
+            // above. Use setData(from:) to convert the Message properties into document fields.
             try firestoreDB.collection("users").document(uid).collection("messages").document(messageID)
                 .setData(from: newMessage)
             logger.info("Successfully sent chat message to database.")
@@ -94,11 +96,12 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    // Add an image in Firestore
+    /// Add an image to the Firestore database
     func sendImage(image: UIImage) {
         let storagePath = "users/" + uid + "/" + UUID().uuidString
         let ref = Storage.storage().reference(withPath: storagePath)
 
+        // Convert the image to jpeg format and compress
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
 
         ref.putData(imageData, metadata: nil) { _, err in
@@ -117,15 +120,16 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    // Set messages as read for user, locally and in Firestore
+    /// Set messages as read, locally and in Firestore
     func setAsRead() {
-        do {
-            // Update the user's document in Firestore
-            try firestoreDB.collection("users").document(uid)
-                .updateData(["unread": false])
-            logger.info("Successfully set message as read.")
-        } catch {
-            logger.error("Error setting message as read in Firestore: \(error)")
-        }
+        // Update the user document in Firestore
+        firestoreDB.collection("users").document(uid)
+            .updateData(["unread": false]) { error in
+                if let error = error {
+                    logger.error("Error setting message as read in Firestore: \(error)")
+                } else {
+                    logger.info("Successfully set message as read.")
+                }
+            }
     }
 }

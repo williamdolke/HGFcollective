@@ -16,7 +16,6 @@ struct MailView: UIViewControllerRepresentable {
     @Binding var result: Result<MFMailComposeResult, Error>?
 
     class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
-
         @Binding var presentation: Bool
         @Binding var result: Result<MFMailComposeResult, Error>?
 
@@ -29,7 +28,6 @@ struct MailView: UIViewControllerRepresentable {
         func mailComposeController(_ controller: MFMailComposeViewController,
                                    didFinishWith result: MFMailComposeResult,
                                    error: Error?) {
-
             defer {
                 presentation = false
             }
