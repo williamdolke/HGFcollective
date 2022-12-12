@@ -24,15 +24,16 @@ struct ArtworkView: View {
             artworkInfo
                 .padding()
 
-            VStack {
-                Text("Price: " + (artwork.price ?? "POA"))
-                    .font(.title)
+            Text("Price: " + (artwork.price ?? "POA"))
+                .font(.title)
 
-                HStack {
-                    enquireButton
-                    favouriteButton
-                }
+            HStack {
+                enquireButton
+                    .alignmentGuide(.hCentered, computeValue: { $0.width / 2.0 })
+                favouriteButton
+                    .padding()
             }
+            .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .hCentered, vertical: .center))
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
     }
@@ -129,4 +130,13 @@ struct ArtworkView_Previews: PreviewProvider {
             .environmentObject(favourites)
             .preferredColorScheme(.dark)
     }
+}
+
+extension HorizontalAlignment {
+   private enum HCenterAlignment: AlignmentID {
+      static func defaultValue(in dimensions: ViewDimensions) -> CGFloat {
+         return dimensions[HorizontalAlignment.center]
+      }
+   }
+   static let hCentered = HorizontalAlignment(HCenterAlignment.self)
 }

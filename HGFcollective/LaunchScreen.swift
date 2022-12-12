@@ -19,8 +19,11 @@ struct LaunchScreen: View {
             ContentView()
                 .environmentObject(artistManager)
                 // Fetch the chat messages when the content view appears. Hopefully
-                // this will be complete before the user taps on the chat tab.
+                // this will be complete before the user taps on the chat tab. If not,
+                // the app will crash if this is the first install.
+                // swiftlint:disable force_cast
                 .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
+                // swiftlint:enable force_cast
         } else {
             logoAnimation
                 .onAppear {
