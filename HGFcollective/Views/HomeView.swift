@@ -24,16 +24,16 @@ struct HomeView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 featuredPictures
-
-                Spacer()
             }
-            .navigationTitle("Home")
-            .navigationBarItems(trailing: Image("IconCircle")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 100, height: 100)
-                .clipShape(Circle())
-                .padding(.top, 90))
+            .navigationBarTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Image("IconCircle")
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                }
+            }
         }
     }
 
@@ -49,7 +49,8 @@ struct HomeView: View {
                         NavigationLink(destination: ArtistView(artist: artistManager.artists[artistIndex])) {
                             ImageBubble(assetName: artworkAssetName + " 1",
                                         height: geo.size.height,
-                                        width: geo.size.width * 0.48)
+                                        width: geo.size.width * 0.48,
+                                        fill: true)
                             .background(Color.theme.bubble)
                             .cornerRadius(geo.size.width * 0.15)
                         }
@@ -70,8 +71,9 @@ struct HomeView: View {
                         let artwork = featuredArtist.artworks![index]
                         NavigationLink(destination: ArtworkView(artwork: artwork)) {
                             ImageBubble(assetName: artwork.name + " 1",
-                                        height:geo.size.height,
-                                        width:geo.size.width)
+                                        height: geo.size.height,
+                                        width: geo.size.width,
+                                        fill: true)
                                 .background(Color.theme.bubble)
                                 .cornerRadius(geo.size.width * 0.15)
                         }

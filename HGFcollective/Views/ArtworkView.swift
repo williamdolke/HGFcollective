@@ -101,9 +101,11 @@ struct ArtworkView: View {
             }
         } label: {
             Image(systemName: favourites.contains(artwork.name) ? "heart.fill" : "heart")
-                .font(.system(size: 50))
+                .font(.system(size: 40))
                 .foregroundColor(Color.theme.favourite)
         }
+        .scaleEffect(favourites.contains(artwork.name) ? 1.2 : 1)
+        .animation(.easeInOut(duration: 1), value: 1)
     }
 }
 

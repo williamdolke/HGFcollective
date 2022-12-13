@@ -19,6 +19,14 @@ struct ArtworksView: View {
                 artistSections
             }
             .navigationTitle("Artworks")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Image("IconCircle")
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                }
+            }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
         }

@@ -125,7 +125,7 @@ class ArtistManager: ObservableObject {
         var info = ""
 
         // Add all the information we have about an artwork to the text string
-        // swiftlint:enable cyclomatic_complexity
+        // swiftlint:disable cyclomatic_complexity
         if let text = artwork.editionNumber {
             info += "**Edition Number:** \(text)\n"
         }

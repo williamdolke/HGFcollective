@@ -17,6 +17,14 @@ struct ContactView: View {
                 .environmentObject(EnquiryManager())
                 .cornerRadius(30, corners: [.topLeft, .topRight])
                 .navigationTitle("Contact Us")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Image("IconCircle")
+                            .resizable()
+                            .scaledToFit()
+                            .clipShape(Circle())
+                    }
+                }
         }
     }
 }

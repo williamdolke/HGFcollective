@@ -13,6 +13,7 @@ struct ImageBubble: View {
     var url: String?
     let height: CGFloat
     let width: CGFloat
+    var fill: Bool = false
 
     var body: some View {
         HStack {
@@ -22,12 +23,12 @@ struct ImageBubble: View {
                     .placeholder {
                         ProgressView()
                     }
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: fill ? .fill : .fit)
                     .frame(width: width, height: height)
             } else if (UIImage(named: assetName) != nil) {
                 Image(assetName)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: fill ? .fill : .fit)
                     .frame(width: width, height: height)
             } else {
                 Image(systemName: "photo.circle.fill")

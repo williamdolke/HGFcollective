@@ -34,8 +34,7 @@ struct ArtistView: View {
                         let artworkAssetName = (artistArtworks!.count-1 >= $0) ? (artistArtworks![$0].name + " 1") : ""
 
                         if (UIImage(named: artworkAssetName) != nil) {
-                            NavigationLink(destination: ImageView(artwork: artist.artworks?[$0])
-                                .navigationBarBackButtonHidden(true)) {
+                            NavigationLink(destination: ArtworkView(artwork: (artist.artworks?[$0])!)) {
                                 ImageBubble(assetName: artworkAssetName,
                                             height: geo.size.height,
                                             width: geo.size.width * 0.9)

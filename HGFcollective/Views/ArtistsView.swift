@@ -22,6 +22,14 @@ struct ArtistsView: View {
                 }
             }
             .navigationTitle("Artists")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Image("IconCircle")
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                }
+            }
             .searchable(text: $searchQuery, prompt: "Search By Artist Name")
         }
     }
