@@ -36,6 +36,7 @@ struct InboxView: View {
             Spacer()
             Button {
                 showLogOutOptions.toggle()
+                logger.info("User tapped the settings button")
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 28, weight: .bold))
@@ -47,8 +48,11 @@ struct InboxView: View {
             .init(title: Text("Sign out?"), buttons: [
                 .destructive(Text("Yes"), action: {
                     signOutUser()
+                    logger.info("User tapped 'Yes' button")
                 }),
-                .cancel()
+                .cancel(Text("Cancel"), action: {
+                    logger.info("User tapped 'Cancel' button")
+                })
             ])
         }
         .background(Color.theme.accent)
@@ -60,9 +64,12 @@ struct InboxView: View {
                 let messagesManager = MessagesManager(uid: user.id, isCustomer: false)
                 NavigationLink(destination: AdminChatView().environmentObject(messagesManager)) {
                     ConversationPreviewRow(user: user)
-                }.simultaneousGesture(TapGesture().onEnded {
-                    messagesManager.setAsRead()
-                })
+                }
+                .simultaneousGesture(
+                    TapGesture()
+                        .onEnded {
+                            messagesManager.setAsRead()
+                        })
                 .navigationTitle(user.id)
             }
         }

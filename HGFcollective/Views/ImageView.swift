@@ -20,7 +20,7 @@ struct ImageView: View {
     private let maxScale = 5.0
     private let defaultLocation = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
 
-    var artwork: Artwork?
+    var artworkName: String?
     var imageNum: String?
     var url: String?
 
@@ -33,15 +33,20 @@ struct ImageView: View {
             // Overlay a button to close the view
             .overlay(
                 closeButton
-                .padding()
                 , alignment: .topTrailing
             )
+        }
+        .onDisappear {
+            withAnimation {
+                scale = 1.0
+                lastScale = 1.0
+            }
         }
     }
 
     private var fullScreenImage: some View {
         GeometryReader { geo in
-            ImageBubble(assetName: (artwork?.name ?? "") + " " + (imageNum ?? "1"),
+            ImageBubble(assetName: (artworkName ?? "") + " " + (imageNum ?? "1"),
                         url: url,
                         height: geo.size.height,
                         width: geo.size.width)
@@ -57,6 +62,7 @@ struct ImageView: View {
     private var closeButton: some View {
         Button {
             dismiss()
+            logger.info("User pressed the close button to dismiss the view")
         } label: {
             Image(systemName: "xmark")
                 .foregroundColor(Color.theme.buttonForeground)
@@ -64,6 +70,10 @@ struct ImageView: View {
                 .background(Color.theme.buttonForeground.opacity(0.35))
                 .clipShape(Circle())
         }
+        // Don't show the close button if the image is zoomed in
+        .opacity(scale != 1.0 ? 0.0 : 1.0)
+        .disabled(scale != 1.0)
+        .padding()
     }
 
     var magnificationGesture: some Gesture {
@@ -78,6 +88,7 @@ struct ImageView: View {
                     validateScaleLimits()
                     lastScale = 1.0
                     maybeResetLocation()
+                    logger.info("User set scale to \(scale)")
                 }
             }
     }
@@ -95,6 +106,7 @@ struct ImageView: View {
                 withAnimation {
                     maybeResetLocation()
                 }
+                logger.info("User dragged image to x: \(location.x), y: \(location.y)")
             }
     }
 
@@ -146,9 +158,9 @@ struct ImageView: View {
 
 struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        ImageView(artwork: Artwork(name: "Artwork"))
+        ImageView(artworkName: "Artwork")
 
-        ImageView(artwork: Artwork(name: "Artwork"))
+        ImageView(artworkName: "Artwork")
             .preferredColorScheme(.dark)
     }
 }

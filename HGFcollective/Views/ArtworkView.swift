@@ -12,6 +12,8 @@ struct ArtworkView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var favourites: Favourites
 
+    @State private var currentIndex: Int = 0
+    @State private var images: [Asset] = []
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
 
@@ -20,12 +22,12 @@ struct ArtworkView: View {
     var body: some View {
         VStack {
             artworkImages
-
+            imageIndexIndicator
             artworkInfo
-                .padding()
-
+                .padding(.horizontal)
+            
             Text("Price: " + (artwork.price ?? "POA"))
-                .font(.title)
+                .font(.title2)
 
             HStack {
                 enquireButton
@@ -36,46 +38,56 @@ struct ArtworkView: View {
             .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .hCentered, vertical: .center))
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
+        .onAppear {
+            for index in 1...10 {
+                let artworkAssetName = artwork.name + " " + String(index)
+                let image = Asset(assetName: artworkAssetName)
+                if (UIImage(named: artworkAssetName) != nil && !images.contains { $0.assetName == image.assetName } ) {
+                    images.append(image)
+                }
+            }
+        }
     }
 
     private var artworkImages: some View {
         GeometryReader { geo in
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach((1...10), id: \.self) {
-                        let artworkAssetName = artwork.name + " " + String($0)
-                        if (UIImage(named: artworkAssetName) != nil) {
-                            NavigationLink(destination: ImageView(artwork: artwork, imageNum: String($0))
-                                .navigationBarBackButtonHidden(true)) {
-                                ImageBubble(assetName: artworkAssetName,
-                                            height: geo.size.height,
-                                            width: geo.size.width * 0.9)
-                                .frame(width: geo.size.width, height: geo.size.height)
-                                // Repeat to center the image
-                                .frame(width: geo.size.width, height: geo.size.height)
-                            }
-                        }
-                    }
+            SnapCarousel(index: $currentIndex, items: images) { image in
+                NavigationLink(destination: ImageView(artworkName: artwork.name, imageNum: String(currentIndex+1))
+                    .navigationBarBackButtonHidden(true)) {
+                        ImageBubble(assetName: image.assetName,
+                                    height: geo.size.height,
+                                    width: nil)
                 }
             }
         }
     }
 
     private var artworkInfo: some View {
-        ScrollView {
-            artistManager.getArtworkInfo(artwork: artwork)
-                .padding()
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        artistManager.getArtworkInfo(artwork: artwork)
+            .padding()
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    private var imageIndexIndicator: some View {
+        HStack(spacing: 10) {
+            ForEach(images.indices, id: \.self) { index in
+                Circle()
+                    .fill(Color.theme.accentSecondary.opacity(currentIndex == index ? 1 : 0.1))
+                    .frame(width: 8, height: 8)
+                    .scaleEffect(currentIndex == index ? 1.4 : 1)
+                    .animation(.spring(), value: currentIndex == index)
+            }
         }
     }
 
     private var enquireButton: some View {
         Button {
             enquireClicked.toggle()
+            logger.info("User tapped the enquire button")
         } label: {
             HStack {
                 Text("**Enquire**")
-                    .font(.title)
+                    .font(.title2)
                 Image(systemName: "envelope")
             }
             .padding()
@@ -96,12 +108,14 @@ struct ArtworkView: View {
         Button {
             if favourites.contains(artwork.name) {
                 favourites.remove(artwork.name)
+                logger.info("User removed the artwork '\(artwork.name)' from their favourites")
             } else {
                 favourites.add(artwork.name)
+                logger.info("User added the artwork '\(artwork.name)' from their favourites")
             }
         } label: {
             Image(systemName: favourites.contains(artwork.name) ? "heart.fill" : "heart")
-                .font(.system(size: 40))
+                .font(.system(size: 35))
                 .foregroundColor(Color.theme.favourite)
         }
         .scaleEffect(favourites.contains(artwork.name) ? 1.2 : 1)
@@ -112,22 +126,19 @@ struct ArtworkView: View {
 struct ArtworkView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
     static let favourites = Favourites()
-
-    static var previews: some View {
-        ArtworkView(artwork: Artwork(name: "Artwork",
+    static let artwork = Artwork(name: "Artwork",
                                      editionNumber: "1",
                                      editionSize: "Original",
                                      material: "Oil paint on canvas",
                                      signed: "Yes",
-                                     price: "£1000"))
+                                     price: "£1000")
+
+    static var previews: some View {
+        ArtworkView(artwork: artwork)
             .environmentObject(artistManager)
             .environmentObject(favourites)
 
-        ArtworkView(artwork: Artwork(name: "Artwork",
-                                     editionNumber: "1",
-                                     editionSize: "Original",
-                                     material: "Oil paint on canvas",
-                                     signed: "Yes"))
+        ArtworkView(artwork: artwork)
             .environmentObject(artistManager)
             .environmentObject(favourites)
             .preferredColorScheme(.dark)

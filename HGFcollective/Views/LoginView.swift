@@ -51,6 +51,7 @@ struct LoginView: View {
     private var hiddenButton: some View {
         Button {
             isSecured.toggle()
+            logger.info("User toggled the password visability")
         } label: {
             Image(systemName: self.isSecured ? "eye.slash" : "eye")
                 .foregroundColor(Color.theme.accent)
@@ -64,6 +65,7 @@ struct LoginView: View {
                        isActive: $showInbox) {
             Button {
                 loginUser()
+                logger.info("User tapped the login button")
             } label: {
                 HStack {
                     Spacer()

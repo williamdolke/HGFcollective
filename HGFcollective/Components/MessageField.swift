@@ -22,6 +22,7 @@ struct MessageField: View {
         HStack {
             Button {
                 showImagePicker.toggle()
+                logger.info("User tapped the image picker button")
             } label: {
                 Image(systemName: "photo.on.rectangle.angled")
                     .foregroundColor(Color.theme.buttonForeground)
@@ -55,6 +56,7 @@ struct MessageField: View {
                 if message == "admin login" {
                     message = ""
                     self.showLogin = true
+                    logger.info("User entered the secret keyphrase")
                 } else if message != "" {
                     messagesManager.sendMessage(text: message, type: "text")
                     message = ""

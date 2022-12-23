@@ -39,6 +39,7 @@ struct MessageBubble: View {
             .frame(maxWidth: 300, alignment: isCustomer ? .trailing: .leading)
             .onTapGesture {
                 showTime.toggle()
+                logger.info("User tapped on a message bubble")
             }
 
             if showTime {
