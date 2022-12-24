@@ -12,8 +12,10 @@ struct ArtworkView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var favourites: Favourites
 
-    @State private var currentIndex: Int = 0
+    // Store images to be shown in the snap carousel
     @State private var images: [Asset] = []
+    // Store the current image in the snap carousel
+    @State private var currentIndex: Int = 0
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
 
@@ -25,7 +27,7 @@ struct ArtworkView: View {
             imageIndexIndicator
             artworkInfo
                 .padding(.horizontal)
-            
+
             Text("Price: " + (artwork.price ?? "POA"))
                 .font(.title2)
 
@@ -42,13 +44,14 @@ struct ArtworkView: View {
             for index in 1...10 {
                 let artworkAssetName = artwork.name + " " + String(index)
                 let image = Asset(assetName: artworkAssetName)
-                if (UIImage(named: artworkAssetName) != nil && !images.contains { $0.assetName == image.assetName } ) {
+                if (UIImage(named: artworkAssetName) != nil && !images.contains { $0.assetName == image.assetName }) {
                     images.append(image)
                 }
             }
         }
     }
 
+    /// Display all images of the artwork in a snap carousel
     private var artworkImages: some View {
         GeometryReader { geo in
             SnapCarousel(index: $currentIndex, items: images) { image in
@@ -62,12 +65,7 @@ struct ArtworkView: View {
         }
     }
 
-    private var artworkInfo: some View {
-        artistManager.getArtworkInfo(artwork: artwork)
-            .padding()
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-    }
-
+    /// Indicate which image number is being displayed by the snap carousel
     private var imageIndexIndicator: some View {
         HStack(spacing: 10) {
             ForEach(images.indices, id: \.self) { index in
@@ -78,6 +76,13 @@ struct ArtworkView: View {
                     .animation(.spring(), value: currentIndex == index)
             }
         }
+    }
+
+    /// Display all known information about the artwork
+    private var artworkInfo: some View {
+        artistManager.getArtworkInfo(artwork: artwork)
+            .padding()
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
     }
 
     private var enquireButton: some View {

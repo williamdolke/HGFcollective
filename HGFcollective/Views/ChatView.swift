@@ -25,6 +25,7 @@ struct ChatView: View {
         }
     }
 
+    /// Display all messages that have been sent by the customer and admin(s)
     private var sentMessages: some View {
         ScrollViewReader { proxy in
             ScrollView {

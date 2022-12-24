@@ -38,6 +38,8 @@
 		6033369B2946414A008A4444 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369A2946414A008A4444 /* FirebaseStorage */; };
 		6033369D29464151008A4444 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369C29464151008A4444 /* Logging */; };
 		6033369F2946415F008A4444 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369E2946415F008A4444 /* SDWebImageSwiftUI */; };
+		603336A5294946AF008A4444 /* SnapCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603336A4294946AF008A4444 /* SnapCarousel.swift */; };
+		603336A7294948EF008A4444 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603336A6294948EF008A4444 /* Asset.swift */; };
 		60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60339F9728F3531B00E7E1C8 /* Favourites.swift */; };
 		604557F228E24190003EB09B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F128E24190003EB09B /* UserManager.swift */; };
 		604557F428E24857003EB09B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F328E24857003EB09B /* User.swift */; };
@@ -96,6 +98,8 @@
 		6033368929463A20008A4444 /* HGFcollectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HGFcollectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6033368B29463A20008A4444 /* HGFcollectiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HGFcollectiveTests.swift; sourceTree = "<group>"; };
 		6033369229463B2B008A4444 /* testArtistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testArtistManager.swift; sourceTree = "<group>"; };
+		603336A4294946AF008A4444 /* SnapCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapCarousel.swift; sourceTree = "<group>"; };
+		603336A6294948EF008A4444 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		60339F9728F3531B00E7E1C8 /* Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourites.swift; sourceTree = "<group>"; };
 		604557F128E24190003EB09B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		604557F328E24857003EB09B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -170,6 +174,7 @@
 				6003C1FF28CEA92200ABA79E /* MessageField.swift */,
 				6083EEE028D6BD1E0038A547 /* ImageBubble.swift */,
 				60A103B128E0863E00DB6A00 /* ConversationPreviewRow.swift */,
+				603336A4294946AF008A4444 /* SnapCarousel.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -183,6 +188,7 @@
 				607391B128D29A5C009BBFBD /* Artwork.swift */,
 				6055E91628D6760900968099 /* Chat.swift */,
 				604557F328E24857003EB09B /* User.swift */,
+				603336A6294948EF008A4444 /* Asset.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -490,9 +496,11 @@
 				604557F228E24190003EB09B /* UserManager.swift in Sources */,
 				6003C20228CEA97C00ABA79E /* MessagesManager.swift in Sources */,
 				6003C1FC28CEA6B800ABA79E /* MessageBubble.swift in Sources */,
+				603336A5294946AF008A4444 /* SnapCarousel.swift in Sources */,
 				60610D6F28E7A7FC00C95711 /* formattedDateString.swift in Sources */,
 				60A103B228E0863E00DB6A00 /* ConversationPreviewRow.swift in Sources */,
 				6003C1FE28CEA88000ABA79E /* ChatView.swift in Sources */,
+				603336A7294948EF008A4444 /* Asset.swift in Sources */,
 				6032FF1828CD5E9F00C4F22C /* HomeView.swift in Sources */,
 				6032FF1C28CD5EAC00C4F22C /* ArtworksView.swift in Sources */,
 				6003C20028CEA92200ABA79E /* MessageField.swift in Sources */,
@@ -676,6 +684,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -712,6 +721,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

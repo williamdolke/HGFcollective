@@ -28,7 +28,8 @@ struct Artwork: Identifiable, Codable {
         }
     var name: String
     // The following properties may not be provided in the database. Only
-    // those that are successfully fetched will be presented in the UI.
+    // those that are successfully fetched will be presented in the
+    // ArtworkView UI.
     var url: String?
     var editionNumber: String?
     var editionSize: String?

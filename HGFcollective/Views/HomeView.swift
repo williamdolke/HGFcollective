@@ -11,7 +11,7 @@ struct HomeView: View {
     @EnvironmentObject var artistManager: ArtistManager
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 Text("Discover")
                     .font(.title)
@@ -40,7 +40,7 @@ struct HomeView: View {
     private var discoverPictures: some View {
         GeometryReader { geo in
             ScrollView(.horizontal) {
-                HStack(spacing: geo.size.width * 0.04) {
+                HStack(spacing: 0.03 * geo.size.width) {
                     ForEach(0..<artistManager.numDiscoverArtists, id: \.self) {index in
                         let artistIndex = artistManager.discoverArtistIndexes![index]
                         let artistArtwork = artistManager.artists[artistIndex].artworks
@@ -49,7 +49,7 @@ struct HomeView: View {
                         NavigationLink(destination: ArtistView(artist: artistManager.artists[artistIndex])) {
                             ImageBubble(assetName: artworkAssetName + " 1",
                                         height: geo.size.height,
-                                        width: geo.size.width * 0.48,
+                                        width: geo.size.width * 0.45,
                                         fill: true)
                             .background(Color.theme.bubble)
                             .cornerRadius(geo.size.width * 0.15)
@@ -64,7 +64,7 @@ struct HomeView: View {
     private var featuredPictures: some View {
         GeometryReader { geo in
             ScrollView(.horizontal) {
-                HStack(spacing: geo.size.width * 0.04) {
+                HStack(spacing: 0.03 * geo.size.width) {
                     let featuredArtist = artistManager.artists[artistManager.featuredArtistIndex!]
                     ForEach(0..<(featuredArtist.artworks?.count ?? 0),
                             id: \.self) {index in
@@ -72,7 +72,7 @@ struct HomeView: View {
                         NavigationLink(destination: ArtworkView(artwork: artwork)) {
                             ImageBubble(assetName: artwork.name + " 1",
                                         height: geo.size.height,
-                                        width: geo.size.width,
+                                        width: 0.9 * geo.size.width,
                                         fill: true)
                                 .background(Color.theme.bubble)
                                 .cornerRadius(geo.size.width * 0.15)

@@ -48,6 +48,7 @@ struct LoginView: View {
         .cornerRadius(25)
     }
 
+    // Show the password when the user taps this button
     private var hiddenButton: some View {
         Button {
             isSecured.toggle()

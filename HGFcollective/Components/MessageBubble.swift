@@ -15,14 +15,19 @@ struct MessageBubble: View {
     var isCustomer: Bool
 
     var body: some View {
+        // Messages are green and aligned to the right if they were sent from the local client,
+        // or sent by an admin if the user is signed in as admin
         VStack(alignment: isCustomer ? .trailing: .leading) {
             HStack {
                 if (message.type == "text") {
+                    // Display the message as text if it was typed by the sender
                     Text(message.content)
                         .padding()
                         .background(isCustomer ? Color.theme.accent: Color.theme.accentSecondary)
                         .cornerRadius(30)
                 } else if (message.type == "image") {
+                    // The content of the message is a url if an image was sent. The
+                    // url leads to the image which is stored in Firebase Storage
                     NavigationLink(destination: ImageView(url: message.content)
                         .navigationBarBackButtonHidden(true)) {
                         WebImage(url: URL(string: message.content))
@@ -42,6 +47,8 @@ struct MessageBubble: View {
                 logger.info("User tapped on a message bubble")
             }
 
+            // Show the timestamp that the message was sent beneath the message
+            // for type="text" messages if the user has tapped on the message
             if showTime {
                 Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
                     .font(.caption2)

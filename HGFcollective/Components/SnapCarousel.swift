@@ -62,7 +62,7 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
                         currentIndex = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
 
                         currentIndex = index
-                        
+
                         logger.info("User swiped snap carousel to index \(currentIndex)")
                     })
                     .onChanged({ value in

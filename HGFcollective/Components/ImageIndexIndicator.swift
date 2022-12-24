@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SwiftUIView: View {
     let images: [Asset]
-    
+
     var body: some View {
         HStack(spacing: 10) {
             ForEach(images.indices, id: \.self) { index in

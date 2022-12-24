@@ -14,7 +14,6 @@ struct ContentView: View {
     @StateObject var favourites = Favourites()
 
     @State private var selection = 0
-    //
     @State private var id: [Bool] = [false, false, false, false]
 
     var handler: Binding<Int> { Binding(
@@ -31,6 +30,7 @@ struct ContentView: View {
     )}
 
     var body: some View {
+        // Define the tabs in the tab bar
         TabView(selection: handler) {
             HomeView().id(id[self.selection])
                 .tabItem {

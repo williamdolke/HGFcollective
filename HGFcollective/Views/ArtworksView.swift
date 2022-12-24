@@ -29,6 +29,9 @@ struct ArtworksView: View {
             }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+
+            // The secondary view that will be shown on devices with a sidebar
+            ArtworkView(artwork: artistManager.artists[0].artworks![0])
         }
     }
 

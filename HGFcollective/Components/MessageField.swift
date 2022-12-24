@@ -32,7 +32,6 @@ struct MessageField: View {
                     .cornerRadius(50)
             }
 
-            // Custom text field created below
             CustomTextField(text: $message, image: $image, placeholder: Text("Enter your message here"))
                 .padding()
                 .contentShape(Rectangle())
@@ -46,7 +45,7 @@ struct MessageField: View {
         .padding(5)
         .sheet(isPresented: $showImagePicker) {
             // For camera, use .camera
-            ImagePicker(sourceType: .photoLibrary, selectedImage: $image)
+            ImagePicker(selectedImage: $image, sourceType: .photoLibrary)
         }
     }
 
@@ -110,6 +109,7 @@ struct CustomTextField: View {
                     TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
                 }
 
+                // Display an image if the user has specified one to send
                 if let image {
                     Image(uiImage: image)
                         .resizable()

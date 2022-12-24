@@ -10,42 +10,66 @@ import SwiftUI
 struct ArtistView: View {
     var artist: Artist
 
+    // Store images to be shown in the snap carousel
+    @State private var images: [Asset] = []
+    // Store the current image in the snap carousel
+    @State private var currentIndex: Int = 0
+
     var body: some View {
         VStack {
             artworkImages
-
-            ScrollView {
-                Text(artist.biography)
-                    .padding()
-                    .background(.ultraThinMaterial,
-                                in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-            }
-            .padding()
+            imageIndexIndicator
+            biography
         }
         .navigationBarTitle(artist.name, displayMode: .inline)
-    }
-
-    var artworkImages: some View {
-        GeometryReader { geo in
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach((0...9), id: \.self) {
-                        let artistArtworks = artist.artworks
-                        let artworkAssetName = (artistArtworks!.count-1 >= $0) ? (artistArtworks![$0].name + " 1") : ""
-
-                        if (UIImage(named: artworkAssetName) != nil) {
-                            NavigationLink(destination: ArtworkView(artwork: (artist.artworks?[$0])!)) {
-                                ImageBubble(assetName: artworkAssetName,
-                                            height: geo.size.height,
-                                            width: geo.size.width * 0.9)
-                                .frame(width: geo.size.width, height: geo.size.height)
-                                // Repeat to center the image
-                                .frame(width: geo.size.width, height: geo.size.height)
-                            }
-                        }
-                    }
+        .onAppear {
+            for index in 1...10 {
+                let artistArtworks = artist.artworks
+                let artworkAssetName = (artistArtworks!.count >= index) ? (artistArtworks![index-1].name + " 1") : ""
+                let image = Asset(assetName: artworkAssetName)
+                if (UIImage(named: artworkAssetName) != nil && !images.contains { $0.assetName == image.assetName }) {
+                    images.append(image)
                 }
             }
+        }
+    }
+
+    /// Display all images of the artwork in a snap carousel
+    var artworkImages: some View {
+        GeometryReader { geo in
+            SnapCarousel(index: $currentIndex, items: images) { image in
+                NavigationLink(destination: ArtworkView(artwork: (artist.artworks?[currentIndex])!)) {
+                    ImageBubble(assetName: image.assetName,
+                                height: geo.size.height,
+                                width: geo.size.width * 0.9)
+                    .frame(width: geo.size.width, height: geo.size.height)
+                    // Repeat to center the image
+                    .frame(width: geo.size.width, height: geo.size.height)
+                }
+            }
+        }
+    }
+
+    /// Indicate which image number is being displayed by the snap carousel
+    private var imageIndexIndicator: some View {
+        HStack(spacing: 10) {
+            ForEach(images.indices, id: \.self) { index in
+                Circle()
+                    .fill(Color.theme.accentSecondary.opacity(currentIndex == index ? 1 : 0.1))
+                    .frame(width: 8, height: 8)
+                    .scaleEffect(currentIndex == index ? 1.4 : 1)
+                    .animation(.spring(), value: currentIndex == index)
+            }
+        }
+    }
+
+    /// Display the artist's biography
+    private var biography: some View {
+        ScrollView {
+            Text(artist.biography)
+                .padding()
+                .background(.ultraThinMaterial,
+                            in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
     }
 }

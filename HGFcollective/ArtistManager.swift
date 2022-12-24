@@ -121,11 +121,11 @@ class ArtistManager: ObservableObject {
     }
 
     /// Create a text view that contains all information available about an artwork
+    // swiftlint:disable cyclomatic_complexity
     func getArtworkInfo(artwork: Artwork) -> Text {
         var info = ""
 
         // Add all the information we have about an artwork to the text string
-        // swiftlint:disable cyclomatic_complexity
         if let text = artwork.editionNumber {
             info += "**Edition Number:** \(text)\n"
         }
@@ -156,7 +156,6 @@ class ArtistManager: ObservableObject {
         if let text = artwork.authenticity {
             info += "**Certificate of authenticity:** \(text)"
         }
-        // swiftlint:enable cyclomatic_complexity
 
         // We need to parse the markdown (info) to interpret the text in asterisks as bold text
         do {
@@ -168,4 +167,5 @@ class ArtistManager: ObservableObject {
             return Text(info)
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 }

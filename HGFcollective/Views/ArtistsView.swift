@@ -31,6 +31,9 @@ struct ArtistsView: View {
                 }
             }
             .searchable(text: $searchQuery, prompt: "Search By Artist Name")
+
+            // The secondary view that will be shown on devices with a sidebar
+            ArtistView(artist: artistManager.artists[0])
         }
     }
 
