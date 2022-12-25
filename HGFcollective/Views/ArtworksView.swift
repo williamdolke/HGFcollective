@@ -14,6 +14,7 @@ struct ArtworksView: View {
     @State private var searchQuery = ""
 
     var body: some View {
+        // This will be the primary view on all devices
         NavigationView {
             Form {
                 artistSections
@@ -30,7 +31,7 @@ struct ArtworksView: View {
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
 
-            // The secondary view that will be shown on devices with a sidebar
+            // This is the secondary view that will be shown on devices with a sidebar
             ArtworkView(artwork: artistManager.artists[0].artworks![0])
         }
     }
@@ -48,6 +49,7 @@ struct ArtworksView: View {
                     }
                 }
             } header: {
+                // Section label
                 Text(filteredArtist.name)
             }
         }

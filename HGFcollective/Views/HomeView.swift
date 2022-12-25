@@ -10,9 +10,13 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var artistManager: ArtistManager
 
+    @State private var showMenu = false
+
     var body: some View {
         NavigationStack {
             VStack {
+                titleRow
+
                 Text("Discover")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -25,7 +29,6 @@ struct HomeView: View {
                     .padding()
                 featuredPictures
             }
-            .navigationBarTitle("Home")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Image("IconCircle")
@@ -33,6 +36,26 @@ struct HomeView: View {
                         .scaledToFit()
                         .clipShape(Circle())
                 }
+            }
+            .sheet(isPresented: $showMenu) {
+                MenuView()
+            }
+        }
+    }
+
+    private var titleRow: some View {
+        HStack {
+            Text("Home")
+                .font(.largeTitle.bold())
+                .padding()
+            Spacer()
+            Button {
+                showMenu.toggle()
+            } label: {
+                Image(systemName: "ellipsis.circle")
+                    .resizable()
+                    .frame(width: 28, height: 28)
+                    .padding()
             }
         }
     }
