@@ -23,6 +23,9 @@ struct MenuView: View {
             NavigationLink(destination: AboutView()) {
                 Text("About")
             }
+            NavigationLink(destination: ReportView()) {
+                Text("Report a problem")
+            }
         } header: {
             Text("General")
         }

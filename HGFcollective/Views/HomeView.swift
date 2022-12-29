@@ -52,7 +52,7 @@ struct HomeView: View {
             Button {
                 showMenu.toggle()
             } label: {
-                Image(systemName: "ellipsis.circle")
+                Image(systemName: "line.3.horizontal")
                     .resizable()
                     .frame(width: 28, height: 28)
                     .padding()

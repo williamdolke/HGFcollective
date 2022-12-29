@@ -41,6 +41,7 @@
 		603336A5294946AF008A4444 /* SnapCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603336A4294946AF008A4444 /* SnapCarousel.swift */; };
 		603336A7294948EF008A4444 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603336A6294948EF008A4444 /* Asset.swift */; };
 		60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60339F9728F3531B00E7E1C8 /* Favourites.swift */; };
+		6042238F295B884300F96D5D /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6042238E295B884300F96D5D /* ReportView.swift */; };
 		604557F228E24190003EB09B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F128E24190003EB09B /* UserManager.swift */; };
 		604557F428E24857003EB09B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F328E24857003EB09B /* User.swift */; };
 		60496E4228D4FBDC003465EF /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60496E4128D4FBDC003465EF /* Mail.swift */; };
@@ -107,6 +108,7 @@
 		603336A4294946AF008A4444 /* SnapCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapCarousel.swift; sourceTree = "<group>"; };
 		603336A6294948EF008A4444 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		60339F9728F3531B00E7E1C8 /* Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourites.swift; sourceTree = "<group>"; };
+		6042238E295B884300F96D5D /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
 		604557F128E24190003EB09B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		604557F328E24857003EB09B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		60496E4128D4FBDC003465EF /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				6032FF1928CD5EA600C4F22C /* ArtistsView.swift */,
 				60ADDD5D2958770F00676A3C /* AboutView.swift */,
 				6032FF1B28CD5EAC00C4F22C /* ArtworksView.swift */,
+				6042238E295B884300F96D5D /* ReportView.swift */,
 				6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */,
 				6032FF2128CD7FCC00C4F22C /* ArtistView.swift */,
 				6003C1EF28CE55B200ABA79E /* ContactView.swift */,
@@ -523,6 +526,7 @@
 				60A103B228E0863E00DB6A00 /* ConversationPreviewRow.swift in Sources */,
 				6003C1FE28CEA88000ABA79E /* ChatView.swift in Sources */,
 				603336A7294948EF008A4444 /* Asset.swift in Sources */,
+				6042238F295B884300F96D5D /* ReportView.swift in Sources */,
 				6032FF1828CD5E9F00C4F22C /* HomeView.swift in Sources */,
 				6032FF1C28CD5EAC00C4F22C /* ArtworksView.swift in Sources */,
 				6003C20028CEA92200ABA79E /* MessageField.swift in Sources */,
@@ -703,6 +707,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HGFcollective/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -740,6 +745,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HGFcollective/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
