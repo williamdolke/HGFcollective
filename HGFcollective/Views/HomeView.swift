@@ -51,6 +51,7 @@ struct HomeView: View {
             Spacer()
             Button {
                 showMenu.toggle()
+                logger.info("User tapped the menu button")
             } label: {
                 Image(systemName: "line.3.horizontal")
                     .resizable()
@@ -72,10 +73,10 @@ struct HomeView: View {
                         NavigationLink(destination: ArtistView(artist: artistManager.artists[artistIndex])) {
                             ImageBubble(assetName: artworkAssetName + " 1",
                                         height: geo.size.height,
-                                        width: geo.size.width * 0.45,
+                                        width: 0.45 * geo.size.width,
                                         fill: true)
                             .background(Color.theme.bubble)
-                            .cornerRadius(geo.size.width * 0.15)
+                            .cornerRadius(0.15 * geo.size.width)
                         }
                     }
                 }
@@ -98,7 +99,7 @@ struct HomeView: View {
                                         width: 0.9 * geo.size.width,
                                         fill: true)
                                 .background(Color.theme.bubble)
-                                .cornerRadius(geo.size.width * 0.15)
+                                .cornerRadius(0.15 * geo.size.width )
                         }
                     }
                 }

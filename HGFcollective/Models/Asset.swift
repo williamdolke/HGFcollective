@@ -13,4 +13,6 @@ import SwiftUI
 struct Asset: Identifiable {
     var id = UUID().uuidString
     var assetName: String
+    var url: String?
+    var index: Int?
 }

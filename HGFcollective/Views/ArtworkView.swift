@@ -41,10 +41,22 @@ struct ArtworkView: View {
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
         .onAppear {
+            // Check for images of the artwork to display
             for index in 1...10 {
                 let artworkAssetName = artwork.name + " " + String(index)
-                let image = Asset(assetName: artworkAssetName)
-                if (UIImage(named: artworkAssetName) != nil && !images.contains { $0.assetName == image.assetName }) {
+                // The URL is an empty string if the artwork image hasn't been overriden from the database
+                let url = (artwork.urls?.count ?? 0 >= index) ? artwork.urls?[index-1] : ""
+
+                // Append the image if we have a url or it is found in
+                // Assets.xcassets and isn't already in the array
+                let haveURL = (url != "")
+                let haveAsset = artworkAssetName != "" &&
+                                 UIImage(named: artworkAssetName) != nil
+                let image = Asset(assetName: artworkAssetName,
+                                  url: haveURL ? url : nil,
+                                  index: index)
+                if ((haveURL || haveAsset) &&
+                    !images.contains { $0.assetName == image.assetName }) {
                     images.append(image)
                 }
             }
@@ -55,9 +67,13 @@ struct ArtworkView: View {
     private var artworkImages: some View {
         GeometryReader { geo in
             SnapCarousel(index: $currentIndex, items: images) { image in
-                NavigationLink(destination: ImageView(artworkName: artwork.name, imageNum: String(currentIndex+1))
+                let haveURL = artwork.urls?[currentIndex] != ""
+                NavigationLink(destination: ImageView(artworkName: artwork.name,
+                                                      imageNum: String(currentIndex+1),
+                                                      url: haveURL ? artwork.urls?[currentIndex] : nil)
                     .navigationBarBackButtonHidden(true)) {
                         ImageBubble(assetName: image.assetName,
+                                    url: image.url,
                                     height: geo.size.height,
                                     width: nil)
                 }

@@ -157,6 +157,11 @@ class ArtistManager: ObservableObject {
             info += "**Certificate of authenticity:** \(text)"
         }
 
+        // Make sure the string doesn't end in a newline
+        if info.hasSuffix("\n") {
+            info.removeLast()
+        }
+
         // We need to parse the markdown (info) to interpret the text in asterisks as bold text
         do {
             return try Text(AttributedString(markdown: info,

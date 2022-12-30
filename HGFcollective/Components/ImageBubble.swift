@@ -9,6 +9,8 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ImageBubble: View {
+    // Artwork images in Assets.xcassets will follow the naming convention "<artworkName> 1"
+    // and the integer number will increment as more images are added
     let assetName: String
     var url: String?
     // Optionally specify the height and/or width of the bubble

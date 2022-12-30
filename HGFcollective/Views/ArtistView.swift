@@ -23,11 +23,23 @@ struct ArtistView: View {
         }
         .navigationBarTitle(artist.name, displayMode: .inline)
         .onAppear {
+            // Check which artworks have a primary/first image to display
             for index in 1...10 {
                 let artistArtworks = artist.artworks
                 let artworkAssetName = (artistArtworks!.count >= index) ? (artistArtworks![index-1].name + " 1") : ""
-                let image = Asset(assetName: artworkAssetName)
-                if (UIImage(named: artworkAssetName) != nil && !images.contains { $0.assetName == image.assetName }) {
+                let urls = (artistArtworks!.count >= index) ? artistArtworks![index-1].urls : nil
+                // The URL is an empty string if the first artwork image hasn't been overriden from the database
+                let url = (urls?.count ?? 0 > 0) ? urls?[0] : ""
+                // We need to store the index so we know which will be displayed and which have been skipped
+                let image = Asset(assetName: artworkAssetName, url: url, index: index-1)
+
+                // Append the image if we have a url or it is found in
+                // Assets.xcassets and isn't already included in the array
+                let haveURL = (url != "")
+                let haveAsset = artworkAssetName != "" &&
+                                 UIImage(named: artworkAssetName) != nil
+                if ((haveURL || haveAsset) &&
+                    !images.contains { $0.assetName == image.assetName }) {
                     images.append(image)
                 }
             }
@@ -38,13 +50,12 @@ struct ArtistView: View {
     var artworkImages: some View {
         GeometryReader { geo in
             SnapCarousel(index: $currentIndex, items: images) { image in
-                NavigationLink(destination: ArtworkView(artwork: (artist.artworks?[currentIndex])!)) {
+                let haveURL = image.url != ""
+                NavigationLink(destination: ArtworkView(artwork: (artist.artworks?[image.index!])!)) {
                     ImageBubble(assetName: image.assetName,
+                                url: haveURL ? image.url : nil,
                                 height: geo.size.height,
-                                width: geo.size.width * 0.9)
-                    .frame(width: geo.size.width, height: geo.size.height)
-                    // Repeat to center the image
-                    .frame(width: geo.size.width, height: geo.size.height)
+                                width: nil)
                 }
             }
         }
@@ -71,6 +82,7 @@ struct ArtistView: View {
                 .background(.ultraThinMaterial,
                             in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
+        .padding()
     }
 }
 

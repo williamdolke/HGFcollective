@@ -30,7 +30,9 @@ struct Artwork: Identifiable, Codable {
     // The following properties may not be provided in the database. Only
     // those that are successfully fetched will be presented in the
     // ArtworkView UI.
-    var url: String?
+
+    // urls is an array to allow for individual artwork images to be overriden from the database
+    var urls: [String]?
     var editionNumber: String?
     var editionSize: String?
     var material: String?
