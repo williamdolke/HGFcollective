@@ -37,6 +37,11 @@ struct ContentView: View {
                     Label("Home", systemImage: "house")
                 }
                 .tag(0)
+                // Fix for a bug where HomeView navigationsLinks wouldn't work
+                // when id[0] is set to true
+                .onChange(of: id[0]) { _ in
+                    id[0] = false
+                }
             ArtistsView().id(id[self.selection])
                 .tabItem {
                     Label("Artists", systemImage: "person.3")

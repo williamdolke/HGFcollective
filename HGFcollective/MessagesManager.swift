@@ -29,6 +29,7 @@ class MessagesManager: ObservableObject {
         self.getMessages()
     }
 
+    /// Retrieve messages from  the Firestore database
     func getMessages() {
         // Read message from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("users").document(uid).collection("messages")

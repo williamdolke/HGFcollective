@@ -15,6 +15,9 @@ struct LoginView: View {
     @State private var isSecured: Bool = true
     @State private var showInbox: Bool = false
 
+    @FocusState private var isEmailFocused: Bool
+    @FocusState private var isPasswordFocused: Bool
+
     var body: some View {
         VStack(spacing: 16) {
             Image("IconSquare")
@@ -37,13 +40,27 @@ struct LoginView: View {
             TextField("Email", text: $email)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
+                // Allows the user to tap anywhere, including
+                // the padded area, to focus the text field
+                .focused($isEmailFocused)
+                .onTapGesture {
+                    isEmailFocused = true
+                }
             if isSecured {
                 SecureField("Password", text: $password)
+                    .focused($isPasswordFocused)
+                    .onTapGesture {
+                        isPasswordFocused = true
+                    }
             } else {
                 TextField("Password", text: $password)
+                    .focused($isPasswordFocused)
+                    .onTapGesture {
+                        isPasswordFocused = true
+                    }
             }
         }
-        .padding(12)
+        .padding()
         .background(Color.theme.bubble)
         .cornerRadius(25)
     }

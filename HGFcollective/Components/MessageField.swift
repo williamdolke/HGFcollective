@@ -93,6 +93,8 @@ struct CustomTextField: View {
     @Binding var text: String
     @Binding var image: UIImage?
 
+    @FocusState private var isFocused: Bool
+
     var placeholder: Text
     var editingChanged: (Bool) -> Void = { _ in }
     var commit: () -> Void = { }
@@ -107,6 +109,12 @@ struct CustomTextField: View {
                             .opacity(0.5)
                     }
                     TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
+                }
+                // Allows the user to tap anywhere, including
+                // the padded area, to focus the text field
+                .focused($isFocused)
+                .onTapGesture {
+                    isFocused = true
                 }
 
                 // Display an image if the user has specified one to send
