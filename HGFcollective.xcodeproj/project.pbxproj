@@ -41,6 +41,7 @@
 		603336A7294948EF008A4444 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603336A6294948EF008A4444 /* Asset.swift */; };
 		60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60339F9728F3531B00E7E1C8 /* Favourites.swift */; };
 		6042238F295B884300F96D5D /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6042238E295B884300F96D5D /* ReportView.swift */; };
+		604223912963732000F96D5D /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 604223902963732000F96D5D /* FirebaseMessaging */; };
 		604557F228E24190003EB09B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F128E24190003EB09B /* UserManager.swift */; };
 		604557F428E24857003EB09B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F328E24857003EB09B /* User.swift */; };
 		60496E4228D4FBDC003465EF /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60496E4128D4FBDC003465EF /* Mail.swift */; };
@@ -144,6 +145,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				604223912963732000F96D5D /* FirebaseMessaging in Frameworks */,
 				60A103B028E0781100DB6A00 /* SDWebImageSwiftUI in Frameworks */,
 				6003C20728CEAE2B00ABA79E /* FirebaseDatabaseSwift in Frameworks */,
 				60FBD7FE2919AFFE007CB313 /* Logging in Frameworks */,
@@ -346,6 +348,7 @@
 				60A103AF28E0781100DB6A00 /* SDWebImageSwiftUI */,
 				602BCA3128FCC0360096E607 /* FirebaseStorage */,
 				60FBD7FD2919AFFE007CB313 /* Logging */,
+				604223902963732000F96D5D /* FirebaseMessaging */,
 			);
 			productName = ArtApp;
 			productReference = 6032FF0328CD5E7200C4F22C /* HGFcollective.app */;
@@ -622,7 +625,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -678,7 +681,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "HGF Collective";
@@ -707,6 +710,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -745,6 +749,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
@@ -909,6 +914,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60A103AE28E0781100DB6A00 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		604223902963732000F96D5D /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		6055E91228D64A7300968099 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
