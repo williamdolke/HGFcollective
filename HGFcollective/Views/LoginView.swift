@@ -40,6 +40,7 @@ struct LoginView: View {
             TextField("Email", text: $email)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
+                .accentColor(Color.theme.systemBackgroundInvert)
                 // Allows the user to tap anywhere, including
                 // the padded area, to focus the text field
                 .focused($isEmailFocused)
@@ -48,12 +49,14 @@ struct LoginView: View {
                 }
             if isSecured {
                 SecureField("Password", text: $password)
+                    .accentColor(Color.theme.systemBackgroundInvert)
                     .focused($isPasswordFocused)
                     .onTapGesture {
                         isPasswordFocused = true
                     }
             } else {
                 TextField("Password", text: $password)
+                    .accentColor(Color.theme.systemBackgroundInvert)
                     .focused($isPasswordFocused)
                     .onTapGesture {
                         isPasswordFocused = true

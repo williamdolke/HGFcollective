@@ -45,6 +45,8 @@ struct ImageBubble: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: width, height: height)
+                    .background(Color.theme.accent)
+                    .foregroundColor(Color.theme.navigationBarAccent)
             }
         }
     }

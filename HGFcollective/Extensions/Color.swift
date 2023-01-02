@@ -22,4 +22,9 @@ struct ColorTheme {
     let favourite = Color("FavouriteColor")
     let imageBackground = Color("ImageBackground")
     let systemBackground = Color("SystemBackground")
+    let systemBackgroundInvert = Color("SystemBackgroundInvert")
+    let tabBarActive = Color("TabBarActive")
+    let tabBarBackground = Color("TabBarBackground")
+    let tabBarInactive = Color("TabBarInactive")
+    let navigationBarAccent = Color("NavigationBarAccent")
 }

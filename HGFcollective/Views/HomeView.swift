@@ -20,17 +20,19 @@ struct HomeView: View {
                 Text("Discover")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
+                    .padding(.horizontal)
                 discoverPictures
 
                 Text("Featured Artist - \(artistManager.featuredArtistName ?? "")")
                     .font(.title)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding()
+                    .padding(.horizontal)
                 featuredPictures
             }
+            .navigationTitle("Home")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .principal) {
                     Image("IconCircle")
                         .resizable()
                         .scaledToFit()
@@ -47,7 +49,7 @@ struct HomeView: View {
         HStack {
             Text("Home")
                 .font(.largeTitle.bold())
-                .padding()
+                .padding(.horizontal)
             Spacer()
             Button {
                 showMenu.toggle()
@@ -59,6 +61,8 @@ struct HomeView: View {
                     .padding()
             }
         }
+        .foregroundColor(Color.theme.navigationBarAccent)
+        .background(Color.theme.accent)
     }
 
     private var discoverPictures: some View {
@@ -75,8 +79,8 @@ struct HomeView: View {
                                         height: geo.size.height,
                                         width: 0.45 * geo.size.width,
                                         fill: true)
-                            .background(Color.theme.bubble)
-                            .cornerRadius(0.15 * geo.size.width)
+                            .background(Color.theme.accent)
+                            .cornerRadius(0.2 * min(geo.size.height, geo.size.width))
                         }
                     }
                 }
@@ -98,8 +102,10 @@ struct HomeView: View {
                                         height: geo.size.height,
                                         width: 0.9 * geo.size.width,
                                         fill: true)
-                                .background(Color.theme.bubble)
-                                .cornerRadius(0.15 * geo.size.width )
+                            .background(Color.theme.accent)
+                                // Take the minimum so that corners radius doesn't get
+                                // very large if the bubble is very tall or very wide
+                                .cornerRadius(0.2 * min(geo.size.height, geo.size.width))
                         }
                     }
                 }

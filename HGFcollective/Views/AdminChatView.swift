@@ -21,7 +21,6 @@ struct AdminChatView: View {
                 .environmentObject(messagesManager)
         }
         .navigationBarTitleDisplayMode(.inline)
-        .foregroundColor(Color.theme.systemBackground)
     }
 
     private var sentMessages: some View {

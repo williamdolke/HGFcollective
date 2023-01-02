@@ -21,7 +21,7 @@ struct ArtworksView: View {
             }
             .navigationTitle("Artworks")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .principal) {
                     Image("IconCircle")
                         .resizable()
                         .scaledToFit()

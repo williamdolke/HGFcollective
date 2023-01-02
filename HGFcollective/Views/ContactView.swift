@@ -18,7 +18,7 @@ struct ContactView: View {
                 .cornerRadius(30, corners: [.topLeft, .topRight])
                 .navigationTitle("Contact Us")
                 .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
+                    ToolbarItem(placement: .principal) {
                         Image("IconCircle")
                             .resizable()
                             .scaledToFit()
@@ -26,6 +26,8 @@ struct ContactView: View {
                     }
                 }
         }
+        // On iPad, navigationLinks don't work in InboxView without the following
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 

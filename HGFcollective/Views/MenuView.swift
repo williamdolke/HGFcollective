@@ -14,8 +14,8 @@ struct MenuView: View {
                 generalSection
                 legalSection
             }
+            .navigationTitle("Menu")
         }
-        .navigationTitle("Menu")
     }
 
     var generalSection: some View {

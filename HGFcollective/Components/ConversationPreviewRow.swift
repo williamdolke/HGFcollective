@@ -15,14 +15,17 @@ struct ConversationPreviewRow: View {
             HStack(spacing: 16) {
                 Image(systemName: user.unread ? "envelope.fill" : "envelope.open.fill")
                     .font(.system(size: 32))
+                    .foregroundColor(Color.theme.systemBackgroundInvert)
                     .padding(8)
                     .overlay(RoundedRectangle(cornerRadius: 32)
                         .stroke(lineWidth: 2)
+                        .foregroundColor(Color.theme.systemBackgroundInvert)
                     )
 
                 VStack(alignment: .leading) {
                     Text(user.id.prefix(12) + "...")
                         .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(Color.theme.systemBackgroundInvert)
                     Text(user.messagePreview.prefix(18) + "...")
                         .font(.system(size: 16))
                         .foregroundColor(Color.theme.accentSecondary)
@@ -31,9 +34,10 @@ struct ConversationPreviewRow: View {
 
                 Text(user.latestTimestamp.formattedDateString(format: "E, d MMM HH:mm:ss"))
                     .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(Color.theme.accentSecondary)
             }
             Divider()
-                .background(Color.theme.accent)
+                .background(Color.theme.accentSecondary)
                 .padding(.vertical, 8)
         }.padding(.horizontal)
     }

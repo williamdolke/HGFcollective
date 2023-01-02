@@ -52,7 +52,7 @@ struct MessageField: View {
     private var sendButton: some View {
         NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
             Button {
-                if message == "admin login" {
+                if message.lowercased() == "admin login" {
                     message = ""
                     self.showLogin = true
                     logger.info("User entered the secret keyphrase")
@@ -109,6 +109,7 @@ struct CustomTextField: View {
                             .opacity(0.5)
                     }
                     TextField("", text: $text, onEditingChanged: editingChanged, onCommit: commit)
+                        .accentColor(Color.theme.systemBackgroundInvert)
                 }
                 // Allows the user to tap anywhere, including
                 // the padded area, to focus the text field

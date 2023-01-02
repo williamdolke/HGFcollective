@@ -12,17 +12,21 @@ struct ChatView: View {
     @EnvironmentObject var enquiryManager: EnquiryManager
 
     var body: some View {
-        VStack {
+        NavigationView {
             VStack {
-                ChatTitleRow()
+                VStack {
+                    ChatTitleRow()
 
-                sentMessages
+                    sentMessages
+                }
+                .background(Color.theme.accent)
+
+                MessageField()
+                    .environmentObject(messagesManager)
             }
-            .background(Color.theme.accent)
-
-            MessageField()
-                .environmentObject(messagesManager)
         }
+        // On iPad, navigationLinks don't work in InboxView without the following
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 
     /// Display all messages that have been sent by the customer and admin(s)

@@ -42,7 +42,7 @@ struct InboxView: View {
                     .font(.system(size: 28, weight: .bold))
             }
         }
-        .foregroundColor(Color.theme.systemBackground)
+        .foregroundColor(Color.theme.navigationBarAccent)
         .padding()
         .actionSheet(isPresented: $showLogOutOptions) {
             .init(title: Text("Sign out?"), buttons: [
@@ -70,7 +70,7 @@ struct InboxView: View {
                         .onEnded {
                             messagesManager.setAsRead()
                         })
-                .navigationTitle(user.id)
+                .navigationTitle("Inbox")
             }
         }
     }

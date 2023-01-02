@@ -19,11 +19,14 @@ struct ArtistsView: View {
                     ForEach(filteredArtists) { artist in
                         NavigationLink(artist.name, destination: ArtistView(artist: artist))
                     }
+                } header: {
+                    // Empty section label to add spacing
+                    Text("")
                 }
             }
             .navigationTitle("Artists")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .principal) {
                     Image("IconCircle")
                         .resizable()
                         .scaledToFit()

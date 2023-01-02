@@ -36,12 +36,6 @@ struct ImageView: View {
                 , alignment: .topTrailing
             )
         }
-        .onDisappear {
-            withAnimation {
-                scale = 1.0
-                lastScale = 1.0
-            }
-        }
     }
 
     private var fullScreenImage: some View {

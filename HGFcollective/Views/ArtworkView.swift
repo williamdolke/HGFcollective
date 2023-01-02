@@ -22,22 +22,39 @@ struct ArtworkView: View {
     let artwork: Artwork
 
     var body: some View {
-        VStack {
-            artworkImages
-            imageIndexIndicator
-            artworkInfo
-                .padding(.horizontal)
+        GeometryReader { geo in
+            ScrollView {
+                VStack {
+                    SnapCarousel(index: $currentIndex, items: images) { image in
+                        let haveURL = artwork.urls?[currentIndex] != ""
+                        NavigationLink(destination: ImageView(artworkName: artwork.name,
+                                                              imageNum: String(currentIndex+1),
+                                                              url: haveURL ? artwork.urls?[currentIndex] : nil)
+                            .navigationBarBackButtonHidden(true)) {
+                                ImageBubble(assetName: image.assetName,
+                                            url: image.url,
+                                            height: 0.6 * geo.size.height,
+                                            width: nil)
+                        }
+                    }
+                    _VSpacer(minHeight: 0.6 * geo.size.height)
 
-            Text("Price: " + (artwork.price ?? "POA"))
-                .font(.title2)
+                    imageIndexIndicator
+                    artworkInfo
+                        .padding(.horizontal)
 
-            HStack {
-                enquireButton
-                    .alignmentGuide(.hCentered, computeValue: { $0.width / 2.0 })
-                favouriteButton
-                    .padding()
+                    Text("Price: " + (artwork.price ?? "POA"))
+                        .font(.title2)
+
+                    HStack {
+                        enquireButton
+                            .alignmentGuide(.hCentered, computeValue: { $0.width / 2.0 })
+                        favouriteButton
+                            .padding()
+                    }
+                    .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .hCentered, vertical: .center))
+                }
             }
-            .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .hCentered, vertical: .center))
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
         .onAppear {
@@ -53,8 +70,8 @@ struct ArtworkView: View {
                 let haveAsset = artworkAssetName != "" &&
                                  UIImage(named: artworkAssetName) != nil
                 let image = Asset(assetName: artworkAssetName,
-                                  url: haveURL ? url : nil,
-                                  index: index)
+                                  index: index,
+                                  url: haveURL ? url : nil)
                 if ((haveURL || haveAsset) &&
                     !images.contains { $0.assetName == image.assetName }) {
                     images.append(image)

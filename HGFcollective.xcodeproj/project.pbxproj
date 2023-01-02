@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0EDA7BBC4F31A69C2214AA19 /* libPods-HGFcollective.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F48C33326FDA7104ACABEAFC /* libPods-HGFcollective.a */; };
-		6003C1F028CE55B200ABA79E /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1EF28CE55B200ABA79E /* ContactView.swift */; };
 		6003C1F428CE751900ABA79E /* MailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F328CE751900ABA79E /* MailView.swift */; };
 		6003C1F728CEA35300ABA79E /* ChatTitleRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F628CEA35300ABA79E /* ChatTitleRow.swift */; };
 		6003C1FA28CEA65A00ABA79E /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003C1F928CEA65A00ABA79E /* Message.swift */; };
@@ -82,7 +81,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6003C1EF28CE55B200ABA79E /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
 		6003C1F328CE751900ABA79E /* MailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailView.swift; sourceTree = "<group>"; };
 		6003C1F628CEA35300ABA79E /* ChatTitleRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTitleRow.swift; sourceTree = "<group>"; };
 		6003C1F928CEA65A00ABA79E /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -271,7 +269,6 @@
 				6042238E295B884300F96D5D /* ReportView.swift */,
 				6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */,
 				6032FF2128CD7FCC00C4F22C /* ArtistView.swift */,
-				6003C1EF28CE55B200ABA79E /* ContactView.swift */,
 				6003C1F328CE751900ABA79E /* MailView.swift */,
 				6003C1FD28CEA88000ABA79E /* ChatView.swift */,
 				6079AE0428D8EBF600725F73 /* ImageView.swift */,
@@ -511,7 +508,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003C1F028CE55B200ABA79E /* ContactView.swift in Sources */,
 				6032FF2028CD7F9600C4F22C /* ArtworkView.swift in Sources */,
 				6055E91728D6760900968099 /* Chat.swift in Sources */,
 				602BCA3428FCC75F0096E607 /* ImagePickerView.swift in Sources */,
