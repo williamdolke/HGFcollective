@@ -8,19 +8,66 @@
 import SwiftUI
 
 struct AboutView: View {
-    var body: some View {
-        VStack {
-            Image("IconSquare")
-                .resizable()
-                .frame(width: 150, height: 150)
+    // AppStorage is a property wrapper for accessing values stored in UserDefaults
+    @AppStorage("aboutScreenShown")
+    var aboutScreenShown: Bool = false
 
-            Text("Hi, we're HGF Collective!")
+    let path = Bundle.main.path(forResource: "About", ofType: "txt")
+
+    var body: some View {
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
+        GeometryReader { geo in
+            ScrollView {
+                VStack {
+                    let squareDimension = 0.4 * min(geo.size.height, geo.size.width)
+
+                    Image("IconSquare")
+                        .resizable()
+                        .frame(width: squareDimension, height: squareDimension)
+                        .padding()
+
+                    let content = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+
+                    Text(content ?? "")
+                        .padding()
+                        .background(.ultraThinMaterial,
+                                    in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+
+                    // Show the dismiss button if this is the first time launching the app
+                    if !UserDefaults.standard.aboutScreenShown {
+                        dismissButton
+                    }
+                }
+                .padding()
+            }
         }
+    }
+
+    var dismissButton: some View {
+        Button {
+            aboutScreenShown = true
+            logger.info("User tapped the dismiss button")
+        } label: {
+            HStack {
+                Text("**Dismiss**")
+                    .font(.title2)
+            }
+            .padding()
+            .background(Color.theme.accent)
+            .cornerRadius(40)
+            .foregroundColor(Color.theme.buttonForeground)
+        }
+        .contentShape(Rectangle())
+        .padding(.bottom, 10)
     }
 }
 
 struct AboutView_Previews: PreviewProvider {
     static var previews: some View {
         AboutView()
+
+        AboutView()
+            .preferredColorScheme(.dark)
     }
 }

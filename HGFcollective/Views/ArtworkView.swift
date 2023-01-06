@@ -14,7 +14,7 @@ struct ArtworkView: View {
 
     // Store images to be shown in the snap carousel
     @State private var images: [Asset] = []
-    // Store the current image in the snap carousel
+    // Store the current image presented in the snap carousel
     @State private var currentIndex: Int = 0
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
@@ -22,6 +22,8 @@ struct ArtworkView: View {
     let artwork: Artwork
 
     var body: some View {
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
         GeometryReader { geo in
             ScrollView {
                 VStack {

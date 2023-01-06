@@ -41,6 +41,7 @@
 		603336A7294948EF008A4444 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603336A6294948EF008A4444 /* Asset.swift */; };
 		60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60339F9728F3531B00E7E1C8 /* Favourites.swift */; };
 		6042238F295B884300F96D5D /* ReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6042238E295B884300F96D5D /* ReportView.swift */; };
+		6042239529678F2300F96D5D /* About.txt in Resources */ = {isa = PBXBuildFile; fileRef = 6042239429678F2200F96D5D /* About.txt */; };
 		604557F228E24190003EB09B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F128E24190003EB09B /* UserManager.swift */; };
 		604557F428E24857003EB09B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604557F328E24857003EB09B /* User.swift */; };
 		60496E4228D4FBDC003465EF /* Mail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60496E4128D4FBDC003465EF /* Mail.swift */; };
@@ -107,6 +108,7 @@
 		603336A6294948EF008A4444 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		60339F9728F3531B00E7E1C8 /* Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourites.swift; sourceTree = "<group>"; };
 		6042238E295B884300F96D5D /* ReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportView.swift; sourceTree = "<group>"; };
+		6042239429678F2200F96D5D /* About.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = About.txt; sourceTree = "<group>"; };
 		604557F128E24190003EB09B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		604557F328E24857003EB09B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		60496E4128D4FBDC003465EF /* Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mail.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 		6079AE0028D8D61800725F73 /* Content */ = {
 			isa = PBXGroup;
 			children = (
+				6042239429678F2200F96D5D /* About.txt */,
 				60ADDD632958B8B200676A3C /* TermsAndConditions.txt */,
 				60ADDD5B2957F75F00676A3C /* PrivacyPolicy.txt */,
 				60ADDD612958AFC700676A3C /* EULA.txt */,
@@ -427,6 +430,7 @@
 			files = (
 				60ADDD622958AFC800676A3C /* EULA.txt in Resources */,
 				6032FF0E28CD5E7300C4F22C /* Preview Assets.xcassets in Resources */,
+				6042239529678F2300F96D5D /* About.txt in Resources */,
 				60ADDD642958B8B400676A3C /* TermsAndConditions.txt in Resources */,
 				60ADDD5C2957F75F00676A3C /* PrivacyPolicy.txt in Resources */,
 				6032FF0B28CD5E7300C4F22C /* Assets.xcassets in Resources */,
@@ -622,6 +626,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -678,6 +683,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

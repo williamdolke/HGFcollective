@@ -13,8 +13,13 @@ struct ContentView: View {
 
     @StateObject var favourites = Favourites()
 
+    // TabBar states
     @State private var selection = 0
     @State private var id: [Bool] = [false, false, false, false]
+
+    // AppStorage is a property wrapper for accessing values stored in UserDefaults
+    @AppStorage("aboutScreenShown")
+    var aboutScreenShown: Bool = false
 
     init() {
         // Navigation bar colours
@@ -56,16 +61,27 @@ struct ContentView: View {
     )}
 
     var body: some View {
+        // Show the about screen if it has not been shown before i.e. on the app's first launch
+        // Otherwise, show the tabBar and associated views
+        if !aboutScreenShown {
+            AboutView()
+        } else {
+            tabView
+        }
+    }
+
+    var tabView: some View {
         // Define the tabs in the tab bar
         TabView(selection: handler) {
+            // Group the tabs so that colours can be applied to all of them
             Group {
                 HomeView().id(id[self.selection])
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
                     .tag(0)
-                // Fix for a bug where HomeView navigationsLinks wouldn't work
-                // when id[0] is set to true
+                    // Fix for a bug where HomeView navigationsLinks wouldn't work
+                    // when id[0] is set to true
                     .onChange(of: id[0]) { _ in
                         id[0] = false
                     }
@@ -109,5 +125,16 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(artistManager)
             .environmentObject(messagesManager)
             .preferredColorScheme(.dark)
+    }
+}
+
+extension UserDefaults {
+    var aboutScreenShown: Bool {
+        get {
+            return (UserDefaults.standard.bool(forKey: "aboutScreenShown"))
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "aboutScreenShown")
+        }
     }
 }

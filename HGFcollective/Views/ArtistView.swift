@@ -16,6 +16,8 @@ struct ArtistView: View {
     @State private var currentIndex: Int = 0
 
     var body: some View {
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
         GeometryReader { geo in
             ScrollView {
                 VStack {

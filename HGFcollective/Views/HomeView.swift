@@ -41,6 +41,7 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showMenu) {
                 MenuView()
+                    .accentColor(Color.theme.navigationBarAccent)
             }
         }
     }
@@ -66,6 +67,8 @@ struct HomeView: View {
     }
 
     private var discoverPictures: some View {
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
         GeometryReader { geo in
             ScrollView(.horizontal) {
                 HStack(spacing: 0.03 * geo.size.width) {

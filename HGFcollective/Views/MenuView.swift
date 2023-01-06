@@ -33,14 +33,17 @@ struct MenuView: View {
 
     var legalSection: some View {
         Section {
-            NavigationLink(destination: HTMLView(filePath: "PrivacyPolicy", ofType: "txt")) {
+            NavigationLink(destination: HTMLView(filePath: "PrivacyPolicy", ofType: "txt")
+                .navigationTitle("Privacy Policy")) {
                 Text("Privacy Policy")
             }
-            NavigationLink(destination: HTMLView(filePath: "TermsAndConditions", ofType: "txt")) {
+            NavigationLink(destination: HTMLView(filePath: "TermsAndConditions", ofType: "txt")
+                .navigationTitle("Terms and Conditions")) {
                 Text("Terms and Conditions")
             }
-            NavigationLink(destination: HTMLView(filePath: "EULA", ofType: "txt")) {
-                Text("End User License Agreement (EULA)")
+            NavigationLink(destination: HTMLView(filePath: "EULA", ofType: "txt")
+                .navigationTitle("End User License Agreement")) {
+                Text("End User License Agreement")
             }
         } header: {
             Text("Legal")
