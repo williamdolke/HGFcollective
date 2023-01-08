@@ -12,13 +12,19 @@ struct ArtworksView: View {
     @EnvironmentObject var favourites: Favourites
 
     @State private var searchQuery = ""
+    @State private var segmentationSelection : ProfileSection = .grid
+
+    // Define the segmented control segments
+    enum ProfileSection : String, CaseIterable {
+        case grid = "Grid"
+        case list = "List"
+    }
 
     var body: some View {
-        // This will be the primary view on all devices
-        NavigationView {
-            Form {
-                artistSections
-            }
+        NavigationStack {
+            segmentedControl
+                .padding()
+            chosenSegmentView()
             .navigationTitle("Artworks")
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -30,31 +36,85 @@ struct ArtworksView: View {
             }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
-
-            // This is the secondary view that will be shown on devices with a sidebar
-            ArtworkView(artwork: artistManager.artists[0].artworks![0])
         }
     }
 
-    private var artistSections: some View {
-        ForEach(filteredArtists.0) { filteredArtist in
-            Section {
-                ForEach(filteredArtist.artworks!) { artwork in
-                    if filteredArtists.1.contains(artwork.name) {
-                        NavigationLink {
-                            ArtworkView(artwork: artwork)
-                        } label: {
-                            artworkLabel(artworkName: artwork.name)
+    /// Create the segmented picker from the enum cases
+    private var segmentedControl: some View {
+        Picker("", selection: $segmentationSelection) {
+            ForEach(ProfileSection.allCases, id: \.self) { option in
+                Text(option.rawValue)
+            }
+        }.pickerStyle(SegmentedPickerStyle())
+    }
+
+    /// Define the view presented for each segment
+    @ViewBuilder
+    private func chosenSegmentView() -> some View {
+        switch segmentationSelection {
+        case .grid:
+            artworksGrid
+        case .list:
+            artworksList
+        }
+    }
+
+    /// Display the filtered artworks in a grid with two columns that extends vertically
+    @ViewBuilder
+    private var artworksGrid: some View {
+        let columns = [GridItem(), GridItem()]
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
+        GeometryReader { geo in
+            ScrollView {
+                LazyVGrid(columns: columns) {
+                    // Create an ImageBubble for each artwork that meets the filter criteria
+                    ForEach(filteredArtists.0) { artist in
+                        ForEach(artist.artworks!) { artwork in
+                            if filteredArtists.1.contains(artwork.name) {
+                                NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                                    ImageBubble(assetName: artwork.name + " 1",
+                                                height: nil,
+                                                width: 0.45 * geo.size.width,
+                                                fill: true)
+                                    .background(Color.theme.accent)
+                                    .cornerRadius(0.1 * min(geo.size.height, geo.size.width))
+                                }
+                            }
                         }
                     }
                 }
-            } header: {
-                // Section label
-                Text(filteredArtist.name)
             }
         }
     }
 
+    /// Display the filtered artworks in a list organised into sections by artist
+    private var artworksList: some View {
+        Form {
+            // Create a section for every artist who has an artwork that
+            // meets the filter criteria
+            ForEach(filteredArtists.0) { filteredArtist in
+                Section {
+                    // Add a navigationLink for every artwork by the artist
+                    // that meets the filter criteria
+                    ForEach(filteredArtist.artworks!) { filteredArtwork in
+                        if filteredArtists.1.contains(filteredArtwork.name) {
+                            NavigationLink {
+                                ArtworkView(artwork: filteredArtwork)
+                            } label: {
+                                artworkLabel(artworkName: filteredArtwork.name)
+                            }
+                        }
+                    }
+                } header: {
+                    // Section label
+                    Text(filteredArtist.name)
+                }
+            }
+        }
+    }
+
+    /// Display the artwork's name in the list and a trailing heart image if the artwork is in the user's favourites
     private func artworkLabel(artworkName: String) -> some View {
         HStack {
             Text(artworkName)
@@ -62,22 +122,25 @@ struct ArtworksView: View {
             if favourites.contains(artworkName) {
                 Spacer()
                 Image(systemName: "heart.fill")
-                    .accessibilityLabel("This is a favourite artwork")
                     .foregroundColor(Color.theme.favourite)
             }
         }
     }
 
-    var filteredArtists: ([Artist], [String]) {
+    /// Filter the artworks displayed by comparing text entered into the search bar to the artwork names
+    private var filteredArtists: ([Artist], [String]) {
+        // Array of artists who have an artwork that meets the filter criteria
         var filteredArtists: [Artist] = []
+        // Array of artwork names that meet the filter criteria
         var filteredArtworks: [String] = []
         var alreadyFiltered: Bool = false
 
         artistManager.artists.forEach { artist in
             alreadyFiltered = false
-            artist.artworks?.forEach {artwork in
+            artist.artworks?.forEach { artwork in
                 if artwork.name.localizedCaseInsensitiveContains(searchQuery) || searchQuery == "" {
                     filteredArtworks.append(artwork.name)
+                    // Avoid adding the artist to the array more than once
                     if !alreadyFiltered {
                         filteredArtists.append(artist)
                         alreadyFiltered = true

@@ -43,6 +43,7 @@ struct LaunchScreen: View {
             Image("IconSquare")
                 .resizable()
                 .frame(width: 250, height: 250)
+                .cornerRadius(30)
         }
         .scaleEffect(size)
         .opacity(opacity)

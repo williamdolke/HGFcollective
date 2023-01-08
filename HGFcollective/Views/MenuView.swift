@@ -18,7 +18,7 @@ struct MenuView: View {
         }
     }
 
-    var generalSection: some View {
+    private var generalSection: some View {
         Section {
             NavigationLink(destination: AboutView()) {
                 Text("About")
@@ -31,7 +31,7 @@ struct MenuView: View {
         }
     }
 
-    var legalSection: some View {
+    private var legalSection: some View {
         Section {
             NavigationLink(destination: HTMLView(filePath: "PrivacyPolicy", ofType: "txt")
                 .navigationTitle("Privacy Policy")) {

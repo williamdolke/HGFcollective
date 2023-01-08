@@ -38,8 +38,14 @@ struct ContentView: View {
         UITabBar.appearance().barTintColor = UIColor(Color.theme.tabBarActive)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Color.theme.tabBarInactive)
 
-        // Search bar colours
+        // Segmented control colours
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.theme.navigationBarAccent)
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color.theme.accentSecondary)
         // swiftlint:disable line_length
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.theme.accent)], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.theme.navigationBarAccent)], for: .normal)
+
+        // Search bar colours
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(Color.theme.systemBackground)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor(Color.theme.systemBackgroundInvert)
         // swiftlint:enable line_length
@@ -70,7 +76,7 @@ struct ContentView: View {
         }
     }
 
-    var tabView: some View {
+    private var tabView: some View {
         // Define the tabs in the tab bar
         TabView(selection: handler) {
             // Group the tabs so that colours can be applied to all of them

@@ -76,9 +76,11 @@ struct HomeView: View {
                         let artistIndex = artistManager.discoverArtistIndexes![index]
                         let artistArtwork = artistManager.artists[artistIndex].artworks
                         let artworkAssetName = (artistArtwork?.isEmpty == false) ? artistArtwork![0].name : ""
+                        let artworkURL = (artistArtwork?.isEmpty == false) ? artistArtwork![0].urls?[0] : nil
 
                         NavigationLink(destination: ArtistView(artist: artistManager.artists[artistIndex])) {
                             ImageBubble(assetName: artworkAssetName + " 1",
+                                        url: artworkURL,
                                         height: geo.size.height,
                                         width: 0.45 * geo.size.width,
                                         fill: true)
@@ -102,6 +104,7 @@ struct HomeView: View {
                         let artwork = featuredArtist.artworks![index]
                         NavigationLink(destination: ArtworkView(artwork: artwork)) {
                             ImageBubble(assetName: artwork.name + " 1",
+                                        url: artwork.urls?[0],
                                         height: geo.size.height,
                                         width: 0.9 * geo.size.width,
                                         fill: true)

@@ -44,7 +44,7 @@ struct AboutView: View {
         }
     }
 
-    var dismissButton: some View {
+    private var dismissButton: some View {
         Button {
             aboutScreenShown = true
             logger.info("User tapped the dismiss button")
