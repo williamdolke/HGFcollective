@@ -59,7 +59,7 @@ struct ArtworksView: View {
         }
     }
 
-    /// Display the filtered artworks in a grid with two columns that extends vertically
+    /// Display the filtered artworks in a grid with two columns that extend vertically
     @ViewBuilder
     private var artworksGrid: some View {
         let columns = [GridItem(), GridItem()]
