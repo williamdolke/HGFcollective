@@ -64,7 +64,7 @@ struct ArtistsView: View {
         // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
         // take the dimensions of the screen
         GeometryReader { geo in
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 LazyVGrid(columns: columns) {
                     // Create an ImageBubble for each artist that meets the filter criteria
                     ForEach(filteredArtists) { artist in

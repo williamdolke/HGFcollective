@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 import SwiftUI
 
@@ -35,6 +36,7 @@ class ArtistManager: ObservableObject {
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
+                Crashlytics.crashlytics().record(error: error!)
                 logger.error("Error fetching documents: \(String(describing: error))")
                 return
             }
@@ -45,6 +47,7 @@ class ArtistManager: ObservableObject {
                     // Convert each document into the Artist model
                     return try document.data(as: Artist.self)
                 } catch {
+                    Crashlytics.crashlytics().record(error: error)
                     logger.error("Error decoding document into Artist: \(error)")
 
                     // Return nil if we run into an error - the compactMap will
@@ -74,6 +77,7 @@ class ArtistManager: ObservableObject {
 
                 // If we don't have documents, exit the function
                 guard let documents = querySnapshot?.documents else {
+                    Crashlytics.crashlytics().record(error: error!)
                     logger.error("Error fetching documents: \(String(describing: error))")
                     return
                 }
@@ -85,6 +89,7 @@ class ArtistManager: ObservableObject {
                             // Convert each document into the Artwork model
                             return try document.data(as: Artwork.self)
                         } catch {
+                            Crashlytics.crashlytics().record(error: error)
                             logger.error("Error decoding document into Artwork: \(error)")
 
                             // Return nil if we run into an error - the compactMap will not include it in the final
@@ -168,6 +173,7 @@ class ArtistManager: ObservableObject {
                                              options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
                                                     .inlineOnlyPreservingWhitespace)))
         } catch {
+            Crashlytics.crashlytics().record(error: error)
             logger.error("Couldn't convert artwork info to bold.")
             return Text(info)
         }

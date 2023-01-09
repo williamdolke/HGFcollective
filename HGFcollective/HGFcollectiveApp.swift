@@ -9,6 +9,7 @@ import SwiftUI
 import Logging
 import Firebase
 import FirebaseAuth
+import FirebaseCrashlytics
 
 // Configure a logger that can be used globally
 let logger = Logger(label: "")
@@ -22,8 +23,9 @@ struct HGFcollectiveApp: App {
         if UserDefaults.standard.string(forKey: "uid") == nil {
             // Sign the user in to Firestore anonymously
             Auth.auth().signInAnonymously { authResult, error in
-                if let err = error {
-                    logger.error("Error signing into database: \(err.localizedDescription)")
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error signing into database: \(error.localizedDescription)")
                 } else {
                     logger.info("Sucessfully signed in to database anonymously.")
                 }

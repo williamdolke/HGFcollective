@@ -70,7 +70,7 @@ struct HomeView: View {
         // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
         // take the dimensions of the screen
         GeometryReader { geo in
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0.03 * geo.size.width) {
                     ForEach(0..<artistManager.numDiscoverArtists, id: \.self) {index in
                         let artistIndex = artistManager.discoverArtistIndexes![index]
@@ -96,7 +96,7 @@ struct HomeView: View {
 
     private var featuredPictures: some View {
         GeometryReader { geo in
-            ScrollView(.horizontal) {
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0.03 * geo.size.width) {
                     let featuredArtist = artistManager.artists[artistManager.featuredArtistIndex!]
                     ForEach(0..<(featuredArtist.artworks?.count ?? 0),

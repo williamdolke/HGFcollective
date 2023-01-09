@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseStorage
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 
 class MessagesManager: ObservableObject {
@@ -37,6 +38,7 @@ class MessagesManager: ObservableObject {
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
+                Crashlytics.crashlytics().record(error: error!)
                 logger.error("Error fetching documents: \(String(describing: error))")
                 return
             }
@@ -47,6 +49,7 @@ class MessagesManager: ObservableObject {
                     // Convert each document into the Message model
                     return try document.data(as: Message.self)
                 } catch {
+                    Crashlytics.crashlytics().record(error: error)
                     logger.error("Error decoding document into Message: \(error)")
 
                     // Return nil if we run into an error - the compactMap will
@@ -93,6 +96,7 @@ class MessagesManager: ObservableObject {
                 .setData(from: userUpdate)
             logger.info("Successfully sent update to user document.")
         } catch {
+            Crashlytics.crashlytics().record(error: error)
             logger.error("Error adding message to Firestore: \(error)")
         }
     }
@@ -105,14 +109,16 @@ class MessagesManager: ObservableObject {
         // Convert the image to jpeg format and compress
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
 
-        ref.putData(imageData, metadata: nil) { _, err in
-            if let err = err {
-                logger.error("Failed to push image to Storage: \(err)")
+        ref.putData(imageData, metadata: nil) { _, error in
+            if let error = error {
+                Crashlytics.crashlytics().record(error: error)
+                logger.error("Failed to push image to Storage: \(error)")
                 return
             }
-            ref.downloadURL { url, err in
-                if let err = err {
-                    logger.error("Failed to retrieve downloadURL: \(err)")
+            ref.downloadURL { url, error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Failed to retrieve downloadURL: \(error)")
                     return
                 }
                 logger.info("Successfully stored image with url: \(url?.absoluteString ?? "")")
@@ -127,6 +133,7 @@ class MessagesManager: ObservableObject {
         firestoreDB.collection("users").document(uid)
             .updateData(["unread": false]) { error in
                 if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
                     logger.error("Error setting message as read in Firestore: \(error)")
                 } else {
                     logger.info("Successfully set message as read.")

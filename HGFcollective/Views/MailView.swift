@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import UIKit
 import MessageUI
+import FirebaseCrashlytics
 
 struct MailView: UIViewControllerRepresentable {
     @EnvironmentObject var enquiryManager: EnquiryManager
@@ -32,6 +33,7 @@ struct MailView: UIViewControllerRepresentable {
                 presentation = false
             }
             guard error == nil else {
+                Crashlytics.crashlytics().record(error: error!)
                 self.result = .failure(error!)
                 return
             }

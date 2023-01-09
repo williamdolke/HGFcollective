@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseCrashlytics
 
 struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
@@ -81,6 +82,7 @@ struct InboxView: View {
             try Auth.auth().signOut()
             dismiss()
         } catch let signOutError as NSError {
+            Crashlytics.crashlytics().record(error: signOutError)
             logger.error("Error signing out: \(signOutError)")
         }
         logger.info("Successfully logged out.")

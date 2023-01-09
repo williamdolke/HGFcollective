@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 
 class UserManager: ObservableObject {
@@ -27,6 +28,7 @@ class UserManager: ObservableObject {
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
+                Crashlytics.crashlytics().record(error: error!)
                 logger.error("Error fetching user documents: \(String(describing: error))")
                 return
             }
@@ -37,6 +39,7 @@ class UserManager: ObservableObject {
                     // Convert each document into the User model
                     return try document.data(as: User.self)
                 } catch {
+                    Crashlytics.crashlytics().record(error: error)
                     logger.error("Error decoding document into User: \(error)")
 
                     // Return nil if we run into an error - the compactMap will

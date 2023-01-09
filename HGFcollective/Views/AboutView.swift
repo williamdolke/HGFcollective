@@ -18,7 +18,7 @@ struct AboutView: View {
         // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
         // take the dimensions of the screen
         GeometryReader { geo in
-            ScrollView {
+            ScrollView(showsIndicators: false) {
                 VStack {
                     let squareDimension = 0.4 * min(geo.size.height, geo.size.width)
 

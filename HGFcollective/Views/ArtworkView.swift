@@ -7,6 +7,7 @@
 
 import MessageUI
 import SwiftUI
+import FirebaseCrashlytics
 
 struct ArtworkView: View {
     @EnvironmentObject var artistManager: ArtistManager

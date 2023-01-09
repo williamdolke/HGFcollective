@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 
 class EnquiryManager: ObservableObject {
@@ -42,6 +43,7 @@ class EnquiryManager: ObservableObject {
                 }
             }
         } catch {
+            Crashlytics.crashlytics().record(error: error)
             logger.info("Error fetching email enquiry information: \(error)")
         }
     }
