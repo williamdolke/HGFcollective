@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct MenuView: View {
     var body: some View {
@@ -15,6 +16,11 @@ struct MenuView: View {
                 legalSection
             }
             .navigationTitle("Menu")
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(MenuView.self)",
+                                               AnalyticsParameterScreenClass: "\(MenuView.self)"])
+            }
         }
     }
 

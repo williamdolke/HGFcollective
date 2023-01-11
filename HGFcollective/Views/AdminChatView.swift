@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
@@ -21,6 +22,11 @@ struct AdminChatView: View {
                 .environmentObject(messagesManager)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(AdminChatView.self)",
+                                           AnalyticsParameterScreenClass: "\(AdminChatView.self)"])
+        }
     }
 
     private var sentMessages: some View {

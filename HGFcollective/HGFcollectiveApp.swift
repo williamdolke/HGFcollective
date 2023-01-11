@@ -16,7 +16,20 @@ let logger = Logger(label: "")
 
 @main
 struct HGFcollectiveApp: App {
-    init() {
+    @UIApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    var body: some Scene {
+        WindowGroup {
+            LaunchScreen()
+            // Start fetching the artists from the database when the launch screen
+            // is created. Hopefully by the time the launch screen is dismissed
+            // this will have completed.
+                .environmentObject(ArtistManager())
+        }
+    }
+}
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
 
@@ -38,15 +51,6 @@ struct HGFcollectiveApp: App {
                 logger.info("Anonymous login UID: \(user.uid)")
             }
         }
-    }
-
-    var body: some Scene {
-        WindowGroup {
-            LaunchScreen()
-                // Start fetching the artists from the database when the launch screen
-                // is created. Hopefully by the time the launch screen is dismissed
-                // this will have completed.
-                .environmentObject(ArtistManager())
-        }
+        return true
     }
 }

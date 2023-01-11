@@ -7,6 +7,7 @@
 
 import MessageUI
 import SwiftUI
+import FirebaseAnalytics
 import FirebaseCrashlytics
 
 struct ArtworkView: View {
@@ -80,6 +81,10 @@ struct ArtworkView: View {
                     images.append(image)
                 }
             }
+
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(ArtworkView.self)",
+                                           AnalyticsParameterScreenClass: "\(ArtworkView.self)"])
         }
     }
 

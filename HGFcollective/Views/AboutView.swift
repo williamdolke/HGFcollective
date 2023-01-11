@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct AboutView: View {
     // AppStorage is a property wrapper for accessing values stored in UserDefaults
@@ -40,6 +41,11 @@ struct AboutView: View {
                     }
                 }
                 .padding()
+            }
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(AboutView.self)",
+                                               AnalyticsParameterScreenClass: "\(AboutView.self)"])
             }
         }
     }

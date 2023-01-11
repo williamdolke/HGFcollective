@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseAnalytics
 import FirebaseCrashlytics
 
 struct LoginView: View {
@@ -34,6 +35,11 @@ struct LoginView: View {
         }
         .padding()
         .navigationTitle("Log In")
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(LoginView.self)",
+                                           AnalyticsParameterScreenClass: "\(LoginView.self)"])
+        }
     }
 
     private var textFields: some View {

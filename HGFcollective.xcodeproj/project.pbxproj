@@ -70,6 +70,7 @@
 		60ADDD5E2958770F00676A3C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ADDD5D2958770F00676A3C /* AboutView.swift */; };
 		60ADDD622958AFC800676A3C /* EULA.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD612958AFC700676A3C /* EULA.txt */; };
 		60ADDD642958B8B400676A3C /* TermsAndConditions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD632958B8B200676A3C /* TermsAndConditions.txt */; };
+		60E43E53296E24EE00279D1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60E43E52296E24EE00279D1B /* FirebaseAnalytics */; };
 		60FBD7FE2919AFFE007CB313 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 60FBD7FD2919AFFE007CB313 /* Logging */; };
 /* End PBXBuildFile section */
 
@@ -157,6 +158,7 @@
 				60858CE6296CC92300F48140 /* FirebaseCrashlytics in Frameworks */,
 				602BCA3228FCC0360096E607 /* FirebaseStorage in Frameworks */,
 				0EDA7BBC4F31A69C2214AA19 /* libPods-HGFcollective.a in Frameworks */,
+				60E43E53296E24EE00279D1B /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +358,7 @@
 				602BCA3128FCC0360096E607 /* FirebaseStorage */,
 				60FBD7FD2919AFFE007CB313 /* Logging */,
 				60858CE5296CC92300F48140 /* FirebaseCrashlytics */,
+				60E43E52296E24EE00279D1B /* FirebaseAnalytics */,
 			);
 			productName = ArtApp;
 			productReference = 6032FF0328CD5E7200C4F22C /* HGFcollective.app */;
@@ -959,6 +962,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60A103AE28E0781100DB6A00 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		60E43E52296E24EE00279D1B /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 		60FBD7FD2919AFFE007CB313 /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;

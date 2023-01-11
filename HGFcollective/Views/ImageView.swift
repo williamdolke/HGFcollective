@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ImageView: View {
     @Environment(\.dismiss) private var dismiss
@@ -31,10 +32,12 @@ struct ImageView: View {
 
             fullScreenImage
             // Overlay a button to close the view
-            .overlay(
-                closeButton
-                , alignment: .topTrailing
-            )
+            .overlay(closeButton, alignment: .topTrailing)
+        }
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(ImageView.self)",
+                                           AnalyticsParameterScreenClass: "\(ImageView.self)"])
         }
     }
 

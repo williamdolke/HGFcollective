@@ -37,11 +37,26 @@ struct CustomTextField: View {
                 }
 
                 // Display an image if the user has specified one to send
-                if let image {
-                    Image(uiImage: image)
+                if (image != nil) {
+                    Image(uiImage: image!)
                         .resizable()
                         .frame(width: 100, height: 100)
                         .aspectRatio(contentMode: .fill)
+                        .overlay(alignment: .topTrailing) {
+                            Button {
+                                logger.info("User pressed the close button to delete the image from the chat message")
+                                image = nil
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .resizable()
+                                    .frame(width: 18, height: 18)
+                                    .foregroundColor(Color.theme.systemBackgroundInvert)
+                                    .background(Color.theme.systemBackground)
+                                    .clipShape(Circle())
+                                    .padding()
+                            }
+                            .frame(width: 20, height: 20)
+                        }
                 }
             }
         }

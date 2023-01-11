@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ArtworksView: View {
     @EnvironmentObject var artistManager: ArtistManager
@@ -36,6 +37,11 @@ struct ArtworksView: View {
             }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
             .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(ArtworksView.self)",
+                                               AnalyticsParameterScreenClass: "\(ArtworksView.self)"])
+            }
         }
     }
 

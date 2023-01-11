@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
@@ -23,6 +24,11 @@ struct ChatView: View {
 
                 MessageField()
                     .environmentObject(messagesManager)
+            }
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(ChatView.self)",
+                                               AnalyticsParameterScreenClass: "\(ChatView.self)"])
             }
         }
         // On iPad, navigationLinks don't work in InboxView without the following

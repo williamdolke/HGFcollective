@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ArtistView: View {
     var artist: Artist
@@ -60,6 +61,10 @@ struct ArtistView: View {
                     images.append(image)
                 }
             }
+
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(ArtistView.self)",
+                                           AnalyticsParameterScreenClass: "\(ArtistView.self)"])
         }
     }
 

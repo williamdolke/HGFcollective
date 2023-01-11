@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct HomeView: View {
     @EnvironmentObject var artistManager: ArtistManager
@@ -42,6 +43,11 @@ struct HomeView: View {
             .sheet(isPresented: $showMenu) {
                 MenuView()
                     .accentColor(Color.theme.navigationBarAccent)
+            }
+            .onAppear {
+                    Analytics.logEvent(AnalyticsEventScreenView,
+                                       parameters: [AnalyticsParameterScreenName: "\(HomeView.self)",
+                                                   AnalyticsParameterScreenClass: "\(HomeView.self)"])
             }
         }
     }

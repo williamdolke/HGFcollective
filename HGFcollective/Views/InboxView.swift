@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseAnalytics
 import FirebaseCrashlytics
 
 struct InboxView: View {
@@ -22,6 +23,11 @@ struct InboxView: View {
             conversationRows
         }
         .navigationBarHidden(true)
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(InboxView.self)",
+                                           AnalyticsParameterScreenClass: "\(InboxView.self)"])
+        }
     }
 
     private var conversationTitleRow: some View {
