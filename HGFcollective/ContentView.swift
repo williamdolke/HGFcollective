@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     @EnvironmentObject var artistManager: ArtistManager
-    @EnvironmentObject var messagesManager: MessagesManager
 
     @StateObject var favourites = Favourites()
 
@@ -101,9 +101,7 @@ struct ContentView: View {
                         Label("Artworks", systemImage: "photo.artframe")
                     }
                     .tag(2)
-                ChatView().id(id[self.selection])
-                    .environmentObject(messagesManager)
-                    .environmentObject(EnquiryManager())
+                customerOrAdmin()
                     .tabItem {
                         Label("Chat", systemImage: "bubble.left")
                     }
@@ -116,31 +114,32 @@ struct ContentView: View {
         .environmentObject(artistManager)
         .environmentObject(favourites)
     }
+    
+    @ViewBuilder
+    private func customerOrAdmin() -> some View {
+        if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
+            NavigationView {
+                InboxView()
+                    .environmentObject(UserManager())
+            }
+        } else {
+            ChatView().id(id[self.selection])
+                .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
+                .environmentObject(EnquiryManager())
+        }
+        
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
-    static let messagesManager = MessagesManager(uid: "test")
 
     static var previews: some View {
         ContentView()
             .environmentObject(artistManager)
-            .environmentObject(messagesManager)
 
         ContentView()
             .environmentObject(artistManager)
-            .environmentObject(messagesManager)
             .preferredColorScheme(.dark)
-    }
-}
-
-extension UserDefaults {
-    var aboutScreenShown: Bool {
-        get {
-            return (UserDefaults.standard.bool(forKey: "aboutScreenShown"))
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: "aboutScreenShown")
-        }
     }
 }

@@ -54,8 +54,15 @@ struct InboxView: View {
         .actionSheet(isPresented: $showLogOutOptions) {
             .init(title: Text("Sign out?"), buttons: [
                 .destructive(Text("Yes"), action: {
+                    logger.info("User tapped the Yes button")
+                    // Sign out of the admin account
                     signOutUser()
-                    logger.info("User tapped 'Yes' button")
+
+                    // Create a new anonymous user so that chat will work
+                    // again as a customer
+                    signInAnonymously()
+
+                    dismiss()
                 }),
                 .cancel(Text("Cancel"), action: {
                     logger.info("User tapped 'Cancel' button")
@@ -86,7 +93,8 @@ struct InboxView: View {
         logger.info("Logging out of Firebase with existing credentials.")
         do {
             try Auth.auth().signOut()
-            dismiss()
+            UserDefaults.standard.setValue(nil, forKey: "isAdmin")
+            UserDefaults.standard.setValue(nil, forKey: "uid")
         } catch let signOutError as NSError {
             Crashlytics.crashlytics().record(error: signOutError)
             logger.error("Error signing out: \(signOutError)")

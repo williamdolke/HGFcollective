@@ -73,7 +73,7 @@ struct ImageView: View {
         .padding()
     }
 
-    var magnificationGesture: some Gesture {
+    private var magnificationGesture: some Gesture {
         MagnificationGesture()
             .onChanged { state in
                 adjustScale(from: state)
@@ -90,7 +90,7 @@ struct ImageView: View {
             }
     }
 
-    var dragGesture: some Gesture {
+    private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { state in
                 location.x += (state.predictedEndLocation.x - state.startLocation.x)/(0.1*defaultLocation.x)
@@ -108,35 +108,35 @@ struct ImageView: View {
     }
 
     /// Scale the image when the user perform the magnification gesture
-    func adjustScale(from state: MagnificationGesture.Value) {
+    private func adjustScale(from state: MagnificationGesture.Value) {
         let delta = state / lastScale
         scale *= delta
         lastScale = state
     }
 
-    func getMinimumScaleAllowed() -> CGFloat {
+    private func getMinimumScaleAllowed() -> CGFloat {
         return max(minScale, scale)
     }
 
-    func getMaximumScaleAllowed() -> CGFloat {
+    private func getMaximumScaleAllowed() -> CGFloat {
         return min(maxScale, scale)
     }
 
     /// Ensure the image scale is within the allowed range
-    func validateScaleLimits() {
+    private func validateScaleLimits() {
         scale = getMinimumScaleAllowed()
         scale = getMaximumScaleAllowed()
     }
 
     /// Reset the image location if the user zooms out and releases
-    func maybeResetLocation() {
+    private func maybeResetLocation() {
         if scale <= 1.0 {
             location = defaultLocation
         }
     }
 
     /// Ensure the image location coordinates are within the allowed ranges
-    func limitLocation() {
+    private func limitLocation() {
         // Bound the x coordinate
         if location.x >= defaultLocation.x {
             location.x = min(location.x, 1.5*defaultLocation.x)

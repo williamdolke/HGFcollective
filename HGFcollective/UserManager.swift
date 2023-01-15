@@ -22,7 +22,7 @@ class UserManager: ObservableObject {
     }
 
     /// Fetch all user documents from the database
-    func getUsers() {
+    private func getUsers() {
         // Read users from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("users").addSnapshotListener { querySnapshot, error in
 
@@ -52,7 +52,7 @@ class UserManager: ObservableObject {
     }
 
     /// Sort users by the timestamp of their most recent messages
-    func sortUsers() {
+    private func sortUsers() {
         self.users.sort(by: { $0.latestTimestamp > $1.latestTimestamp })
     }
 }

@@ -92,8 +92,9 @@ struct LoginView: View {
         NavigationLink(destination: InboxView().environmentObject(UserManager()).navigationBarBackButtonHidden(true),
                        isActive: $showInbox) {
             Button {
-                loginUser()
+                // Attempt to sign in as admin
                 logger.info("User tapped the login button")
+                signInUser()
             } label: {
                 HStack {
                     Spacer()
@@ -111,7 +112,7 @@ struct LoginView: View {
         }
     }
 
-    private func loginUser() {
+    private func signInUser() {
         logger.info("Logging into Firebase with existing credentials.")
         Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
             if let error = error {
@@ -122,6 +123,7 @@ struct LoginView: View {
             }
 
             logger.info("Successfully logged in as user: \(result?.user.uid ?? "nil")")
+            UserDefaults.standard.setValue(true, forKey: "isAdmin")
             self.showInbox = true
         }
     }

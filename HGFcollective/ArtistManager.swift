@@ -29,7 +29,7 @@ class ArtistManager: ObservableObject {
     }
 
     /// Fetch all artist documents from the database
-    func getArtists() {
+    private func getArtists() {
         logger.info("Retrieving artists from database.")
         // Read artists from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("artists").addSnapshotListener { querySnapshot, error in
@@ -68,7 +68,7 @@ class ArtistManager: ObservableObject {
     }
 
     /// Fetch the artwork documents from the database for all artworks
-    func getArtworks() {
+    private func getArtworks() {
         for artist in self.artists {
             logger.info("Retrieving artworks for \(artist.name).")
             // Read artworks from Firestore in real-time with the addSnapShotListener
@@ -105,7 +105,7 @@ class ArtistManager: ObservableObject {
 
     /// Randomly select artists to be included in the discovery section. To do this we generate an array of
     /// unique random indexes that correspond to the indices of the selected artists in the array of all artists.
-    func getDiscoverArtists() {
+    private func getDiscoverArtists() {
         discoverArtistIndexes = getUniqueRandomNumbers(min: 0,
                                                        max: artists.count-1, count: numDiscoverArtists)
     }
@@ -116,7 +116,7 @@ class ArtistManager: ObservableObject {
     ///   -min: Minimum value that can be generated
     ///   -max: Maximum value that can be generated
     ///   -count: Number of unique integers to be generated
-    func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
+    private func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
         // Use a set to avoid adding duplicates
         var set = Set<Int>()
         while set.count < count {
