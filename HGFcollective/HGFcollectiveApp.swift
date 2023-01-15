@@ -30,7 +30,9 @@ struct HGFcollectiveApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
+                     // swiftlint:disable line_length
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+                     // swiftlint:enable line_length
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
 

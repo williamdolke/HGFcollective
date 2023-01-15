@@ -114,7 +114,7 @@ struct ContentView: View {
         .environmentObject(artistManager)
         .environmentObject(favourites)
     }
-    
+
     @ViewBuilder
     private func customerOrAdmin() -> some View {
         if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
@@ -124,10 +124,12 @@ struct ContentView: View {
             }
         } else {
             ChatView().id(id[self.selection])
+                // swiftlint:disable force_cast
                 .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
                 .environmentObject(EnquiryManager())
+                // swiftlint:enable force_cast
         }
-        
+
     }
 }
 
