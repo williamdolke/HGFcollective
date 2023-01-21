@@ -39,7 +39,8 @@ struct ConversationPreviewRow: View {
             Divider()
                 .background(Color.theme.accentSecondary)
                 .padding(.vertical, 8)
-        }.padding(.horizontal)
+        }
+        .padding(.horizontal)
     }
 }
 

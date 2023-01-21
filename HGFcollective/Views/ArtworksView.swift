@@ -97,25 +97,27 @@ struct ArtworksView: View {
 
     /// Display the filtered artworks in a list organised into sections by artist
     private var artworksList: some View {
-        Form {
-            // Create a section for every artist who has an artwork that
-            // meets the filter criteria
-            ForEach(filteredArtists.0) { filteredArtist in
-                Section {
-                    // Add a navigationLink for every artwork by the artist
-                    // that meets the filter criteria
-                    ForEach(filteredArtist.artworks!) { filteredArtwork in
-                        if filteredArtists.1.contains(filteredArtwork.name) {
-                            NavigationLink {
-                                ArtworkView(artwork: filteredArtwork)
-                            } label: {
-                                artworkLabel(artworkName: filteredArtwork.name)
-                            }
-                        }
+        // Create a section for every artist who has an artwork that
+        // meets the filter criteria
+        ForEach(filteredArtists.0) { filteredArtist in
+            HStack {
+                Text(filteredArtist.name)
+                    .font(.title).bold()
+                    .foregroundColor(Color.theme.systemBackgroundInvert)
+                    .padding(.horizontal)
+                Spacer()
+            }
+
+            let artworkAssetName = (filteredArtist.artworks?.isEmpty == false) ? filteredArtist.artworks![0].name + " 1" : ""
+            let artworkURL = (filteredArtist.artworks?.isEmpty == false) ? filteredArtist.artworks![0].urls?[0] : nil
+
+            // Add a navigationLink for every artwork by the artist
+            // that meets the filter criteria
+            ForEach(filteredArtist.artworks!) { artwork in
+                if filteredArtists.1.contains(artwork.name) {
+                    NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                        CustomListRow(assetName: artworkAssetName, url: artworkURL, text: artwork.name)
                     }
-                } header: {
-                    // Section label
-                    Text(filteredArtist.name)
                 }
             }
         }

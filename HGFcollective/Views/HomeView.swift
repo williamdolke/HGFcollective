@@ -45,9 +45,9 @@ struct HomeView: View {
                     .accentColor(Color.theme.navigationBarAccent)
             }
             .onAppear {
-                    Analytics.logEvent(AnalyticsEventScreenView,
-                                       parameters: [AnalyticsParameterScreenName: "\(HomeView.self)",
-                                                   AnalyticsParameterScreenClass: "\(HomeView.self)"])
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(HomeView.self)",
+                                               AnalyticsParameterScreenClass: "\(HomeView.self)"])
             }
         }
     }

@@ -89,12 +89,13 @@ struct ArtistsView: View {
 
     /// Display the filtered artists in a list
     private var artistsList: some View {
-        Form {
-            Section {
-                // Add a navigationLink for every artist that meets the filter criteria
-                ForEach(filteredArtists) { artist in
-                    NavigationLink(artist.name, destination: ArtistView(artist: artist))
-                }
+        // Add a navigationLink for every artist that meets the filter criteria
+        ForEach(filteredArtists) { artist in
+            let artworkAssetName = (artist.artworks?.isEmpty == false) ? artist.artworks![0].name + " 1" : ""
+            let artworkURL = (artist.artworks?.isEmpty == false) ? artist.artworks![0].urls?[0] : nil
+
+            NavigationLink(destination: ArtistView(artist: artist)) {
+                CustomListRow(assetName: artworkAssetName, url: artworkURL, text: artist.name)
             }
         }
     }
