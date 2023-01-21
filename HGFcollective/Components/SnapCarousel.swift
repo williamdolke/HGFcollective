@@ -21,7 +21,7 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
 
     init(spacing: CGFloat = 15,
          trailingSpace: CGFloat = 100,
-         sensitivity: CGFloat = 4,
+         sensitivity: CGFloat = 5,
          index: Binding<Int>,
          items: [T],
          @ViewBuilder content: @escaping (T) -> Content) {

@@ -53,12 +53,13 @@ struct ContentView: View {
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes , for: .normal)
     }
 
-    var handler: Binding<Int> { Binding(
+    private var handler: Binding<Int> { Binding(
         get: { self.selection },
         set: {
             // Reset the view of the selected tab when the user
             // taps the active tab in the tab bar
             if $0 == self.selection {
+                logger.info("User reset tab \(selection)")
                 id[self.selection].toggle()
             } else {
                 self.selection = $0
@@ -67,8 +68,8 @@ struct ContentView: View {
     )}
 
     var body: some View {
-        // Show the about screen if it has not been shown before i.e. on the app's first launch
-        // Otherwise, show the tabBar and associated views
+        // Show the about screen if it has not been shown before i.e. on the app's
+        // first launch. Otherwise, show the tabBar and associated views.
         if !aboutScreenShown {
             AboutView()
         } else {
@@ -129,7 +130,6 @@ struct ContentView: View {
                 .environmentObject(EnquiryManager())
                 // swiftlint:enable force_cast
         }
-
     }
 }
 

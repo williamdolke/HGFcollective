@@ -14,18 +14,23 @@ struct ArtworksView: View {
 
     @State private var searchQuery = ""
     @State private var segmentationSelection : ProfileSection = .grid
+    private var height = UIScreen.main.bounds.size.height
+    private var width = UIScreen.main.bounds.size.width
 
     // Define the segmented control segments
     enum ProfileSection : String, CaseIterable {
         case grid = "Grid"
         case list = "List"
+        case favourites = "Favourites"
     }
 
     var body: some View {
         NavigationStack {
-            segmentedControl
-                .padding()
-            chosenSegmentView()
+            ScrollView(showsIndicators: false) {
+                segmentedControl
+                    .padding()
+                chosenSegmentView()
+            }
             .navigationTitle("Artworks")
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -62,6 +67,8 @@ struct ArtworksView: View {
             artworksGrid
         case .list:
             artworksList
+        case .favourites:
+            favouritesGrid
         }
     }
 
@@ -69,24 +76,18 @@ struct ArtworksView: View {
     @ViewBuilder
     private var artworksGrid: some View {
         let columns = [GridItem(), GridItem()]
-        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
-        // take the dimensions of the screen
-        GeometryReader { geo in
-            ScrollView(showsIndicators: false) {
-                LazyVGrid(columns: columns) {
-                    // Create an ImageBubble for each artwork that meets the filter criteria
-                    ForEach(filteredArtists.0) { artist in
-                        ForEach(artist.artworks!) { artwork in
-                            if filteredArtists.1.contains(artwork.name) {
-                                NavigationLink(destination: ArtworkView(artwork: artwork)) {
-                                    ImageBubble(assetName: artwork.name + " 1",
-                                                height: nil,
-                                                width: 0.45 * geo.size.width,
-                                                fill: true)
-                                    .background(Color.theme.accent)
-                                    .cornerRadius(0.1 * min(geo.size.height, geo.size.width))
-                                }
-                            }
+        LazyVGrid(columns: columns) {
+            // Create an ImageBubble for each artwork that meets the filter criteria
+            ForEach(filteredArtists.0) { artist in
+                ForEach(artist.artworks!) { artwork in
+                    if filteredArtists.1.contains(artwork.name) {
+                        NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                            ImageBubble(assetName: artwork.name + " 1",
+                                        height: nil,
+                                        width: 0.45 * width,
+                                        fill: true)
+                            .background(Color.theme.accent)
+                            .cornerRadius(0.1 * min(height, width))
                         }
                     }
                 }
@@ -115,6 +116,30 @@ struct ArtworksView: View {
                 } header: {
                     // Section label
                     Text(filteredArtist.name)
+                }
+            }
+        }
+    }
+
+    /// Display the favourites  in a grid with two columns that extend vertically
+    @ViewBuilder
+    private var favouritesGrid: some View {
+        let columns = [GridItem(), GridItem()]
+        LazyVGrid(columns: columns) {
+            // Create an ImageBubble for each artwork that meets the filter criteria
+            // and is a favourite
+            ForEach(filteredArtists.0) { artist in
+                ForEach(artist.artworks!) { artwork in
+                    if (filteredArtists.1.contains(artwork.name) && favourites.contains(artwork.name)) {
+                        NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                            ImageBubble(assetName: artwork.name + " 1",
+                                        height: nil,
+                                        width: 0.45 * width,
+                                        fill: true)
+                            .background(Color.theme.accent)
+                            .cornerRadius(0.1 * min(height, width))
+                        }
+                    }
                 }
             }
         }

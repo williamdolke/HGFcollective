@@ -13,6 +13,8 @@ struct ArtistsView: View {
 
     @State private var searchQuery = ""
     @State private var segmentationSelection : ProfileSection = .grid
+    private var height = UIScreen.main.bounds.size.height
+    private var width = UIScreen.main.bounds.size.width
 
     // Define the segmented control segments
     enum ProfileSection : String, CaseIterable {
@@ -22,9 +24,11 @@ struct ArtistsView: View {
 
     var body: some View {
         NavigationStack {
-            segmentedControl
-                .padding()
-            chosenSegmentView()
+            ScrollView(showsIndicators: false) {
+                segmentedControl
+                    .padding()
+                chosenSegmentView()
+            }
             .navigationTitle("Artists")
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -67,23 +71,17 @@ struct ArtistsView: View {
     @ViewBuilder
     private var artistsGrid: some View {
         let columns = [GridItem(), GridItem()]
-        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
-        // take the dimensions of the screen
-        GeometryReader { geo in
-            ScrollView(showsIndicators: false) {
-                LazyVGrid(columns: columns) {
-                    // Create an ImageBubble for each artist that meets the filter criteria
-                    ForEach(filteredArtists) { artist in
-                        let artwork = (artist.artworks?.isEmpty == false) ? artist.artworks![0] : Artwork(name: "")
-                        NavigationLink(destination: ArtistView(artist: artist)) {
-                            ImageBubble(assetName: artwork.name + " 1",
-                                        height: nil,
-                                        width: 0.45 * geo.size.width,
-                                        fill: true)
-                            .background(Color.theme.accent)
-                            .cornerRadius(0.1 * min(geo.size.height, geo.size.width))
-                        }
-                    }
+        LazyVGrid(columns: columns) {
+            // Create an ImageBubble for each artist that meets the filter criteria
+            ForEach(filteredArtists) { artist in
+                let artwork = (artist.artworks?.isEmpty == false) ? artist.artworks![0] : Artwork(name: "")
+                NavigationLink(destination: ArtistView(artist: artist)) {
+                    ImageBubble(assetName: artwork.name + " 1",
+                                height: nil,
+                                width: 0.45 * width,
+                                fill: true)
+                    .background(Color.theme.accent)
+                    .cornerRadius(0.1 * min(height, width))
                 }
             }
         }
