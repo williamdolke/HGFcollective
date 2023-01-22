@@ -12,7 +12,7 @@ struct ArtistsView: View {
     @EnvironmentObject var artistManager: ArtistManager
 
     @State private var searchQuery = ""
-    @State private var segmentationSelection : ProfileSection = .grid
+    @State private var segmentationSelection: ProfileSection = .grid
     private var height = UIScreen.main.bounds.size.height
     private var width = UIScreen.main.bounds.size.width
 
@@ -20,6 +20,20 @@ struct ArtistsView: View {
     enum ProfileSection : String, CaseIterable {
         case grid = "Grid"
         case list = "List"
+
+        // Return the index of a case
+        static func index(of aProfileSection: ProfileSection) -> Int {
+            return ProfileSection.allCases.firstIndex(of: aProfileSection)!
+        }
+
+        // Return the value associated with a case
+        static func element(at index: Int) -> ProfileSection? {
+            if index >= 0 && index < ProfileSection.allCases.count {
+                return ProfileSection.allCases[index]
+            } else {
+                return nil
+            }
+        }
     }
 
     var body: some View {
@@ -49,11 +63,28 @@ struct ArtistsView: View {
 
     /// Create the segmented picker from the enum cases
     private var segmentedControl: some View {
-        Picker("", selection: $segmentationSelection) {
-            ForEach(ProfileSection.allCases, id: \.self) { option in
-                Text(option.rawValue)
+        SegmentedPicker(
+            ProfileSection.allCases,
+            selectedIndex: Binding(
+                get: { ProfileSection.index(of: segmentationSelection) },
+                set: { segmentationSelection = ProfileSection.element(at: $0 ?? 0) ?? .grid }),
+            content: { segment, isActive in
+                // Display the text for each segmentationControl case
+                Text(segment.rawValue)
+                    .foregroundColor(isActive ? Color.theme.systemBackgroundInvert : Color.theme.tabBarInactive)
+                    .padding()
+            },
+            selection: {
+                // Horizontal line under the active case
+                VStack {
+                    Spacer()
+                    Rectangle()
+                        .fill(Color.theme.systemBackgroundInvert)
+                        .frame(height: 2)
+                }
             }
-        }.pickerStyle(SegmentedPickerStyle())
+        )
+        .animation(.easeInOut(duration: 0.3))
     }
 
     /// Define the view presented for each segment
@@ -91,8 +122,9 @@ struct ArtistsView: View {
     private var artistsList: some View {
         // Add a navigationLink for every artist that meets the filter criteria
         ForEach(filteredArtists) { artist in
-            let artworkAssetName = (artist.artworks?.isEmpty == false) ? artist.artworks![0].name + " 1" : ""
-            let artworkURL = (artist.artworks?.isEmpty == false) ? artist.artworks![0].urls?[0] : nil
+            let noArtworks = artist.artworks?.isEmpty
+            let artworkAssetName = (noArtworks == false) ? artist.artworks![0].name + " 1" : ""
+            let artworkURL = (noArtworks == false) ? artist.artworks![0].urls?[0] : nil
 
             NavigationLink(destination: ArtistView(artist: artist)) {
                 CustomListRow(assetName: artworkAssetName, url: artworkURL, text: artist.name)

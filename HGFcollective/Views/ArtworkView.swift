@@ -52,11 +52,12 @@ struct ArtworkView: View {
 
                     HStack {
                         enquireButton
-                            .alignmentGuide(.hCentered, computeValue: { $0.width / 2.0 })
+                            .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })
                         favouriteButton
                             .padding()
                     }
-                    .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .hCentered, vertical: .center))
+                    .frame(maxWidth: .infinity,
+                           alignment: Alignment(horizontal: .horizontalCenterAlignment, vertical: .center))
                 }
             }
         }

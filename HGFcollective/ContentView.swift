@@ -107,6 +107,7 @@ struct ContentView: View {
                         Label("Chat", systemImage: "bubble.left")
                     }
                     .tag(3)
+                    .badge(1)
             }
             .accentColor(Color.theme.navigationBarAccent)
             .toolbar(.visible, for: .tabBar)
