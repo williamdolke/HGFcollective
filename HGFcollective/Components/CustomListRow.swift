@@ -27,8 +27,6 @@ struct CustomListRow: View {
                 }
                 Spacer()
             }
-            Divider()
-                .background(Color.theme.accentSecondary)
         }
         .padding(.horizontal)
     }

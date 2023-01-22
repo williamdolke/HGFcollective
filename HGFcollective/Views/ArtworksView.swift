@@ -42,7 +42,6 @@ struct ArtworksView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 segmentedControl
-                    .padding()
                 chosenSegmentView()
             }
             .navigationTitle("Artworks")
@@ -119,6 +118,9 @@ struct ArtworksView: View {
                                         fill: true)
                             .background(Color.theme.accent)
                             .cornerRadius(0.1 * min(height, width))
+                            .overlay(
+                                favourites.contains(artwork.name) ? heart : nil
+                            )
                         }
                     }
                 }
@@ -139,16 +141,25 @@ struct ArtworksView: View {
                 Spacer()
             }
 
-            let noArtworks = filteredArtist.artworks?.isEmpty
-            let artworkAssetName = (noArtworks == false) ? filteredArtist.artworks![0].name + " 1" : ""
-            let artworkURL = (noArtworks == false) ? filteredArtist.artworks![0].urls?[0] : nil
-
             // Add a navigationLink for every artwork by the artist
             // that meets the filter criteria
             ForEach(filteredArtist.artworks!) { artwork in
                 if filteredArtists.1.contains(artwork.name) {
                     NavigationLink(destination: ArtworkView(artwork: artwork)) {
-                        CustomListRow(assetName: artworkAssetName, url: artworkURL, text: artwork.name)
+                        VStack {
+                            HStack {
+                                CustomListRow(assetName: artwork.name + " 1", url: artwork.urls?[0], text: artwork.name)
+                                if favourites.contains(artwork.name) {
+                                    heart
+                                } else {
+                                    Image(systemName: "chevron.right")
+                                        .foregroundColor(Color.theme.accent)
+                                        .padding()
+                                }
+                            }
+                            Divider()
+                                .background(Color.theme.accentSecondary)
+                        }
                     }
                 }
             }
@@ -179,19 +190,6 @@ struct ArtworksView: View {
         }
     }
 
-    /// Display the artwork's name in the list and a trailing heart image if the artwork is in the user's favourites
-    private func artworkLabel(artworkName: String) -> some View {
-        HStack {
-            Text(artworkName)
-
-            if favourites.contains(artworkName) {
-                Spacer()
-                Image(systemName: "heart.fill")
-                    .foregroundColor(Color.theme.favourite)
-            }
-        }
-    }
-
     /// Filter the artworks displayed by comparing text entered into the search bar to the artwork names
     private var filteredArtists: ([Artist], [String]) {
         // Array of artists who have an artwork that meets the filter criteria
@@ -214,6 +212,12 @@ struct ArtworksView: View {
             }
         }
         return (filteredArtists, filteredArtworks)
+    }
+
+    private var heart: some View {
+        Image(systemName: "heart.fill")
+            .foregroundColor(Color.theme.favourite)
+            .padding()
     }
 }
 

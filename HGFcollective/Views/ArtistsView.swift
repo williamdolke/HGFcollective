@@ -40,7 +40,6 @@ struct ArtistsView: View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
                 segmentedControl
-                    .padding()
                 chosenSegmentView()
             }
             .navigationTitle("Artists")
@@ -127,7 +126,16 @@ struct ArtistsView: View {
             let artworkURL = (noArtworks == false) ? artist.artworks![0].urls?[0] : nil
 
             NavigationLink(destination: ArtistView(artist: artist)) {
-                CustomListRow(assetName: artworkAssetName, url: artworkURL, text: artist.name)
+                VStack {
+                    HStack {
+                        CustomListRow(assetName: artworkAssetName, url: artworkURL, text: artist.name)
+                        Image(systemName: "chevron.right")
+                            .foregroundColor(Color.theme.accent)
+                            .padding()
+                    }
+                    Divider()
+                        .background(Color.theme.accentSecondary)
+                }
             }
         }
     }
