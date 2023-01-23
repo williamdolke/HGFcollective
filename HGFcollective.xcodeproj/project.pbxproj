@@ -72,6 +72,7 @@
 		60ADDD642958B8B400676A3C /* TermsAndConditions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD632958B8B200676A3C /* TermsAndConditions.txt */; };
 		60D098F1297C78CF00F9CE6C /* CustomListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F0297C78CF00F9CE6C /* CustomListRow.swift */; };
 		60D098F3297CAC1000F9CE6C /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */; };
+		60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */; };
 		60E43E53296E24EE00279D1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60E43E52296E24EE00279D1B /* FirebaseAnalytics */; };
 		60E43E572974742100279D1B /* aboutScreenShown.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E43E562974742100279D1B /* aboutScreenShown.swift */; };
 		60E43E5929747ADB00279D1B /* HCenterAlignment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E43E5829747ADB00279D1B /* HCenterAlignment.swift */; };
@@ -177,6 +178,7 @@
 				6033369F2946415F008A4444 /* SDWebImageSwiftUI in Frameworks */,
 				6033369729464135008A4444 /* FirebaseDatabaseSwift in Frameworks */,
 				6033369B2946414A008A4444 /* FirebaseStorage in Frameworks */,
+				60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */,
 				603336992946414A008A4444 /* FirebaseAuth in Frameworks */,
 				6033369529464135008A4444 /* FirebaseDatabase in Frameworks */,
 				6033369D29464151008A4444 /* Logging in Frameworks */,
@@ -397,6 +399,7 @@
 				6033369A2946414A008A4444 /* FirebaseStorage */,
 				6033369C29464151008A4444 /* Logging */,
 				6033369E2946415F008A4444 /* SDWebImageSwiftUI */,
+				60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */,
 			);
 			productName = HGFcollectiveTests;
 			productReference = 6033368929463A20008A4444 /* HGFcollectiveTests.xctest */;
@@ -832,6 +835,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.williamdolke.HGFcollectiveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -852,6 +858,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.williamdolke.HGFcollectiveTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -978,6 +987,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60A103AE28E0781100DB6A00 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
+		};
+		60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		60E43E52296E24EE00279D1B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

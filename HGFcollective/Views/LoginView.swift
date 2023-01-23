@@ -122,8 +122,10 @@ struct LoginView: View {
                 return
             }
 
-            logger.info("Successfully logged in as user: \(result?.user.uid ?? "nil")")
             UserDefaults.standard.setValue(true, forKey: "isAdmin")
+            UserDefaults.standard.set(result!.user.uid, forKey: "uid")
+            logger.info("Successfully logged in as user: \(result!.user.uid)")
+
             self.showInbox = true
         }
     }

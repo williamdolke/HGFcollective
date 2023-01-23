@@ -29,7 +29,7 @@ class UserManager: ObservableObject {
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
                 Crashlytics.crashlytics().record(error: error!)
-                logger.error("Error fetching user documents: \(String(describing: error))")
+                logger.error("Error fetching user document: \(String(describing: error))")
                 return
             }
 

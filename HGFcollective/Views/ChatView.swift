@@ -17,7 +17,6 @@ struct ChatView: View {
             VStack {
                 VStack {
                     ChatTitleRow()
-
                     sentMessages
                 }
                 .background(Color.theme.accent)

@@ -13,6 +13,7 @@ import FirebaseFirestoreSwift
 
 class MessagesManager: ObservableObject {
     @Published private(set) var messages: [Message] = []
+    @Published private(set) var user: User?
     @Published private(set) var lastMessageId: String = ""
     @Published var isCustomer: Bool
     var uid: String = ""
@@ -28,6 +29,11 @@ class MessagesManager: ObservableObject {
         // On initialisation of the MessagesManager class, get the messages
         // for a particular user id from Firestore
         self.getMessages()
+
+        // Get the user document
+        Task(priority: .high) {
+            await self.getUser()
+        }
     }
 
     /// Retrieve messages from  the Firestore database
@@ -68,6 +74,23 @@ class MessagesManager: ObservableObject {
         }
     }
 
+    /// Retrieve user document from  the Firestore database
+    private func getUser() async {
+        do {
+            let document = try await firestoreDB.collection("users").document(uid).getDocument()
+
+            // Convert the document into the User model
+            if let user = try? document.data(as: User.self) {
+                DispatchQueue.main.async {
+                    self.user = user
+                }
+            }
+        } catch {
+            Crashlytics.crashlytics().record(error: error)
+            logger.info("Error fetching user document: \(error)")
+        }
+    }
+
     /// Add a message to the Firestore database
     func sendMessage(text: String, type: String) {
         do {
@@ -84,7 +107,8 @@ class MessagesManager: ObservableObject {
             let userUpdate = User(id: uid,
                                   messagePreview: String(text.prefix(30)),
                                   latestTimestamp: date,
-                                  unread: true)
+                                  read: false,
+                                  sender: UserDefaults.standard.value(forKey: "uid") as! String)
 
             // Create a new document in Firestore with the newMessage and userUpdate variable
             // above. Use setData(from:) to convert the Message properties into document fields.
@@ -131,7 +155,7 @@ class MessagesManager: ObservableObject {
     func setAsRead() {
         // Update the user document in Firestore
         firestoreDB.collection("users").document(uid)
-            .updateData(["unread": false]) { error in
+            .updateData(["read": true]) { error in
                 if let error = error {
                     Crashlytics.crashlytics().record(error: error)
                     logger.error("Error setting message as read in Firestore: \(error)")

@@ -82,7 +82,9 @@ struct InboxView: View {
                 .simultaneousGesture(
                     TapGesture()
                         .onEnded {
-                            messagesManager.setAsRead()
+                            if (user.read == false && user.sender != UserDefaults.standard.object(forKey: "uid") as! String) {
+                                messagesManager.setAsRead()
+                            }
                         })
                 .navigationTitle("Inbox")
             }

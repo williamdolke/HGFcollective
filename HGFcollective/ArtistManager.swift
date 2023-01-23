@@ -116,7 +116,7 @@ class ArtistManager: ObservableObject {
     ///   -min: Minimum value that can be generated
     ///   -max: Maximum value that can be generated
     ///   -count: Number of unique integers to be generated
-    private func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
+    func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
         // Use a set to avoid adding duplicates
         var set = Set<Int>()
         while set.count < count {

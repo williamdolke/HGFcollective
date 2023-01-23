@@ -128,8 +128,8 @@ struct ContentView: View {
             ChatView().id(id[self.selection])
                 // swiftlint:disable force_cast
                 .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
-                .environmentObject(EnquiryManager())
                 // swiftlint:enable force_cast
+                .environmentObject(EnquiryManager())
         }
     }
 }

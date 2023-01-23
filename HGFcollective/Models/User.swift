@@ -11,9 +11,12 @@ import Foundation
 ///   - id: identifier
 ///   - messagePreview: Preview of the most recent chat
 ///   - latestTimestamp: The time that the latest message was sent
+///   - read: Has the user receiving the message read the message
+///   - sender: The UUID of the user who sent the most recent message
 struct User: Identifiable, Codable {
     var id: String
     var messagePreview: String
     var latestTimestamp: Date
-    var unread: Bool
+    var read: Bool
+    var sender: String
 }

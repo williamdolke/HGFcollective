@@ -50,6 +50,12 @@ struct AdminChatView: View {
                     proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
                 }
             }
+            .onChange(of:messagesManager.user?.latestTimestamp) { _ in
+                // Set messages as read when the admin is viewing the chat
+                if (messagesManager.user?.read == false && messagesManager.uid != UserDefaults.standard.object(forKey: "uid") as! String) {
+                    messagesManager.setAsRead()
+                }
+            }
         }
     }
 }
