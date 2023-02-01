@@ -108,7 +108,9 @@ class MessagesManager: ObservableObject {
                                   messagePreview: String(text.prefix(30)),
                                   latestTimestamp: date,
                                   read: false,
+                                  // swiftlint:disable force_cast
                                   sender: UserDefaults.standard.value(forKey: "uid") as! String)
+                                  // swiftlint:enable force_cast
 
             // Create a new document in Firestore with the newMessage and userUpdate variable
             // above. Use setData(from:) to convert the Message properties into document fields.

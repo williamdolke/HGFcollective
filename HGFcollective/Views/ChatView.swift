@@ -17,7 +17,7 @@ struct ChatView: View {
             VStack {
                 VStack {
                     ChatTitleRow()
-                    sentMessages
+                    chatHistory
                 }
                 .background(Color.theme.accent)
 
@@ -35,7 +35,7 @@ struct ChatView: View {
     }
 
     /// Display all messages that have been sent by the customer and admin(s)
-    private var sentMessages: some View {
+    private var chatHistory: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 ForEach(messagesManager.messages, id: \.id) { message in

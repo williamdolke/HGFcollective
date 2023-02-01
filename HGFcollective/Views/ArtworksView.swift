@@ -14,8 +14,8 @@ struct ArtworksView: View {
 
     @State private var searchQuery = ""
     @State private var segmentationSelection: ProfileSection = .grid
-    private var height = UIScreen.main.bounds.size.height
-    private var width = UIScreen.main.bounds.size.width
+    private let height = UIScreen.main.bounds.size.height
+    private let width = UIScreen.main.bounds.size.width
 
     // Define the segmented control segments
     enum ProfileSection : String, CaseIterable {

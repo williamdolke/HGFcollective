@@ -40,8 +40,8 @@ struct CustomTextField: View {
                 if (image != nil) {
                     Image(uiImage: image!)
                         .resizable()
-                        .frame(width: 100, height: 100)
-                        .aspectRatio(contentMode: .fill)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
                         .overlay(alignment: .topTrailing) {
                             Button {
                                 logger.info("User pressed the close button to delete the image from the chat message")

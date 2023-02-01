@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 import FirebaseAuth
 
 struct ContentView: View {
@@ -13,9 +14,8 @@ struct ContentView: View {
 
     @StateObject var favourites = Favourites()
 
-    // TabBar states
+    // TabBar state
     @State private var selection = 0
-    @State private var id: [Bool] = [false, false, false, false]
 
     // AppStorage is a property wrapper for accessing values stored in UserDefaults
     @AppStorage("aboutScreenShown")
@@ -60,7 +60,7 @@ struct ContentView: View {
             // taps the active tab in the tab bar
             if $0 == self.selection {
                 logger.info("User reset tab \(selection)")
-                id[self.selection].toggle()
+                NavigationUtil.popToRootView()
             } else {
                 self.selection = $0
             }
@@ -82,22 +82,17 @@ struct ContentView: View {
         TabView(selection: handler) {
             // Group the tabs so that colours can be applied to all of them
             Group {
-                HomeView().id(id[self.selection])
+                HomeView()
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
                     .tag(0)
-                    // Fix for a bug where HomeView navigationsLinks wouldn't work
-                    // when id[0] is set to true
-                    .onChange(of: id[0]) { _ in
-                        id[0] = false
-                    }
-                ArtistsView().id(id[self.selection])
+                ArtistsView()
                     .tabItem {
                         Label("Artists", systemImage: "person.3")
                     }
                     .tag(1)
-                ArtworksView().id(id[self.selection])
+                ArtworksView()
                     .tabItem {
                         Label("Artworks", systemImage: "photo.artframe")
                     }
@@ -125,7 +120,7 @@ struct ContentView: View {
                     .environmentObject(UserManager())
             }
         } else {
-            ChatView().id(id[self.selection])
+            ChatView()
                 // swiftlint:disable force_cast
                 .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
                 // swiftlint:enable force_cast
@@ -145,4 +140,31 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(artistManager)
             .preferredColorScheme(.dark)
     }
+}
+
+struct NavigationUtil {
+  static func popToRootView() {
+    findNavigationController(viewController: UIApplication.shared.windows.first?.rootViewController)?
+      .popToRootViewController(animated: true)
+  }
+
+  static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
+    guard let viewController = viewController else {
+      return nil
+    }
+
+    if let navigationController = viewController as? UITabBarController {
+      return findNavigationController(viewController: navigationController.selectedViewController)
+    }
+
+    if let navigationController = viewController as? UINavigationController {
+      return navigationController
+    }
+
+    for childViewController in viewController.children {
+      return findNavigationController(viewController: childViewController)
+    }
+
+    return nil
+  }
 }

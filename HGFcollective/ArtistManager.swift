@@ -32,7 +32,7 @@ class ArtistManager: ObservableObject {
     private func getArtists() {
         logger.info("Retrieving artists from database.")
         // Read artists from Firestore in real-time with the addSnapShotListener
-        firestoreDB.collection("artists").addSnapshotListener { querySnapshot, error in
+        firestoreDB.collection("artists").addSnapshotListener { [self] querySnapshot, error in
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
@@ -57,6 +57,9 @@ class ArtistManager: ObservableObject {
             }
             // Select an artist to be featured at random
             self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
+            repeat {
+                self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
+            } while (self.artists[self.featuredArtistIndex!].artworks?.isEmpty == true)
             self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
 
             // Now the artists have been fetched we can begin fetching information about the

@@ -82,15 +82,18 @@ struct InboxView: View {
                 .simultaneousGesture(
                     TapGesture()
                         .onEnded {
+                            // swiftlint:disable force_cast
                             if (user.read == false && user.sender != UserDefaults.standard.object(forKey: "uid") as! String) {
                                 messagesManager.setAsRead()
                             }
+                            // swiftlint:enable force_cast
                         })
                 .navigationTitle("Inbox")
             }
         }
     }
 
+    /// Sign the admin out
     private func signOutUser() {
         logger.info("Logging out of Firebase with existing credentials.")
         do {
