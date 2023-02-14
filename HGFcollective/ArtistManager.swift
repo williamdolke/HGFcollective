@@ -128,8 +128,8 @@ class ArtistManager: ObservableObject {
         return Array(set)
     }
 
-    /// Create a text view that contains all information available about an artwork
     // swiftlint:disable cyclomatic_complexity
+    /// Create a text view that contains all information available about an artwork
     func getArtworkInfo(artwork: Artwork) -> Text {
         var info = ""
 

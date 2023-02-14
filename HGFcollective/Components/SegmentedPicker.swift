@@ -49,9 +49,11 @@ public struct SegmentedPicker<Element, Content, Selection>: View
 
             HStack(spacing: 0) {
                 ForEach(data.indices, id: \.self) { index in
-                    Button(action: { selectedIndex = index },
-                           label: { content(data[index], selectedIndex == index) }
-                    )
+                    Button {
+                        selectedIndex = index
+                    } label: {
+                        content(data[index], selectedIndex == index)
+                    }
                     .buttonStyle(PlainButtonStyle())
                     .background(GeometryReader { proxy in
                         Color.clear.onAppear { frames[index] = proxy.frame(in: .global) }

@@ -84,7 +84,7 @@ struct ArtworkView: View {
             }
 
             Analytics.logEvent(AnalyticsEventScreenView,
-                               parameters: [AnalyticsParameterScreenName: "\(ArtworkView.self)",
+                               parameters: [AnalyticsParameterScreenName: "\(artwork.name)",
                                            AnalyticsParameterScreenClass: "\(ArtworkView.self)"])
         }
     }

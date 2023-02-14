@@ -43,13 +43,28 @@ struct MenuView: View {
                 .navigationTitle("Privacy Policy")) {
                 Text("Privacy Policy")
             }
+            .onTapGesture {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "PrivacyPolicyScreen",
+                                               AnalyticsParameterScreenClass: "PrivacyPolicyScreen"])
+            }
             NavigationLink(destination: HTMLView(filePath: "TermsAndConditions", ofType: "txt")
                 .navigationTitle("Terms and Conditions")) {
                 Text("Terms and Conditions")
             }
+            .onTapGesture {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "TermsAndConditionsScreen",
+                                               AnalyticsParameterScreenClass: "TermsAndConditionsScreen"])
+            }
             NavigationLink(destination: HTMLView(filePath: "EULA", ofType: "txt")
                 .navigationTitle("End User License Agreement")) {
                 Text("End User License Agreement")
+            }
+            .onTapGesture {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "EULAScreen",
+                                               AnalyticsParameterScreenClass: "EULAScreen"])
             }
         } header: {
             Text("Legal")

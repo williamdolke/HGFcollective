@@ -49,6 +49,7 @@ func signInAnonymously() {
                 Crashlytics.crashlytics().record(error: error)
                 logger.error("Error signing into database: \(error.localizedDescription)")
             } else {
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Anonymous"])
                 logger.info("Sucessfully signed in to database anonymously.")
             }
             guard let user = authResult?.user else { return }

@@ -83,7 +83,10 @@ struct InboxView: View {
                     TapGesture()
                         .onEnded {
                             // swiftlint:disable force_cast
-                            if (user.read == false && user.sender != UserDefaults.standard.object(forKey: "uid") as! String) {
+                            // Set messages as read when the admin taps on the chat
+                            let unread = (user.read == false)
+                            let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as! String)
+                            if (unread && notSender) {
                                 messagesManager.setAsRead()
                             }
                             // swiftlint:enable force_cast

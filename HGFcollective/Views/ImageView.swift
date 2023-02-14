@@ -36,7 +36,7 @@ struct ImageView: View {
         }
         .onAppear {
             Analytics.logEvent(AnalyticsEventScreenView,
-                               parameters: [AnalyticsParameterScreenName: "\(ImageView.self)",
+                               parameters: [AnalyticsParameterScreenName: "\(artworkName ?? "nil")",
                                            AnalyticsParameterScreenClass: "\(ImageView.self)"])
         }
     }
@@ -56,6 +56,7 @@ struct ImageView: View {
         }
     }
 
+    // Close button to allow the user to dismiss the image presented
     private var closeButton: some View {
         Button {
             dismiss()
@@ -73,6 +74,7 @@ struct ImageView: View {
         .padding()
     }
 
+    /// Zoom in or out when the user performs a pinch gesture
     private var magnificationGesture: some Gesture {
         MagnificationGesture()
             .onChanged { state in
@@ -80,8 +82,8 @@ struct ImageView: View {
             }
             .onEnded { _ in
                 withAnimation {
-                    // When the gesture ends, check that the
-                    // image is in an allowed state
+                    // When the gesture ends, check that the image is in an allowed state
+                    // i.e. the scale remains is within the maximum and minimum value
                     validateScaleLimits()
                     lastScale = 1.0
                     maybeResetLocation()

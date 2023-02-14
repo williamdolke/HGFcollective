@@ -8,6 +8,7 @@
 import SwiftUI
 import UIKit
 import FirebaseAuth
+import FirebaseAnalytics
 
 struct ContentView: View {
     @EnvironmentObject var artistManager: ArtistManager
@@ -41,11 +42,15 @@ struct ContentView: View {
         // Segmented control colours
         UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.theme.navigationBarAccent)
         UISegmentedControl.appearance().backgroundColor = UIColor(Color.theme.accentSecondary)
-        // swiftlint:disable line_length
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.theme.accent)], for: .selected)
-        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor(Color.theme.navigationBarAccent)], for: .normal)
+        UISegmentedControl.appearance().setTitleTextAttributes([
+            .foregroundColor: UIColor(Color.theme.accent)
+        ], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([
+            .foregroundColor: UIColor(Color.theme.navigationBarAccent)
+        ], for: .normal)
 
         // Search bar colours
+        // swiftlint:disable line_length
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor(Color.theme.systemBackground)
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor(Color.theme.systemBackgroundInvert)
         // swiftlint:enable line_length
@@ -110,6 +115,11 @@ struct ContentView: View {
         }
         .environmentObject(artistManager)
         .environmentObject(favourites)
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(ContentView.self)",
+                                           AnalyticsParameterScreenClass: "\(ContentView.self)"])
+        }
     }
 
     @ViewBuilder

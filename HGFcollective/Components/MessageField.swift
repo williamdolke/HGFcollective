@@ -45,7 +45,7 @@ struct MessageField: View {
         .padding(5)
         .sheet(isPresented: $showImagePicker) {
             // For camera, use .camera
-            ImagePicker(selectedImage: $image, sourceType: .photoLibrary)
+            ImagePickerView(selectedImage: $image, sourceType: .photoLibrary)
         }
     }
 

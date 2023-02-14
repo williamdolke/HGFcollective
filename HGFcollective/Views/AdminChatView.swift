@@ -51,7 +51,9 @@ struct AdminChatView: View {
             .onChange(of:messagesManager.user?.latestTimestamp) { _ in
                 // swiftlint:disable force_cast
                 // Set messages as read when the admin is viewing the chat
-                if (messagesManager.user?.read == false && messagesManager.uid != UserDefaults.standard.object(forKey: "uid") as! String) {
+                let unread = (messagesManager.user?.read == false)
+                let notSender = (messagesManager.uid != UserDefaults.standard.object(forKey: "uid") as! String)
+                if (unread && notSender) {
                     messagesManager.setAsRead()
                 }
                 // swiftlint:enable force_cast

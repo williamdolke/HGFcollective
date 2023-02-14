@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct LaunchScreen: View {
     @EnvironmentObject var artistManager: ArtistManager
@@ -46,6 +47,10 @@ struct LaunchScreen: View {
                 self.size = 0.9
                 self.opacity = 1.0
             }
+
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(LaunchScreen.self)",
+                                           AnalyticsParameterScreenClass: "\(LaunchScreen.self)"])
         }
     }
 }

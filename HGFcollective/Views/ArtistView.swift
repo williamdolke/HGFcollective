@@ -63,7 +63,7 @@ struct ArtistView: View {
             }
 
             Analytics.logEvent(AnalyticsEventScreenView,
-                               parameters: [AnalyticsParameterScreenName: "\(ArtistView.self)",
+                               parameters: [AnalyticsParameterScreenName: "\(artist.name)",
                                            AnalyticsParameterScreenClass: "\(ArtistView.self)"])
         }
     }
