@@ -42,7 +42,7 @@ class EnquiryManager: ObservableObject {
                 }
             }
         } catch {
-            logger.info("Error fetching email enquiry information: \(error)")
+            logger.error("Error fetching email enquiry information: \(error)")
         }
     }
 }

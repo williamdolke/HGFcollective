@@ -107,9 +107,9 @@ struct LoginView: View {
     private func loginUser() {
         logger.info("Logging into Firebase with existing credentials.")
         Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
-            if let err = error {
-                logger.error("Failed to login user: \(err)")
-                self.loginStatusMessage = "Failed to login user: \(err)"
+            if let error = error {
+                logger.error("Failed to login user: \(error)")
+                self.loginStatusMessage = "Failed to login user: \(error)"
                 return
             }
 

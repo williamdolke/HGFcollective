@@ -120,6 +120,7 @@
 		607391B128D29A5C009BBFBD /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
 		6079AE0228D8DC7C00725F73 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		6079AE0428D8EBF600725F73 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
+		607BEA0629A434120041B3F7 /* HGFcollective.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HGFcollective.entitlements; sourceTree = "<group>"; };
 		6080923F29451BFF0075B42D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6083EEE028D6BD1E0038A547 /* ImageBubble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageBubble.swift; sourceTree = "<group>"; };
 		609EE67328D10DC5007086F9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -230,6 +231,7 @@
 		6032FF0528CD5E7200C4F22C /* HGFcollective */ = {
 			isa = PBXGroup;
 			children = (
+				607BEA0629A434120041B3F7 /* HGFcollective.entitlements */,
 				6080923F29451BFF0075B42D /* Info.plist */,
 				6079AE0128D8DC4C00725F73 /* Extensions */,
 				6079AE0028D8D61800725F73 /* Content */,
@@ -698,6 +700,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HGFcollective/HGFcollective.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HGFcollective/Preview Content\"";
@@ -737,6 +740,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HGFcollective/HGFcollective.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HGFcollective/Preview Content\"";

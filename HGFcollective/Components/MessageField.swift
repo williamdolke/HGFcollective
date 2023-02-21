@@ -8,7 +8,6 @@
 import SwiftUI
 import PhotosUI
 
-@available(iOS 16.0, *)
 struct MessageField: View {
     @EnvironmentObject var messagesManager: MessagesManager
 

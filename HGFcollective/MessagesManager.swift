@@ -105,14 +105,14 @@ class MessagesManager: ObservableObject {
         // Convert the image to jpeg format and compress
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
 
-        ref.putData(imageData, metadata: nil) { _, err in
-            if let err = err {
-                logger.error("Failed to push image to Storage: \(err)")
+        ref.putData(imageData, metadata: nil) { _, error in
+            if let error = error {
+                logger.error("Failed to push image to Storage: \(error)")
                 return
             }
-            ref.downloadURL { url, err in
-                if let err = err {
-                    logger.error("Failed to retrieve downloadURL: \(err)")
+            ref.downloadURL { url, error in
+                if let error = error {
+                    logger.error("Failed to retrieve downloadURL: \(error)")
                     return
                 }
                 logger.info("Successfully stored image with url: \(url?.absoluteString ?? "")")
