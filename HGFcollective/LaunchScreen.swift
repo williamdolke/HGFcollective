@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct LaunchScreen: View {
-    @EnvironmentObject var artistManager: ArtistManager
-
     @State private var isActive = false // True when ContentView is presented
     @State private var size = 0.8
     @State private var opacity = 0.5
@@ -17,7 +15,6 @@ struct LaunchScreen: View {
     var body: some View {
         if isActive {
             ContentView()
-                .environmentObject(artistManager)
                 // Fetch the chat messages when the content view appears. Hopefully
                 // this will be complete before the user taps on the chat tab. If not,
                 // the app will crash if this is the first install.

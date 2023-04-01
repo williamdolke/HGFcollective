@@ -10,11 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var messagesManager: MessagesManager
+    @EnvironmentObject var tabBarState: TabBarState
 
     @StateObject var favourites = Favourites()
-
-    @State private var selection = 0
-    @State private var id: [Bool] = [false, false, false, false]
 
     init() {
         // Navigation bar colours
@@ -42,15 +40,16 @@ struct ContentView: View {
         UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes , for: .normal)
     }
 
-    var handler: Binding<Int> { Binding(
-        get: { self.selection },
+    private var handler: Binding<Int> { Binding(
+        get: { tabBarState.selection },
         set: {
             // Reset the view of the selected tab when the user
             // taps the active tab in the tab bar
-            if $0 == self.selection {
-                id[self.selection].toggle()
+            if $0 == tabBarState.selection {
+                logger.info("User reset tab \(tabBarState.selection)")
+                NavigationUtil.popToRootView()
             } else {
-                self.selection = $0
+                tabBarState.selection = $0
             }
         }
     )}
@@ -59,27 +58,22 @@ struct ContentView: View {
         // Define the tabs in the tab bar
         TabView(selection: handler) {
             Group {
-                HomeView().id(id[self.selection])
+                HomeView()
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
                     .tag(0)
-                // Fix for a bug where HomeView navigationsLinks wouldn't work
-                // when id[0] is set to true
-                    .onChange(of: id[0]) { _ in
-                        id[0] = false
-                    }
-                ArtistsView().id(id[self.selection])
+                ArtistsView()
                     .tabItem {
                         Label("Artists", systemImage: "person.3")
                     }
                     .tag(1)
-                ArtworksView().id(id[self.selection])
+                ArtworksView()
                     .tabItem {
                         Label("Artworks", systemImage: "photo.artframe")
                     }
                     .tag(2)
-                ChatView().id(id[self.selection])
+                ChatView()
                     .environmentObject(messagesManager)
                     .environmentObject(EnquiryManager())
                     .tabItem {
@@ -109,5 +103,32 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(artistManager)
             .environmentObject(messagesManager)
             .preferredColorScheme(.dark)
+    }
+}
+
+struct NavigationUtil {
+    static func popToRootView() {
+        findNavigationController(viewController: UIApplication.shared.windows.first?.rootViewController)?
+            .popToRootViewController(animated: true)
+    }
+
+    static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
+        guard let viewController = viewController else {
+            return nil
+        }
+
+        if let navigationController = viewController as? UITabBarController {
+            return findNavigationController(viewController: navigationController.selectedViewController)
+        }
+
+        if let navigationController = viewController as? UINavigationController {
+            return navigationController
+        }
+
+        for childViewController in viewController.children {
+            return findNavigationController(viewController: childViewController)
+        }
+
+        return nil
     }
 }
