@@ -76,17 +76,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
 
-        if let messageID = userInfo[gcmMessageIDKey] {
-            logger.info("Message ID: \(messageID)")
-        }
-
-        if let messageID = userInfo[gcmMessageIDKey] {
-            logger.info("Message ID: \(messageID)")
-        }
-
-        // Print full message
-        print(userInfo)
-
         completionHandler(UIBackgroundFetchResult.newData)
     }
 }
@@ -95,8 +84,7 @@ extension AppDelegate: MessagingDelegate {
     // This callback is fired at each app startup and whenever a new token is generated
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         let deviceToken: [String: String] = ["token": fcmToken ?? ""]
-        // This token can be used for testing notifications on FCM
-        logger.info("FCM token: \(String(describing: deviceToken))")
+        logger.info("FCM token retrieved.")
 
         // TODO: If necessary send token to application server.
     }
@@ -114,18 +102,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
 
-        if let messageID = userInfo[gcmMessageIDKey] {
-          logger.info("Message ID: \(messageID)")
-        }
-
-        // Print full message
-        print(userInfo)
-
         completionHandler([[.banner, .badge, .sound]])
     }
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        logger.info("APNs token retrieved: \(deviceToken)")
+        logger.info("APNs token retrieved.")
 
         // With swizzling disabled you must set the APNs token here
         Messaging.messaging().apnsToken = deviceToken
@@ -144,17 +125,12 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
 
-        if let messageID = userInfo[gcmMessageIDKey] {
-            logger.info("Message ID: \(messageID)")
-        }
-
         if UIApplication.shared.connectedScenes.first?.delegate is UIWindowSceneDelegate {
-            logger.info("Switching to the chat tab after a message notification was tapped")
+            logger.info("Switching to the chat tab after the user tapped a message notification.")
             tabBarState.selection = 3
+        } else {
+            logger.error("Couldn't switch to the chat tab after the user tapped a message notification.")
         }
-
-        // Print full message
-        print(userInfo)
 
         completionHandler()
     }
