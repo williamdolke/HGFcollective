@@ -6,24 +6,28 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
 
     var body: some View {
         VStack {
-            VStack {
-                sentMessages
-            }
-            .background(Color.theme.accent)
+            chatHistory
 
             MessageField()
                 .environmentObject(messagesManager)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(AdminChatView.self)",
+                                           AnalyticsParameterScreenClass: "\(AdminChatView.self)"])
+        }
     }
 
-    private var sentMessages: some View {
+    /// Display all messages that have been sent by the customer and admin(s)
+    private var chatHistory: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 ForEach(messagesManager.messages, id: \.id) { message in
@@ -43,6 +47,16 @@ struct AdminChatView: View {
                 withAnimation {
                     proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
                 }
+            }
+            .onChange(of:messagesManager.user?.latestTimestamp) { _ in
+                // swiftlint:disable force_cast
+                // Set messages as read when the admin is viewing the chat
+                let unread = (messagesManager.user?.read == false)
+                let notSender = (messagesManager.uid != UserDefaults.standard.object(forKey: "uid") as! String)
+                if (unread && notSender) {
+                    messagesManager.setAsRead()
+                }
+                // swiftlint:enable force_cast
             }
         }
     }

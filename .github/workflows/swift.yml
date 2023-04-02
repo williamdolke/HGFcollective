@@ -4,9 +4,7 @@ on: [push]
 
 jobs:
   build:
-  
     runs-on: self-hosted
-    
     steps:
     - uses: actions/checkout@v3
     - name: Build
@@ -14,13 +12,26 @@ jobs:
        xcodebuild clean -workspace "HGFcollective.xcworkspace" -scheme "HGF Collective"
        cp ~/Downloads/HGFCollective/HGFcollective/GoogleService-Info.plist ~/Downloads/HGFCollective/actions-runner/_work/HGFcollective/HGFcollective/HGFcollective/GoogleService-Info.plist
        xcodebuild -workspace "HGFcollective.xcworkspace" -scheme "HGF Collective"
+
   lint:
-  
     runs-on: self-hosted
-    
     needs: build
     steps:
     - name: Lint
       run: |
        swiftlint --version
        swiftlint lint --strict --config .swiftlint.yml
+
+  test:
+    runs-on: self-hosted
+    needs: build
+    steps:
+    - name: Test
+      run: |
+       xcodebuild \
+         -workspace "HGFcollective.xcworkspace" \
+         -scheme "HGF Collective" \
+         -sdk iphonesimulator \
+         -destination "platform=iOS Simulator,name=iPhone 14,OS=16.0" \
+         test \
+         | xcbeautify

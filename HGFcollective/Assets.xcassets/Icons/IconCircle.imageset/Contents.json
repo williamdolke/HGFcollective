@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "HGF Circle.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -10,6 +9,7 @@
       "scale" : "2x"
     },
     {
+      "filename" : "HGF Circle 2000.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

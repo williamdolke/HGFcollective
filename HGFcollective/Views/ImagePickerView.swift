@@ -6,26 +6,33 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
-struct ImagePicker: UIViewControllerRepresentable {
+struct ImagePickerView: UIViewControllerRepresentable {
     @Environment(\.presentationMode) private var presentationMode
 
     @Binding var selectedImage: UIImage?
 
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
 
-    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {
+    // swiftlint:disable line_length
+    func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIImagePickerController {
+    // swiftlint:enable line_length
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = false
         imagePicker.sourceType = sourceType
         imagePicker.delegate = context.coordinator
         imagePicker.mediaTypes = ["public.image"] // Add "public.movie" to the array to show videos
 
+        Analytics.logEvent(AnalyticsEventScreenView,
+                           parameters: [AnalyticsParameterScreenName: "\(ImagePickerView.self)",
+                                       AnalyticsParameterScreenClass: "\(ImagePickerView.self)"])
+
         return imagePicker
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController,
-                                context: UIViewControllerRepresentableContext<ImagePicker>) {
+                                context: UIViewControllerRepresentableContext<ImagePickerView>) {
     }
 
     func makeCoordinator() -> Coordinator {
@@ -33,9 +40,9 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     final class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-        var parent: ImagePicker
+        var parent: ImagePickerView
 
-        init(_ parent: ImagePicker) {
+        init(_ parent: ImagePickerView) {
             self.parent = parent
         }
 

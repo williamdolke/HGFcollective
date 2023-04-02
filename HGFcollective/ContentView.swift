@@ -6,13 +6,19 @@
 //
 
 import SwiftUI
+import UIKit
+import FirebaseAuth
+import FirebaseAnalytics
 
 struct ContentView: View {
-    @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @StateObject var favourites = Favourites()
+
+    // AppStorage is a property wrapper for accessing values stored in UserDefaults
+    @AppStorage("aboutScreenShown")
+    var aboutScreenShown: Bool = false
 
     init() {
         // Navigation bar colours
@@ -30,6 +36,16 @@ struct ContentView: View {
         UITabBar.appearance().backgroundColor = UIColor(Color.theme.tabBarBackground)
         UITabBar.appearance().barTintColor = UIColor(Color.theme.tabBarActive)
         UITabBar.appearance().unselectedItemTintColor = UIColor(Color.theme.tabBarInactive)
+
+        // Segmented control colours
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.theme.navigationBarAccent)
+        UISegmentedControl.appearance().backgroundColor = UIColor(Color.theme.accentSecondary)
+        UISegmentedControl.appearance().setTitleTextAttributes([
+            .foregroundColor: UIColor(Color.theme.accent)
+        ], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([
+            .foregroundColor: UIColor(Color.theme.navigationBarAccent)
+        ], for: .normal)
 
         // Search bar colours
         // swiftlint:disable line_length
@@ -55,8 +71,19 @@ struct ContentView: View {
     )}
 
     var body: some View {
+        // Show the about screen if it has not been shown before i.e. on the app's
+        // first launch. Otherwise, show the tabBar and associated views.
+        if !aboutScreenShown {
+            AboutView()
+        } else {
+            tabView
+        }
+    }
+
+    private var tabView: some View {
         // Define the tabs in the tab bar
         TabView(selection: handler) {
+            // Group the tabs so that colours can be applied to all of them
             Group {
                 HomeView()
                     .tabItem {
@@ -73,35 +100,51 @@ struct ContentView: View {
                         Label("Artworks", systemImage: "photo.artframe")
                     }
                     .tag(2)
-                ChatView()
-                    .environmentObject(messagesManager)
-                    .environmentObject(EnquiryManager())
+                customerOrAdmin()
                     .tabItem {
                         Label("Chat", systemImage: "bubble.left")
                     }
                     .tag(3)
+                    .badge(1)
             }
             .accentColor(Color.theme.navigationBarAccent)
             .toolbar(.visible, for: .tabBar)
             .toolbarBackground(Color.theme.tabBarBackground, for: .tabBar)
         }
-        .environmentObject(artistManager)
         .environmentObject(favourites)
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(ContentView.self)",
+                                           AnalyticsParameterScreenClass: "\(ContentView.self)"])
+        }
+    }
+
+    @ViewBuilder
+    private func customerOrAdmin() -> some View {
+        if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
+            NavigationView {
+                InboxView()
+                    .environmentObject(UserManager())
+            }
+        } else {
+            ChatView()
+                // swiftlint:disable force_cast
+                .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
+                // swiftlint:enable force_cast
+                .environmentObject(EnquiryManager())
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
-    static let messagesManager = MessagesManager(uid: "test")
 
     static var previews: some View {
         ContentView()
             .environmentObject(artistManager)
-            .environmentObject(messagesManager)
 
         ContentView()
             .environmentObject(artistManager)
-            .environmentObject(messagesManager)
             .preferredColorScheme(.dark)
     }
 }

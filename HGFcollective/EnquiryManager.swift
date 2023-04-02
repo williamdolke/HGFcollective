@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 
 class EnquiryManager: ObservableObject {
@@ -31,7 +32,7 @@ class EnquiryManager: ObservableObject {
     }
 
     /// Fetch the email recipients and email subject + body templates
-    func getMailEnquiryInfo() async {
+    private func getMailEnquiryInfo() async {
         do {
             let document = try await firestoreDB.collection("enquiries").document("email").getDocument()
 
@@ -42,7 +43,8 @@ class EnquiryManager: ObservableObject {
                 }
             }
         } catch {
-            logger.error("Error fetching email enquiry information: \(error)")
+            Crashlytics.crashlytics().record(error: error)
+            logger.info("Error fetching email enquiry information: \(error)")
         }
     }
 }

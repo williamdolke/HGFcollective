@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct LaunchScreen: View {
     @State private var isActive = false // True when ContentView is presented
@@ -40,6 +41,7 @@ struct LaunchScreen: View {
             Image("IconSquare")
                 .resizable()
                 .frame(width: 250, height: 250)
+                .cornerRadius(30)
         }
         .scaleEffect(size)
         .opacity(opacity)
@@ -48,6 +50,10 @@ struct LaunchScreen: View {
                 self.size = 0.9
                 self.opacity = 1.0
             }
+
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(LaunchScreen.self)",
+                                           AnalyticsParameterScreenClass: "\(LaunchScreen.self)"])
         }
     }
 }
@@ -58,11 +64,9 @@ struct LaunchScreen_Previews: PreviewProvider {
     static var previews: some View {
         LaunchScreen()
             .environmentObject(artistManager)
-            .environmentObject(MessagesManager(uid: "test"))
 
         LaunchScreen()
             .environmentObject(artistManager)
-            .environmentObject(MessagesManager(uid: "test"))
             .preferredColorScheme(.dark)
     }
 }

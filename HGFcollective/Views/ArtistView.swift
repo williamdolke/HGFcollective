@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ArtistView: View {
     var artist: Artist
@@ -16,6 +17,8 @@ struct ArtistView: View {
     @State private var currentIndex: Int = 0
 
     var body: some View {
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
         GeometryReader { geo in
             ScrollView {
                 VStack {
@@ -58,6 +61,10 @@ struct ArtistView: View {
                     images.append(image)
                 }
             }
+
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(artist.name)",
+                                           AnalyticsParameterScreenClass: "\(ArtistView.self)"])
         }
     }
 

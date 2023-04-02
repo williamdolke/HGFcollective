@@ -9,6 +9,8 @@ import SwiftUI
 import Logging
 import Firebase
 import FirebaseAuth
+import FirebaseAnalytics
+import FirebaseCrashlytics
 import FirebaseMessaging
 import UserNotifications
 
@@ -47,23 +49,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
     // swiftlint:enable line_length
         // Authenticate with Firestore
-        if UserDefaults.standard.string(forKey: "uid") == nil {
-            // Sign the user in anonymously
-            Auth.auth().signInAnonymously { authResult, error in
-                if let error = error {
-                    logger.error("Error signing into database: \(error)")
-                } else {
-                    logger.info("Sucessfully signed in to database anonymously.")
-                }
-                guard let user = authResult?.user else { return }
-
-                // Store the UID that identifies the user. This will be used to define
-                // the file path for chats in Firestore and files in Firebase Storage
-                // that are accessible by the user and the admin(s).
-                UserDefaults.standard.set(user.uid, forKey: "uid")
-                logger.info("Anonymous login UID: \(user.uid)")
-            }
-        }
+        signInAnonymously()
 
         // Implement the Firebase Cloud Messaging delegate protocol to receive registration tokens
         Messaging.messaging().delegate = self
@@ -80,6 +66,28 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         application.registerForRemoteNotifications()
 
         return true
+    }
+
+    func signInAnonymously() {
+        if UserDefaults.standard.string(forKey: "uid") == nil {
+            // Sign the user in to Firestore anonymously
+            Auth.auth().signInAnonymously { authResult, error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error signing into database: \(error.localizedDescription)")
+                } else {
+                    Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Anonymous"])
+                    logger.info("Sucessfully signed in to database anonymously.")
+                }
+                guard let user = authResult?.user else { return }
+
+                // Store the UID that identifies the user. This will be used to define
+                // the file path for chats in Firestore and files in Firebase Storage
+                // that are accessible by the user and the admin(s).
+                UserDefaults.standard.set(user.uid, forKey: "uid")
+                logger.info("Anonymous login UID: \(user.uid)")
+            }
+        }
     }
 
     // If the app was running in the foreground or the background, the system notifies the app by

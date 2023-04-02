@@ -13,7 +13,7 @@ struct ConversationPreviewRow: View {
     var body: some View {
         VStack {
             HStack(spacing: 16) {
-                Image(systemName: user.unread ? "envelope.fill" : "envelope.open.fill")
+                Image(systemName: user.read ? "envelope.open.fill" : "envelope.fill")
                     .font(.system(size: 32))
                     .foregroundColor(Color.theme.systemBackgroundInvert)
                     .padding(8)
@@ -39,7 +39,8 @@ struct ConversationPreviewRow: View {
             Divider()
                 .background(Color.theme.accentSecondary)
                 .padding(.vertical, 8)
-        }.padding(.horizontal)
+        }
+        .padding(.horizontal)
     }
 }
 
@@ -47,7 +48,8 @@ struct ConversationPreviewRow_Previews: PreviewProvider {
     static var user = User(id: UUID().uuidString,
                            messagePreview: "This Is A Message Preview",
                            latestTimestamp: Date.now,
-                           unread: true)
+                           read: false,
+                           sender: UUID().uuidString)
 
     static var previews: some View {
         ConversationPreviewRow(user: user)

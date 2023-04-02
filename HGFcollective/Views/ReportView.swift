@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ReportView: View {
     var body: some View {
@@ -21,6 +22,11 @@ struct ReportView: View {
              6) Send the crash report as a mail attachment to williamdolke@gmail.com
              """)
             .padding()
+        }
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(ReportView.self)",
+                                           AnalyticsParameterScreenClass: "\(ReportView.self)"])
         }
     }
 }

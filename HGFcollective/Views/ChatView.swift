@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
@@ -16,13 +17,17 @@ struct ChatView: View {
             VStack {
                 VStack {
                     ChatTitleRow()
-
-                    sentMessages
+                    chatHistory
                 }
                 .background(Color.theme.accent)
 
                 MessageField()
                     .environmentObject(messagesManager)
+            }
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(ChatView.self)",
+                                               AnalyticsParameterScreenClass: "\(ChatView.self)"])
             }
         }
         // On iPad, navigationLinks don't work in InboxView without the following
@@ -30,7 +35,7 @@ struct ChatView: View {
     }
 
     /// Display all messages that have been sent by the customer and admin(s)
-    private var sentMessages: some View {
+    private var chatHistory: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 ForEach(messagesManager.messages, id: \.id) { message in

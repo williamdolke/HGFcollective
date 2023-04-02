@@ -16,7 +16,7 @@ struct ImageBubble: View {
     // Optionally specify the height and/or width of the bubble
     let height: CGFloat?
     let width: CGFloat?
-    // Optionally whether the image should fill the bubble.
+    // Optionally specify whether the image should fill the bubble.
     // Defaults to .fit if unspecified/false.
     var fill: Bool = false
 
@@ -35,7 +35,10 @@ struct ImageBubble: View {
                     .frame(width: width, height: height)
             } else if (UIImage(named: assetName) != nil) {
                 // Try to find the image in Assets.xcassets
-                Image(assetName)
+                // Convert a UIImage() to Image() to allow cached images to
+                // be freed from memory when the amount available is low
+// https://www.hackingwithswift.com/forums/swiftui/how-can-i-get-swiftui-to-release-cached-image-memory/9862
+                Image(uiImage: UIImage(named: assetName)!)
                     .resizable()
                     .aspectRatio(contentMode: fill ? .fill : .fit)
                     .frame(width: width, height: height)

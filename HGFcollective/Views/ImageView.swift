@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct ImageView: View {
     @Environment(\.dismiss) private var dismiss
@@ -31,10 +32,12 @@ struct ImageView: View {
 
             fullScreenImage
             // Overlay a button to close the view
-            .overlay(
-                closeButton
-                , alignment: .topTrailing
-            )
+            .overlay(closeButton, alignment: .topTrailing)
+        }
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(artworkName ?? "nil")",
+                                           AnalyticsParameterScreenClass: "\(ImageView.self)"])
         }
     }
 
@@ -53,6 +56,7 @@ struct ImageView: View {
         }
     }
 
+    // Close button to allow the user to dismiss the image presented
     private var closeButton: some View {
         Button {
             dismiss()
@@ -70,15 +74,16 @@ struct ImageView: View {
         .padding()
     }
 
-    var magnificationGesture: some Gesture {
+    /// Zoom in or out when the user performs a pinch gesture
+    private var magnificationGesture: some Gesture {
         MagnificationGesture()
             .onChanged { state in
                 adjustScale(from: state)
             }
             .onEnded { _ in
                 withAnimation {
-                    // When the gesture ends, check that the
-                    // image is in an allowed state
+                    // When the gesture ends, check that the image is in an allowed state
+                    // i.e. the scale remains is within the maximum and minimum value
                     validateScaleLimits()
                     lastScale = 1.0
                     maybeResetLocation()
@@ -87,7 +92,7 @@ struct ImageView: View {
             }
     }
 
-    var dragGesture: some Gesture {
+    private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { state in
                 location.x += (state.predictedEndLocation.x - state.startLocation.x)/(0.1*defaultLocation.x)
@@ -105,35 +110,35 @@ struct ImageView: View {
     }
 
     /// Scale the image when the user perform the magnification gesture
-    func adjustScale(from state: MagnificationGesture.Value) {
+    private func adjustScale(from state: MagnificationGesture.Value) {
         let delta = state / lastScale
         scale *= delta
         lastScale = state
     }
 
-    func getMinimumScaleAllowed() -> CGFloat {
+    private func getMinimumScaleAllowed() -> CGFloat {
         return max(minScale, scale)
     }
 
-    func getMaximumScaleAllowed() -> CGFloat {
+    private func getMaximumScaleAllowed() -> CGFloat {
         return min(maxScale, scale)
     }
 
     /// Ensure the image scale is within the allowed range
-    func validateScaleLimits() {
+    private func validateScaleLimits() {
         scale = getMinimumScaleAllowed()
         scale = getMaximumScaleAllowed()
     }
 
     /// Reset the image location if the user zooms out and releases
-    func maybeResetLocation() {
+    private func maybeResetLocation() {
         if scale <= 1.0 {
             location = defaultLocation
         }
     }
 
     /// Ensure the image location coordinates are within the allowed ranges
-    func limitLocation() {
+    private func limitLocation() {
         // Bound the x coordinate
         if location.x >= defaultLocation.x {
             location.x = min(location.x, 1.5*defaultLocation.x)

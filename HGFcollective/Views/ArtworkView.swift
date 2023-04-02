@@ -7,6 +7,8 @@
 
 import MessageUI
 import SwiftUI
+import FirebaseAnalytics
+import FirebaseCrashlytics
 
 struct ArtworkView: View {
     @EnvironmentObject var artistManager: ArtistManager
@@ -14,7 +16,7 @@ struct ArtworkView: View {
 
     // Store images to be shown in the snap carousel
     @State private var images: [Asset] = []
-    // Store the current image in the snap carousel
+    // Store the current image presented in the snap carousel
     @State private var currentIndex: Int = 0
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
@@ -22,6 +24,8 @@ struct ArtworkView: View {
     let artwork: Artwork
 
     var body: some View {
+        // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
+        // take the dimensions of the screen
         GeometryReader { geo in
             ScrollView {
                 VStack {
@@ -48,11 +52,12 @@ struct ArtworkView: View {
 
                     HStack {
                         enquireButton
-                            .alignmentGuide(.hCentered, computeValue: { $0.width / 2.0 })
+                            .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })
                         favouriteButton
                             .padding()
                     }
-                    .frame(maxWidth: .infinity, alignment: Alignment(horizontal: .hCentered, vertical: .center))
+                    .frame(maxWidth: .infinity,
+                           alignment: Alignment(horizontal: .horizontalCenterAlignment, vertical: .center))
                 }
             }
         }
@@ -77,6 +82,10 @@ struct ArtworkView: View {
                     images.append(image)
                 }
             }
+
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(artwork.name)",
+                                           AnalyticsParameterScreenClass: "\(ArtworkView.self)"])
         }
     }
 
@@ -181,13 +190,4 @@ struct ArtworkView_Previews: PreviewProvider {
             .environmentObject(favourites)
             .preferredColorScheme(.dark)
     }
-}
-
-extension HorizontalAlignment {
-   private enum HCenterAlignment: AlignmentID {
-      static func defaultValue(in dimensions: ViewDimensions) -> CGFloat {
-         return dimensions[HorizontalAlignment.center]
-      }
-   }
-   static let hCentered = HorizontalAlignment(HCenterAlignment.self)
 }

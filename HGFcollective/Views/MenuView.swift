@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 
 struct MenuView: View {
     var body: some View {
@@ -15,10 +16,15 @@ struct MenuView: View {
                 legalSection
             }
             .navigationTitle("Menu")
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(MenuView.self)",
+                                               AnalyticsParameterScreenClass: "\(MenuView.self)"])
+            }
         }
     }
 
-    var generalSection: some View {
+    private var generalSection: some View {
         Section {
             NavigationLink(destination: AboutView()) {
                 Text("About")
@@ -31,16 +37,34 @@ struct MenuView: View {
         }
     }
 
-    var legalSection: some View {
+    private var legalSection: some View {
         Section {
-            NavigationLink(destination: HTMLView(filePath: "PrivacyPolicy", ofType: "txt")) {
+            NavigationLink(destination: HTMLView(filePath: "PrivacyPolicy", ofType: "txt")
+                .navigationTitle("Privacy Policy")) {
                 Text("Privacy Policy")
             }
-            NavigationLink(destination: HTMLView(filePath: "TermsAndConditions", ofType: "txt")) {
+            .onTapGesture {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "PrivacyPolicyScreen",
+                                               AnalyticsParameterScreenClass: "PrivacyPolicyScreen"])
+            }
+            NavigationLink(destination: HTMLView(filePath: "TermsAndConditions", ofType: "txt")
+                .navigationTitle("Terms and Conditions")) {
                 Text("Terms and Conditions")
             }
-            NavigationLink(destination: HTMLView(filePath: "EULA", ofType: "txt")) {
-                Text("End User License Agreement (EULA)")
+            .onTapGesture {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "TermsAndConditionsScreen",
+                                               AnalyticsParameterScreenClass: "TermsAndConditionsScreen"])
+            }
+            NavigationLink(destination: HTMLView(filePath: "EULA", ofType: "txt")
+                .navigationTitle("End User License Agreement")) {
+                Text("End User License Agreement")
+            }
+            .onTapGesture {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "EULAScreen",
+                                               AnalyticsParameterScreenClass: "EULAScreen"])
             }
         } header: {
             Text("Legal")

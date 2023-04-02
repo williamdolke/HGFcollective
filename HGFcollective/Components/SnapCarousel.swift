@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// One sided snap carousel
 struct SnapCarousel<Content: View, T: Identifiable>: View {
     @Binding var index: Int
     @State var currentIndex: Int = 0
@@ -20,7 +21,7 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
 
     init(spacing: CGFloat = 15,
          trailingSpace: CGFloat = 100,
-         sensitivity: CGFloat = 1.8,
+         sensitivity: CGFloat = 5,
          index: Binding<Int>,
          items: [T],
          @ViewBuilder content: @escaping (T) -> Content) {
@@ -34,7 +35,6 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
 
     var body: some View {
         GeometryReader { geo in
-            // One sided snap carousel
             let width = (geo.size.width - (trailingSpace - spacing))
             let adjustmentWidth = (trailingSpace / 2) - spacing
 
@@ -51,28 +51,20 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
                     .updating($horizontalOffset, body: { value, out, _ in
                         out = value.translation.width
                     })
-                    .onEnded({value in
-                        let translationX = value.translation.width
-
-                        // Convert the translation into progress (0 - 1 - 2 - etc.) and round the
-                        // value based on the progress increasing or decreasing the currentIndex
-                        let progress = -sensitivity * translationX / width
-                        let roundIndex = progress.rounded()
-
-                        currentIndex = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
-
+                    .onEnded({_ in
                         currentIndex = index
-
                         logger.info("User swiped snap carousel to index \(currentIndex)")
                     })
                     .onChanged({ value in
                         let translationX = value.translation.width
 
-                        // Convert the translation into progress (0 - 1 - 2 - etc.) and round the
+                        // Convert the translation into progress (-1, 0, 1) and round the
                         // value based on the progress increasing or decreasing the currentIndex
                         let progress = -sensitivity * translationX / width
-                        let roundIndex = progress.rounded()
+                        // Limit to values -1, 0 and 1
+                        let roundIndex = max(-1, min(1, progress.rounded()))
 
+                        // Don't allow scrolling beyond the first and last image
                         index = max(min(currentIndex + Int(roundIndex), list.count - 1), 0)
                     })
             )

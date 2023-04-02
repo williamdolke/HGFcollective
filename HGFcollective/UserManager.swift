@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 
 class UserManager: ObservableObject {
@@ -21,13 +22,14 @@ class UserManager: ObservableObject {
     }
 
     /// Fetch all user documents from the database
-    func getUsers() {
+    private func getUsers() {
         // Read users from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("users").addSnapshotListener { querySnapshot, error in
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
-                logger.error("Error fetching user documents: \(String(describing: error))")
+                Crashlytics.crashlytics().record(error: error!)
+                logger.error("Error fetching user document: \(String(describing: error))")
                 return
             }
 
@@ -37,6 +39,7 @@ class UserManager: ObservableObject {
                     // Convert each document into the User model
                     return try document.data(as: User.self)
                 } catch {
+                    Crashlytics.crashlytics().record(error: error)
                     logger.error("Error decoding document into User: \(error)")
 
                     // Return nil if we run into an error - the compactMap will
@@ -49,7 +52,7 @@ class UserManager: ObservableObject {
     }
 
     /// Sort users by the timestamp of their most recent messages
-    func sortUsers() {
+    private func sortUsers() {
         self.users.sort(by: { $0.latestTimestamp > $1.latestTimestamp })
     }
 }

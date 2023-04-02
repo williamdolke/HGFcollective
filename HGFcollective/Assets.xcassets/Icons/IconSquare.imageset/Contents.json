@@ -1,7 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "HGF500.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -10,6 +9,7 @@
       "scale" : "2x"
     },
     {
+      "filename" : "HGF 2000.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

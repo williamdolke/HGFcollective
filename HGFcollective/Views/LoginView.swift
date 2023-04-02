@@ -7,6 +7,8 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseAnalytics
+import FirebaseCrashlytics
 
 struct LoginView: View {
     @State private var email = ""
@@ -25,16 +27,25 @@ struct LoginView: View {
                 .frame(width: 150, height: 150)
 
             textFields
+
             hiddenButton
+
             loginButton
 
+            // Show the error message if the login fails
             Text(self.loginStatusMessage)
                 .foregroundColor(Color.theme.favourite)
         }
         .padding()
         .navigationTitle("Log In")
+        .onAppear {
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(LoginView.self)",
+                                           AnalyticsParameterScreenClass: "\(LoginView.self)"])
+        }
     }
 
+    /// Text fields for the user to enter their email and password
     private var textFields: some View {
         Group {
             TextField("Email", text: $email)
@@ -47,7 +58,9 @@ struct LoginView: View {
                 .onTapGesture {
                     isEmailFocused = true
                 }
+
             if isSecured {
+                // Hide the password from the user
                 SecureField("Password", text: $password)
                     .accentColor(Color.theme.systemBackgroundInvert)
                     .focused($isPasswordFocused)
@@ -55,6 +68,7 @@ struct LoginView: View {
                         isPasswordFocused = true
                     }
             } else {
+                // Show the password on screen
                 TextField("Password", text: $password)
                     .accentColor(Color.theme.systemBackgroundInvert)
                     .focused($isPasswordFocused)
@@ -68,7 +82,7 @@ struct LoginView: View {
         .cornerRadius(25)
     }
 
-    // Show the password when the user taps this button
+    /// Show or hide the password when the user taps this button
     private var hiddenButton: some View {
         Button {
             isSecured.toggle()
@@ -80,13 +94,15 @@ struct LoginView: View {
         }
     }
 
+    /// Button that attempts to sign the user in when tapped
     private var loginButton: some View {
         // Create the UserManager and consequently fetch all messages with users when the admin successfully logs in
         NavigationLink(destination: InboxView().environmentObject(UserManager()).navigationBarBackButtonHidden(true),
                        isActive: $showInbox) {
             Button {
-                loginUser()
+                // Attempt to sign in as admin
                 logger.info("User tapped the login button")
+                signInUser()
             } label: {
                 HStack {
                     Spacer()
@@ -104,16 +120,24 @@ struct LoginView: View {
         }
     }
 
-    private func loginUser() {
+    /// Attempt to sign the user in. An error message is presented if the attempt fails.
+    private func signInUser() {
         logger.info("Logging into Firebase with existing credentials.")
         Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
             if let error = error {
                 logger.error("Failed to login user: \(error)")
                 self.loginStatusMessage = "Failed to login user: \(error)"
+
+                Crashlytics.crashlytics().record(error: error)
                 return
             }
 
-            logger.info("Successfully logged in as user: \(result?.user.uid ?? "nil")")
+            UserDefaults.standard.setValue(true, forKey: "isAdmin")
+            UserDefaults.standard.set(result!.user.uid, forKey: "uid")
+            logger.info("Successfully logged in as user: \(result!.user.uid)")
+
+            Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Email"])
+
             self.showInbox = true
         }
     }

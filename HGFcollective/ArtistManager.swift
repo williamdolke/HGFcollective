@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseFirestore
+import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 import SwiftUI
 
@@ -28,13 +29,14 @@ class ArtistManager: ObservableObject {
     }
 
     /// Fetch all artist documents from the database
-    func getArtists() {
+    private func getArtists() {
         logger.info("Retrieving artists from database.")
         // Read artists from Firestore in real-time with the addSnapShotListener
-        firestoreDB.collection("artists").addSnapshotListener { querySnapshot, error in
+        firestoreDB.collection("artists").addSnapshotListener { [self] querySnapshot, error in
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
+                Crashlytics.crashlytics().record(error: error!)
                 logger.error("Error fetching documents: \(String(describing: error))")
                 return
             }
@@ -45,6 +47,7 @@ class ArtistManager: ObservableObject {
                     // Convert each document into the Artist model
                     return try document.data(as: Artist.self)
                 } catch {
+                    Crashlytics.crashlytics().record(error: error)
                     logger.error("Error decoding document into Artist: \(error)")
 
                     // Return nil if we run into an error - the compactMap will
@@ -54,6 +57,9 @@ class ArtistManager: ObservableObject {
             }
             // Select an artist to be featured at random
             self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
+            repeat {
+                self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
+            } while (self.artists[self.featuredArtistIndex!].artworks?.isEmpty == true)
             self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
 
             // Now the artists have been fetched we can begin fetching information about the
@@ -65,7 +71,7 @@ class ArtistManager: ObservableObject {
     }
 
     /// Fetch the artwork documents from the database for all artworks
-    func getArtworks() {
+    private func getArtworks() {
         for artist in self.artists {
             logger.info("Retrieving artworks for \(artist.name).")
             // Read artworks from Firestore in real-time with the addSnapShotListener
@@ -74,6 +80,7 @@ class ArtistManager: ObservableObject {
 
                 // If we don't have documents, exit the function
                 guard let documents = querySnapshot?.documents else {
+                    Crashlytics.crashlytics().record(error: error!)
                     logger.error("Error fetching documents: \(String(describing: error))")
                     return
                 }
@@ -85,6 +92,7 @@ class ArtistManager: ObservableObject {
                             // Convert each document into the Artwork model
                             return try document.data(as: Artwork.self)
                         } catch {
+                            Crashlytics.crashlytics().record(error: error)
                             logger.error("Error decoding document into Artwork: \(error)")
 
                             // Return nil if we run into an error - the compactMap will not include it in the final
@@ -100,7 +108,7 @@ class ArtistManager: ObservableObject {
 
     /// Randomly select artists to be included in the discovery section. To do this we generate an array of
     /// unique random indexes that correspond to the indices of the selected artists in the array of all artists.
-    func getDiscoverArtists() {
+    private func getDiscoverArtists() {
         discoverArtistIndexes = getUniqueRandomNumbers(min: 0,
                                                        max: artists.count-1, count: numDiscoverArtists)
     }
@@ -120,8 +128,8 @@ class ArtistManager: ObservableObject {
         return Array(set)
     }
 
-    /// Create a text view that contains all information available about an artwork
     // swiftlint:disable cyclomatic_complexity
+    /// Create a text view that contains all information available about an artwork
     func getArtworkInfo(artwork: Artwork) -> Text {
         var info = ""
 
@@ -168,6 +176,7 @@ class ArtistManager: ObservableObject {
                                              options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
                                                     .inlineOnlyPreservingWhitespace)))
         } catch {
+            Crashlytics.crashlytics().record(error: error)
             logger.error("Couldn't convert artwork info to bold.")
             return Text(info)
         }

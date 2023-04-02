@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 import UIKit
 import MessageUI
+import FirebaseAnalytics
+import FirebaseCrashlytics
 
 struct MailView: UIViewControllerRepresentable {
     @EnvironmentObject var enquiryManager: EnquiryManager
@@ -32,6 +34,7 @@ struct MailView: UIViewControllerRepresentable {
                 presentation = false
             }
             guard error == nil else {
+                Crashlytics.crashlytics().record(error: error!)
                 self.result = .failure(error!)
                 return
             }
@@ -47,6 +50,10 @@ struct MailView: UIViewControllerRepresentable {
     func makeUIViewController(context: UIViewControllerRepresentableContext<MailView>) -> MFMailComposeViewController {
         let mailVC = MFMailComposeViewController()
         mailVC.mailComposeDelegate = context.coordinator
+
+        Analytics.logEvent(AnalyticsEventScreenView,
+                           parameters: [AnalyticsParameterScreenName: "\(MailView.self)",
+                                       AnalyticsParameterScreenClass: "\(MailView.self)"])
 
         logger.info("Setting email recipient.")
         mailVC.setToRecipients(enquiryManager.mail.recipients)
