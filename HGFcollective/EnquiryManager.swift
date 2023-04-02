@@ -44,7 +44,7 @@ class EnquiryManager: ObservableObject {
             }
         } catch {
             Crashlytics.crashlytics().record(error: error)
-            logger.info("Error fetching email enquiry information: \(error)")
+            logger.error("Error fetching email enquiry information: \(error)")
         }
     }
 }
