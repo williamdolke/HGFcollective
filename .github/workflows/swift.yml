@@ -9,9 +9,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: |
-       xcodebuild clean -workspace "HGFcollective.xcworkspace" -scheme "HGF Collective"
+       xcodebuild clean -workspace "HGFcollective.xcworkspace" -scheme "HGFcollective"
        cp ~/Downloads/HGFCollective/HGFcollective/GoogleService-Info.plist ~/Downloads/HGFCollective/actions-runner/_work/HGFcollective/HGFcollective/HGFcollective/GoogleService-Info.plist
-       xcodebuild -workspace "HGFcollective.xcworkspace" -scheme "HGF Collective"
+       xcodebuild -workspace "HGFcollective.xcworkspace" -scheme "HGFcollective"
 
   lint:
     runs-on: self-hosted
@@ -30,7 +30,7 @@ jobs:
       run: |
        xcodebuild \
          -workspace "HGFcollective.xcworkspace" \
-         -scheme "HGF Collective" \
+         -scheme "HGFcollective" \
          -sdk iphonesimulator \
          -destination "platform=iOS Simulator,name=iPhone 14,OS=16.0" \
          test \

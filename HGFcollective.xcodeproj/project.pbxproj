@@ -71,6 +71,7 @@
 		60ADDD622958AFC800676A3C /* EULA.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD612958AFC700676A3C /* EULA.txt */; };
 		60ADDD642958B8B400676A3C /* TermsAndConditions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD632958B8B200676A3C /* TermsAndConditions.txt */; };
 		60BB546829D9E1E4008586F2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 60BB546729D9E1E4008586F2 /* FirebaseMessaging */; };
+		60BB546B29DA3012008586F2 /* TabBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BB546A29DA3012008586F2 /* TabBarState.swift */; };
 		60D098F1297C78CF00F9CE6C /* CustomListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F0297C78CF00F9CE6C /* CustomListRow.swift */; };
 		60D098F3297CAC1000F9CE6C /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */; };
 		60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */; };
@@ -145,6 +146,7 @@
 		60ADDD612958AFC700676A3C /* EULA.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EULA.txt; sourceTree = "<group>"; };
 		60ADDD632958B8B200676A3C /* TermsAndConditions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TermsAndConditions.txt; sourceTree = "<group>"; };
 		60BB546929D9E5D1008586F2 /* HGFcollective.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HGFcollective.entitlements; sourceTree = "<group>"; };
+		60BB546A29DA3012008586F2 /* TabBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarState.swift; sourceTree = "<group>"; };
 		60D098F0297C78CF00F9CE6C /* CustomListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListRow.swift; sourceTree = "<group>"; };
 		60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPicker.swift; sourceTree = "<group>"; };
 		60E43E562974742100279D1B /* aboutScreenShown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aboutScreenShown.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				6003C20128CEA97C00ABA79E /* MessagesManager.swift */,
 				607391AD28D136C6009BBFBD /* ArtistManager.swift */,
 				60496E4328D53476003465EF /* EnquiryManager.swift */,
+				60BB546A29DA3012008586F2 /* TabBarState.swift */,
 				604557F128E24190003EB09B /* UserManager.swift */,
 				60339F9728F3531B00E7E1C8 /* Favourites.swift */,
 			);
@@ -587,6 +590,7 @@
 				60ADDD5E2958770F00676A3C /* AboutView.swift in Sources */,
 				607391B228D29A5D009BBFBD /* Artwork.swift in Sources */,
 				607391AE28D136C6009BBFBD /* ArtistManager.swift in Sources */,
+				60BB546B29DA3012008586F2 /* TabBarState.swift in Sources */,
 				60D098F1297C78CF00F9CE6C /* CustomListRow.swift in Sources */,
 				60A103B428E08B4400DB6A00 /* AdminChatView.swift in Sources */,
 				60A103AA28E00EF800DB6A00 /* InboxView.swift in Sources */,

@@ -12,6 +12,7 @@ import FirebaseAnalytics
 
 struct ContentView: View {
     @EnvironmentObject var artistManager: ArtistManager
+    @EnvironmentObject var tabBarState: TabBarState
 
     @StateObject var favourites = Favourites()
 
@@ -59,15 +60,15 @@ struct ContentView: View {
     }
 
     private var handler: Binding<Int> { Binding(
-        get: { self.selection },
+        get: { tabBarState.selection },
         set: {
             // Reset the view of the selected tab when the user
             // taps the active tab in the tab bar
-            if $0 == self.selection {
-                logger.info("User reset tab \(selection)")
+            if $0 == tabBarState.selection {
+                logger.info("User reset tab \(tabBarState.selection)")
                 NavigationUtil.popToRootView()
             } else {
-                self.selection = $0
+                tabBarState.selection = $0
             }
         }
     )}

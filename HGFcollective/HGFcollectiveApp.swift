@@ -26,12 +26,14 @@ struct HGFcollectiveApp: App {
             // is created. Hopefully by the time the launch screen is dismissed
             // this will have completed.
                 .environmentObject(ArtistManager())
+                .environmentObject(appDelegate.tabBarState)
         }
     }
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     let gcmMessageIDKey = "gcm.message_id"
+    var tabBarState = TabBarState()
 
     // If the app wasn’t running and the user launches it by tapping a push notification,
     // iOS passes the notification to the app in the launchOptions
@@ -144,6 +146,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
 
         if let messageID = userInfo[gcmMessageIDKey] {
             logger.info("Message ID: \(messageID)")
+        }
+
+        if UIApplication.shared.connectedScenes.first?.delegate is UIWindowSceneDelegate {
+            logger.info("Switching to the chat tab after a message notification was tapped")
+            tabBarState.selection = 3
         }
 
         // Print full message
