@@ -14,26 +14,29 @@ import FirebaseFirestoreSwift
 class MessagesManager: ObservableObject {
     @Published private(set) var messages: [Message] = []
     @Published private(set) var user: User?
-    @Published private(set) var lastMessageId: String = ""
+    @Published private(set) var latestMessageId: String = ""
+    // Identifies whether a view is being presented to a user or an admin
     @Published var isCustomer: Bool
+    // Customer uid
     var uid: String = ""
+    var unreadMessages: Int
 
-    // Create an instance of our Firestore database and Firebase Storage
+    // Create an instance of our Firestore database (for messages) and Firebase Storage (for images)
     let firestoreDB = Firestore.firestore()
     let storage = Storage.storage()
 
     init(uid: String, isCustomer: Bool = true) {
         self.uid = uid
         self.isCustomer = isCustomer
+        self.unreadMessages = 0
 
         // On initialisation of the MessagesManager class, get the messages
-        // for a particular user id from Firestore
+        // for a particular customer uid from Firestore and count the number of
+        // messages that the local user hasn't read
         self.getMessages()
+        self.countUnreadMessages()
 
-        // Get the user document
-        Task(priority: .high) {
-            await self.getUser()
-        }
+        self.getUser()
     }
 
     /// Retrieve messages from  the Firestore database
@@ -41,53 +44,56 @@ class MessagesManager: ObservableObject {
         // Read message from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("users").document(uid).collection("messages")
             .addSnapshotListener { querySnapshot, error in
-
-            // If we don't have documents, exit the function
-            guard let documents = querySnapshot?.documents else {
-                Crashlytics.crashlytics().record(error: error!)
-                logger.error("Error fetching documents: \(String(describing: error))")
-                return
-            }
-
-            // Map the documents to Message instances
-            self.messages = documents.compactMap { document -> Message? in
-                do {
-                    // Convert each document into the Message model
-                    return try document.data(as: Message.self)
-                } catch {
-                    Crashlytics.crashlytics().record(error: error)
-                    logger.error("Error decoding document into Message: \(error)")
-
-                    // Return nil if we run into an error - the compactMap will
-                    // not include it in the final array
-                    return nil
+                // If we don't have documents, exit the function
+                guard let documents = querySnapshot?.documents else {
+                    Crashlytics.crashlytics().record(error: error!)
+                    logger.error("Error fetching documents: \(String(describing: error))")
+                    return
                 }
-            }
 
-            // Sort the messages by sent date
-            self.messages.sort { $0.timestamp < $1.timestamp }
+                // Map the documents to Message instances
+                self.messages = documents.compactMap { document -> Message? in
+                    do {
+                        // Convert each document into the Message model
+                        return try document.data(as: Message.self)
+                    } catch {
+                        Crashlytics.crashlytics().record(error: error)
+                        logger.error("Error decoding document into Message: \(error)")
 
-            // Get the ID of the last message so we can automatically scroll to it in ChatView
-            if let id = self.messages.last?.id {
-                self.lastMessageId = id
-            }
+                        // Return nil if we run into an error - the compactMap will
+                        // not include it in the final array
+                        return nil
+                    }
+                }
+
+                // Sort the messages by sent date and count the number of
+                // messages that the local user hasn't read
+                self.messages.sort { $0.timestamp < $1.timestamp }
+                self.countUnreadMessages()
+
+                // Get the ID of the last message so we can automatically scroll to it in ChatView
+                if let id = self.messages.last?.id {
+                    self.latestMessageId = id
+                }
         }
     }
 
     /// Retrieve user document from  the Firestore database
-    private func getUser() async {
-        do {
-            let document = try await firestoreDB.collection("users").document(uid).getDocument()
-
-            // Convert the document into the User model
-            if let user = try? document.data(as: User.self) {
-                DispatchQueue.main.async {
-                    self.user = user
+    private func getUser() {
+        // Read message from Firestore in real-time with the addSnapShotListener
+        firestoreDB.collection("users").document(uid)
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    Crashlytics.crashlytics().record(error: error!)
+                    logger.error("Error fetching user document: \(String(describing: error))")
+                    return
                 }
-            }
-        } catch {
-            Crashlytics.crashlytics().record(error: error)
-            logger.info("Error fetching user document: \(error)")
+
+                do {
+                    self.user = try document.data(as: User.self)
+                } catch {
+                    logger.error("Error decoding document into User: \(String(describing: error))")
+                }
         }
     }
 
@@ -102,8 +108,9 @@ class MessagesManager: ObservableObject {
                                      content: text,
                                      isCustomer: isCustomer,
                                      timestamp: date,
-                                     type: type)
-            // Also update the user document with a preview of the latest message
+                                     type: type,
+                                     read: false)
+            // Also update the user document with a preview of the most recent message
             let userUpdate = User(id: uid,
                                   messagePreview: String(text.prefix(30)),
                                   latestTimestamp: date,
@@ -153,8 +160,10 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    /// Set messages as read, locally and in Firestore
+    /// Set the most recent message as read, locally and in Firestore
     func setAsRead() {
+        logger.info("Setting latest message as read.")
+
         // Update the user document in Firestore
         firestoreDB.collection("users").document(uid)
             .updateData(["read": true]) { error in
@@ -165,5 +174,38 @@ class MessagesManager: ObservableObject {
                     logger.info("Successfully set message as read.")
                 }
             }
+
+        // Update the message document for the latest message
+        firestoreDB.collection("users").document(uid).collection("messages").document(latestMessageId)
+            .updateData(["read": true]) { error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error setting message as read in Firestore: \(error)")
+                } else {
+                    logger.info("Successfully set message as read.")
+                }
+            }
+    }
+
+    /// Count and store the number of unread messages from this user
+    func countUnreadMessages() {
+        logger.info("Counting unread messages.")
+
+        var counter = 0
+        for idx in stride(from: self.messages.count-1, through: 0, by: -1) {
+            // Working backwards from the most recent message, if the message wasn't sent
+            // by us and hasn't been read then increment the unread message count
+            if self.messages[idx].isCustomer != isCustomer && self.messages[idx].read == false {
+                counter += 1
+            } else {
+                // Stop when we find a message we sent or a message we have read
+                break
+            }
+        }
+
+        if counter != self.unreadMessages {
+            self.unreadMessages = counter
+            logger.info("Setting unread message count to \(unreadMessages).")
+        }
     }
 }

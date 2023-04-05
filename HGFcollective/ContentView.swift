@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 import FirebaseAuth
 import FirebaseAnalytics
 
@@ -16,14 +15,14 @@ struct ContentView: View {
 
     @StateObject var favourites = Favourites()
 
-    // TabBar state
-    @State private var selection = 0
-
     // AppStorage is a property wrapper for accessing values stored in UserDefaults
     @AppStorage("aboutScreenShown")
     var aboutScreenShown: Bool = false
+    var messagesManager: MessagesManager
 
     init() {
+        self.messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String)
+
         // Navigation bar colours
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.backgroundColor = UIColor(Color.theme.accent)
@@ -108,7 +107,7 @@ struct ContentView: View {
                         Label("Chat", systemImage: "bubble.left")
                     }
                     .tag(3)
-                    .badge(1)
+                    .badge(tabBarState.unreadMessages)
             }
             .accentColor(Color.theme.navigationBarAccent)
             .toolbar(.visible, for: .tabBar)
@@ -133,7 +132,7 @@ struct ContentView: View {
         } else {
             ChatView()
                 // swiftlint:disable force_cast
-                .environmentObject(MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String))
+                .environmentObject(messagesManager)
                 // swiftlint:enable force_cast
                 .environmentObject(EnquiryManager())
         }

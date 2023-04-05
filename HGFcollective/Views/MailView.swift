@@ -7,7 +7,6 @@
 
 import Foundation
 import SwiftUI
-import UIKit
 import MessageUI
 import FirebaseAnalytics
 import FirebaseCrashlytics

@@ -37,26 +37,27 @@ struct AdminChatView: View {
             .padding(.top, 10)
             .background(Color.theme.systemBackground)
             .cornerRadius(30, corners: [.topLeft, .topRight])
-            .onChange(of: messagesManager.lastMessageId) { id in
-                // When the lastMessageId changes, scroll to the bottom of the conversation
+            // When the view appears, scroll to the bottom of the conversation
+            .onAppear {
+                withAnimation {
+                    proxy.scrollTo(messagesManager.latestMessageId, anchor: .bottom)
+                }
+            }
+            // Scroll to the bottom of the conversation when a new message is created or received
+            .onChange(of: messagesManager.latestMessageId) { id in
                 withAnimation {
                     proxy.scrollTo(id, anchor: .bottom)
                 }
             }
-            .onAppear {
-                withAnimation {
-                    proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
-                }
-            }
+            // Set messages as read when the admin is viewing the chat
             .onChange(of:messagesManager.user?.latestTimestamp) { _ in
-                // swiftlint:disable force_cast
-                // Set messages as read when the admin is viewing the chat
                 let unread = (messagesManager.user?.read == false)
-                let notSender = (messagesManager.uid != UserDefaults.standard.object(forKey: "uid") as! String)
+                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+
+                // Set as read if we're not the sender and it is currently unread
                 if (unread && notSender) {
                     messagesManager.setAsRead()
                 }
-                // swiftlint:enable force_cast
             }
         }
     }

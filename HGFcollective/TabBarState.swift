@@ -8,5 +8,6 @@
 import Foundation
 
 class TabBarState: ObservableObject {
-    @Published var selection = 0
+    @Published var selection: Int = 0
+    @Published var unreadMessages: Int = 0
 }

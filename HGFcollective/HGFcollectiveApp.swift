@@ -73,6 +73,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
         // TODO: Handle data of notification
+
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
 
@@ -125,12 +126,8 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
 
-        if UIApplication.shared.connectedScenes.first?.delegate is UIWindowSceneDelegate {
-            logger.info("Switching to the chat tab after the user tapped a message notification.")
-            tabBarState.selection = 3
-        } else {
-            logger.error("Couldn't switch to the chat tab after the user tapped a message notification.")
-        }
+        logger.info("Switching to the chat tab after the user tapped a message notification.")
+        tabBarState.selection = 3
 
         completionHandler()
     }

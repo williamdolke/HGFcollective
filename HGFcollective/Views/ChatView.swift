@@ -11,6 +11,7 @@ import FirebaseAnalytics
 struct ChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var enquiryManager: EnquiryManager
+    @EnvironmentObject var tabBarState: TabBarState
 
     var body: some View {
         NavigationView {
@@ -45,17 +46,32 @@ struct ChatView: View {
             .padding(.top, 10)
             .background(Color.theme.systemBackground)
             .cornerRadius(30, corners: [.topLeft, .topRight])
-            .onChange(of: messagesManager.lastMessageId) { id in
-                // When the lastMessageId changes, scroll to the bottom of the conversation
+            // When the view appears, scroll to the bottom of the conversation and handle unread messages
+            .onAppear {
+                withAnimation {
+                    proxy.scrollTo(messagesManager.latestMessageId, anchor: .bottom)
+                }
+                
+                let unread = (messagesManager.user?.read == false)
+                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+
+                // Set as read and recalculate the number of unread messages
+                // if we're not the sender and it is currently unread
+                if (unread && notSender) {
+                    messagesManager.setAsRead()
+                    messagesManager.countUnreadMessages()
+                }
+            }
+            // Scroll to the bottom of the conversation when a new message is created or received
+            .onChange(of: messagesManager.latestMessageId) { id in
                 withAnimation {
                     proxy.scrollTo(id, anchor: .bottom)
                 }
             }
-            .onAppear {
-                // When the view appears, scroll to the bottom of the conversation
-                withAnimation {
-                    proxy.scrollTo(messagesManager.lastMessageId, anchor: .bottom)
-                }
+            // Update the notification badge on the chat tab
+            .onChange(of:messagesManager.unreadMessages) { _ in
+                logger.info("Setting notification badge on the chat tab to \(messagesManager.unreadMessages).")
+                tabBarState.unreadMessages = messagesManager.unreadMessages
             }
         }
     }

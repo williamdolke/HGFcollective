@@ -67,7 +67,8 @@ struct MessageBubble_Previews: PreviewProvider {
                                  content: "I've been coding applications from scratch in SwiftUI and it's so much fun!",
                                  isCustomer: true,
                                  timestamp: Date(),
-                                 type: "text")
+                                 type: "text",
+                                 read: false)
 
     static let image = Message(id: "12345",
                                content:
@@ -77,7 +78,8 @@ struct MessageBubble_Previews: PreviewProvider {
                                """,
                                isCustomer: true,
                                timestamp: Date(),
-                               type: "image")
+                               type: "image",
+                               read: false)
 
     static var previews: some View {
         MessageBubble(message: message, isCustomer: message.isCustomer)
