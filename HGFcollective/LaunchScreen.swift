@@ -23,7 +23,7 @@ struct LaunchScreen: View {
 
                     // Switch to the home view tab after a delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                        self.isActive = true
+                        isActive = true
                     }
                 }
         }
@@ -41,8 +41,8 @@ struct LaunchScreen: View {
         .opacity(opacity)
         .onAppear {
             withAnimation(.easeIn(duration: 1.5)) {
-                self.size = 0.9
-                self.opacity = 1.0
+                size = 0.9
+                opacity = 1.0
             }
 
             Analytics.logEvent(AnalyticsEventScreenView,

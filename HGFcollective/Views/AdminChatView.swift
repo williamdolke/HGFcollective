@@ -10,6 +10,7 @@ import FirebaseAnalytics
 
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
+    @EnvironmentObject var tabBarState: TabBarState
 
     var body: some View {
         VStack {
@@ -37,10 +38,19 @@ struct AdminChatView: View {
             .padding(.top, 10)
             .background(Color.theme.systemBackground)
             .cornerRadius(30, corners: [.topLeft, .topRight])
-            // When the view appears, scroll to the bottom of the conversation
+            // When the view appears, scroll to the bottom of the conversation and handle unread messages
             .onAppear {
                 withAnimation {
                     proxy.scrollTo(messagesManager.latestMessageId, anchor: .bottom)
+                }
+
+                let unread = (messagesManager.user?.read == false)
+                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+
+                // Set as read and recalculate the number of unread messages
+                // if we're not the sender and it is currently unread
+                if (unread && notSender) {
+                    messagesManager.setAsRead()
                 }
             }
             // Scroll to the bottom of the conversation when a new message is created or received
@@ -54,7 +64,8 @@ struct AdminChatView: View {
                 let unread = (messagesManager.user?.read == false)
                 let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
 
-                // Set as read if we're not the sender and it is currently unread
+                // Set as read and recalculate the number of unread messages
+                // if we're not the sender and it is currently unread
                 if (unread && notSender) {
                     messagesManager.setAsRead()
                 }
@@ -64,7 +75,7 @@ struct AdminChatView: View {
 }
 
 struct AdminChatView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager(uid: "test", isCustomer: false)
+    static let messagesManager = MessagesManager(uid: "test", isCustomer: false, notificationName: "test")
 
     static var previews: some View {
         AdminChatView()

@@ -13,7 +13,10 @@ struct ConversationPreviewRow: View {
     var body: some View {
         VStack {
             HStack(spacing: 16) {
-                Image(systemName: user.read ? "envelope.open.fill" : "envelope.fill")
+                let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+                let latestMessageUnread = (notSender && !user.read)
+                // Show a closed envelope if we have messages to read and an open envelope otherwise
+                Image(systemName: latestMessageUnread ? "envelope.fill" : "envelope.open.fill")
                     .font(.system(size: 32))
                     .foregroundColor(Color.theme.systemBackgroundInvert)
                     .padding(8)

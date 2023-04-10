@@ -14,6 +14,7 @@ struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showLogOutOptions: Bool = false
 
@@ -75,23 +76,36 @@ struct InboxView: View {
     private var conversationRows: some View {
         ScrollView {
             ForEach(userManager.users) { user in
-                let messagesManager = MessagesManager(uid: user.id, isCustomer: false)
+                let messagesManager = MessagesManager(uid: user.id,
+                                                      isCustomer: false,
+                                                      notificationName: "AdminUnreadMessageCountChanged")
                 NavigationLink(destination: AdminChatView().environmentObject(messagesManager)) {
                     ConversationPreviewRow(user: user)
                 }
                 .simultaneousGesture(
                     TapGesture()
                         .onEnded {
-                            // swiftlint:disable force_cast
                             // Set messages as read when the admin taps on the chat
                             let unread = (user.read == false)
-                            let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as! String)
+                            let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as? String)
                             if (unread && notSender) {
+                                // tabBarState.unreadMessages -= messagesManager.unreadMessages
                                 messagesManager.setAsRead()
                             }
-                            // swiftlint:enable force_cast
                         })
                 .navigationTitle("Inbox")
+            }
+        }
+        // swiftlint:disable line_length
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("AdminUnreadMessageCountChanged"))) { notification in
+        // swiftlint:enable line_length
+            if let intObject = notification.object as? NSInteger {
+                userManager.unreadMessages += intObject
+            }
+
+            if tabBarState.unreadMessages != userManager.unreadMessages {
+                logger.info("Setting the badge count on the chat tab to \(userManager.unreadMessages).")
+                // tabBarState.unreadMessages = userManager.unreadMessages
             }
         }
     }

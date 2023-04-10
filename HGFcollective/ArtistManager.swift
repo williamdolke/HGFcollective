@@ -56,23 +56,23 @@ class ArtistManager: ObservableObject {
                 }
             }
             // Select an artist to be featured at random
-            self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
+            featuredArtistIndex = Int.random(in: 0..<artists.count)
             repeat {
-                self.featuredArtistIndex = Int.random(in: 0..<self.artists.count)
-            } while (self.artists[self.featuredArtistIndex!].artworks?.isEmpty == true)
-            self.featuredArtistName = self.artists[self.featuredArtistIndex!].name
+                featuredArtistIndex = Int.random(in: 0..<artists.count)
+            } while (artists[featuredArtistIndex!].artworks?.isEmpty == true)
+            featuredArtistName = artists[featuredArtistIndex!].name
 
             // Now the artists have been fetched we can begin fetching information about the
             // artworks and selecting the artists that will be on in the discovery section
-            self.getDiscoverArtists()
-            self.getArtworks()
+            getDiscoverArtists()
+            getArtworks()
         }
-        logger.info("Successfully retrieved \(self.artists.count) artists.")
+        logger.info("Successfully retrieved \(artists.count) artists.")
     }
 
     /// Fetch the artwork documents from the database for all artworks
     private func getArtworks() {
-        for artist in self.artists {
+        for artist in artists {
             logger.info("Retrieving artworks for \(artist.name).")
             // Read artworks from Firestore in real-time with the addSnapShotListener
             firestoreDB.collection("artists").document(artist.name).collection("artworks")
@@ -86,8 +86,8 @@ class ArtistManager: ObservableObject {
                 }
 
                 // Get the index of the artist that created the artwork that we are fetching
-                if let idx = self.artists.firstIndex(where: { $0.name == artist.name }) {
-                    self.artists[idx].artworks = documents.compactMap { document -> Artwork? in
+                if let idx = artists.firstIndex(where: { $0.name == artist.name }) {
+                    artists[idx].artworks = documents.compactMap { document -> Artwork? in
                         do {
                             // Convert each document into the Artwork model
                             return try document.data(as: Artwork.self)
@@ -100,7 +100,7 @@ class ArtistManager: ObservableObject {
                             return nil
                         }
                     }
-                    logger.info("Retrieved \(self.artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
+                    logger.info("Retrieved \(artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
                 }
             }
         }

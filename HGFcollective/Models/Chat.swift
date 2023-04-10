@@ -16,5 +16,5 @@ struct Chat: Identifiable, Codable {
         self.name
     }
     var name: String
-    var iconURL: String
+    var iconURL: String?
 }

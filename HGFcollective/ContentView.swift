@@ -18,11 +18,13 @@ struct ContentView: View {
     // AppStorage is a property wrapper for accessing values stored in UserDefaults
     @AppStorage("aboutScreenShown")
     var aboutScreenShown: Bool = false
-    var messagesManager: MessagesManager
+    // swiftlint:disable force_cast
+    var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String,
+                                          notificationName: "CustomerUnreadMessageCountChanged")
+    // swiftlint:enable force_cast
+    var enquiryManager = EnquiryManager()
 
     init() {
-        self.messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String)
-
         // Navigation bar colours
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.backgroundColor = UIColor(Color.theme.accent)
@@ -64,7 +66,7 @@ struct ContentView: View {
             // Reset the view of the selected tab when the user
             // taps the active tab in the tab bar
             if $0 == tabBarState.selection {
-                logger.info("User reset tab \(tabBarState.selection)")
+                logger.info("User reset tab \(tabBarState.selection).")
                 NavigationUtil.popToRootView()
             } else {
                 tabBarState.selection = $0
@@ -102,7 +104,7 @@ struct ContentView: View {
                         Label("Artworks", systemImage: "photo.artframe")
                     }
                     .tag(2)
-                customerOrAdmin()
+                customerOrAdminView()
                     .tabItem {
                         Label("Chat", systemImage: "bubble.left")
                     }
@@ -114,6 +116,7 @@ struct ContentView: View {
             .toolbarBackground(Color.theme.tabBarBackground, for: .tabBar)
         }
         .environmentObject(artistManager)
+        .environmentObject(enquiryManager)
         .environmentObject(favourites)
         .onAppear {
             Analytics.logEvent(AnalyticsEventScreenView,
@@ -123,7 +126,7 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private func customerOrAdmin() -> some View {
+    private func customerOrAdminView() -> some View {
         if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
             NavigationView {
                 InboxView()
@@ -131,10 +134,16 @@ struct ContentView: View {
             }
         } else {
             ChatView()
-                // swiftlint:disable force_cast
                 .environmentObject(messagesManager)
-                // swiftlint:enable force_cast
-                .environmentObject(EnquiryManager())
+                // Update the badge count on the chat tab
+                // swiftlint:disable line_length
+                .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CustomerUnreadMessageCountChanged"))) { _ in
+                // swiftlint:enable line_length
+                    if tabBarState.unreadMessages != messagesManager.unreadMessages {
+                        logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")
+                        tabBarState.unreadMessages = messagesManager.unreadMessages
+                    }
+                }
         }
     }
 }

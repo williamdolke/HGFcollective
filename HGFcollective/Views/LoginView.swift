@@ -88,7 +88,7 @@ struct LoginView: View {
             isSecured.toggle()
             logger.info("User toggled the password visability")
         } label: {
-            Image(systemName: self.isSecured ? "eye.slash" : "eye")
+            Image(systemName: isSecured ? "eye.slash" : "eye")
                 .foregroundColor(Color.theme.accent)
                 .font(.system(size: 24))
         }
@@ -123,10 +123,10 @@ struct LoginView: View {
     /// Attempt to sign the user in. An error message is presented if the attempt fails.
     private func signInUser() {
         logger.info("Logging into Firebase with existing credentials.")
-        Auth.auth().signIn(withEmail: self.email, password: self.password) { result, error in
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 logger.error("Failed to login user: \(error)")
-                self.loginStatusMessage = "Failed to login user: \(error)"
+                loginStatusMessage = "Failed to login user: \(error)"
 
                 Crashlytics.crashlytics().record(error: error)
                 return
@@ -138,7 +138,7 @@ struct LoginView: View {
 
             Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Email"])
 
-            self.showInbox = true
+            showInbox = true
         }
     }
 }

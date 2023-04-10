@@ -72,4 +72,6 @@ struct MailView: UIViewControllerRepresentable {
         uiViewController.setSubject(enquiryManager.mail.subject ?? "")
         uiViewController.setMessageBody(enquiryManager.mail.msgBody ?? "", isHTML: false)
     }
+
+    // This view doesn't have a preview as it doesn't work on simulators
 }

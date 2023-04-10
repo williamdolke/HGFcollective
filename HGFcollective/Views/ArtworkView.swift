@@ -145,8 +145,7 @@ struct ArtworkView: View {
         .contentShape(Rectangle())
         .padding(.bottom, 10)
         .sheet(isPresented: $enquireClicked) {
-            MailView(presentation: self.$enquireClicked, result: self.$result)
-                .environmentObject(EnquiryManager())
+            MailView(presentation: $enquireClicked, result: $result)
                 .disabled(!MFMailComposeViewController.canSendMail())
         }
     }
@@ -171,8 +170,11 @@ struct ArtworkView: View {
 }
 
 struct ArtworkView_Previews: PreviewProvider {
+    // The mail composer can't be presented when the enquire button is pressed as it doesn't
+    // work on simulators. Hence, we don't need an EnquiryManager environment object.
     static let artistManager = ArtistManager()
     static let favourites = Favourites()
+
     static let artwork = Artwork(name: "Artwork",
                                      editionNumber: "1",
                                      editionSize: "Original",

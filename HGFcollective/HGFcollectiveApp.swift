@@ -9,6 +9,8 @@ import SwiftUI
 import Logging
 import Firebase
 import FirebaseAuth
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 import FirebaseMessaging
 import UserNotifications
 import FirebaseCrashlytics
@@ -32,17 +34,18 @@ struct HGFcollectiveApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
+    // Create an instance of our Firestore database
+    var firestoreDB: Firestore?
     let gcmMessageIDKey = "gcm.message_id"
     var tabBarState = TabBarState()
 
     // If the app wasn’t running and the user launches it by tapping a push notification,
     // iOS passes the notification to the app in the launchOptions
-    // swiftlint:disable line_length
     func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    // swiftlint:enable line_length
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
+        firestoreDB = Firestore.firestore()
 
         // Authenticate with Firestore
         signInAnonymously()
@@ -84,10 +87,54 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 extension AppDelegate: MessagingDelegate {
     // This callback is fired at each app startup and whenever a new token is generated
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        let deviceToken: [String: String] = ["token": fcmToken ?? ""]
         logger.info("FCM token retrieved.")
 
-        // TODO: If necessary send token to application server.
+        storeFCMtoken(token: fcmToken)
+    }
+
+    /// Store FCM token in the Firestore database
+    private func storeFCMtoken(token: String?) {
+        // We need to know the customer's/admin's id in order to store the FCM token in the database.
+        // However, if we don't know it yet e.g. on the first launch of the app we may receive the FCM
+        // token before the Firebase UID. To handle this, wait for a small period of time and attempt
+        // to store the FCM token again.
+        if let uid = UserDefaults.standard.value(forKey: "uid") as? String, let token = token {
+            if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
+                // Upload to the admin collection
+                let documentData: [String: [String: String]] = ["token": [uid: token]]
+
+                firestoreDB?.collection("admin").document("fcmToken")
+                    .setData(documentData, merge: true) { error in
+                        if let error = error {
+                            Crashlytics.crashlytics().record(error: error)
+                            logger.error("Error sending admin FCM token to Firestore: \(error)")
+                        } else {
+                            logger.info("Successfully sent admin FCM token to database.")
+                        }
+                    }
+            } else {
+                // Upload to the users collection
+                let documentData: [String: String] = ["fcmToken": token]
+
+                firestoreDB?.collection("users").document(uid)
+                    .setData(documentData, merge: true) { error in
+                        if let error = error {
+                            Crashlytics.crashlytics().record(error: error)
+                            logger.error("Error sending FCM token to Firestore: \(error)")
+                        } else {
+                            logger.info("Successfully sent FCM token to database.")
+                        }
+                    }
+            }
+        } else {
+            // Wait for a second before trying to store the FCM token again, hopefully we will
+            // know our uid by then.
+            let delayInSeconds = 1.0
+            logger.error("Could not retrieve uid, waiting for \(delayInSeconds) to retry.")
+            DispatchQueue.main.asyncAfter(deadline: .now() + delayInSeconds) {
+                self.storeFCMtoken(token: token)
+            }
+        }
     }
 }
 
@@ -130,6 +177,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         tabBarState.selection = 3
 
         completionHandler()
+    }
+
+    func clearNotifications() {
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 }
 

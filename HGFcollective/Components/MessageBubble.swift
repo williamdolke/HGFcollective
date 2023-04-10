@@ -44,13 +44,13 @@ struct MessageBubble: View {
             .frame(maxWidth: 300, alignment: isCustomer ? .trailing: .leading)
             .onTapGesture {
                 showTime.toggle()
-                logger.info("User tapped on a message bubble")
+                logger.info("User tapped a message bubble.")
             }
 
             // Show the timestamp that the message was sent beneath the message
             // for type="text" messages if the user has tapped on the message
             if showTime {
-                Text("\(message.timestamp.formatted(.dateTime.hour().minute()))")
+                Text("\(message.timestamp.formatted(.dateTime.month().day().hour().minute()))")
                     .font(.caption2)
                     .foregroundColor(Color.theme.accentSecondary)
                     .padding(isCustomer ? .trailing: .leading, 25)

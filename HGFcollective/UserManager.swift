@@ -12,6 +12,8 @@ import FirebaseFirestoreSwift
 
 class UserManager: ObservableObject {
     @Published private(set) var users: [User] = []
+    // The cumulative unread messages count for all users
+    var unreadMessages: Int = 0
 
     // Create an instance of our Firestore database
     let firestoreDB = Firestore.firestore()

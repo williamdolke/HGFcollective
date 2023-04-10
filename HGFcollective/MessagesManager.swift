@@ -17,24 +17,25 @@ class MessagesManager: ObservableObject {
     @Published private(set) var latestMessageId: String = ""
     // Identifies whether a view is being presented to a user or an admin
     @Published var isCustomer: Bool
+    let notificationName: String
     // Customer uid
     var uid: String = ""
-    var unreadMessages: Int
+    // The unread message count for this user
+    var unreadMessages: Int = 0
 
     // Create an instance of our Firestore database (for messages) and Firebase Storage (for images)
     let firestoreDB = Firestore.firestore()
     let storage = Storage.storage()
 
-    init(uid: String, isCustomer: Bool = true) {
+    init(uid: String, isCustomer: Bool = true, notificationName: String) {
         self.uid = uid
         self.isCustomer = isCustomer
-        self.unreadMessages = 0
+        self.notificationName = notificationName
 
         // On initialisation of the MessagesManager class, get the messages
         // for a particular customer uid from Firestore and count the number of
         // messages that the local user hasn't read
         self.getMessages()
-        self.countUnreadMessages()
 
         self.getUser()
     }
@@ -110,6 +111,7 @@ class MessagesManager: ObservableObject {
                                      timestamp: date,
                                      type: type,
                                      read: false)
+
             // Also update the user document with a preview of the most recent message
             let userUpdate = User(id: uid,
                                   messagePreview: String(text.prefix(30)),
@@ -126,7 +128,7 @@ class MessagesManager: ObservableObject {
             logger.info("Successfully sent chat message to database.")
 
             try firestoreDB.collection("users").document(uid)
-                .setData(from: userUpdate)
+                .setData(from: userUpdate, merge: true)
             logger.info("Successfully sent update to user document.")
         } catch {
             Crashlytics.crashlytics().record(error: error)
@@ -192,10 +194,10 @@ class MessagesManager: ObservableObject {
         logger.info("Counting unread messages.")
 
         var counter = 0
-        for idx in stride(from: self.messages.count-1, through: 0, by: -1) {
+        for idx in stride(from: messages.count-1, through: 0, by: -1) {
             // Working backwards from the most recent message, if the message wasn't sent
             // by us and hasn't been read then increment the unread message count
-            if self.messages[idx].isCustomer != isCustomer && self.messages[idx].read == false {
+            if messages[idx].isCustomer != isCustomer && messages[idx].read == false {
                 counter += 1
             } else {
                 // Stop when we find a message we sent or a message we have read
@@ -203,9 +205,12 @@ class MessagesManager: ObservableObject {
             }
         }
 
-        if counter != self.unreadMessages {
-            self.unreadMessages = counter
+        if counter != unreadMessages {
+            unreadMessages = counter
             logger.info("Setting unread message count to \(unreadMessages).")
+
+            NotificationCenter.default.post(name: Notification.Name(notificationName),
+                                            object: unreadMessages)
         }
     }
 }

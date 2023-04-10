@@ -9,6 +9,8 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct ChatTitleRow: View {
+    @EnvironmentObject var enquiryManager: EnquiryManager
+
     var body: some View {
         HStack(spacing: 20) {
             Image("IconCircle")
@@ -16,8 +18,8 @@ struct ChatTitleRow: View {
                 .frame(width: 60, height: 60)
                 .cornerRadius(60)
 
-            let chatName = Bundle.main.object(forInfoDictionaryKey: "Chat name") as? String ?? ""
-            Text(chatName)
+            let chatName = enquiryManager.chat?.name ?? Bundle.main.object(forInfoDictionaryKey: "Chat name") as? String
+            Text(chatName ?? "")
                 .font(.title).bold()
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
