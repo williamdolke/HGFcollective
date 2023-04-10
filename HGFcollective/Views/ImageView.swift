@@ -11,15 +11,13 @@ import FirebaseAnalytics
 struct ImageView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @State private var scale = 1.0
-    @State private var lastScale = 1.0
-    @State private var location = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
-    @GestureState private var locationState = CGPoint(x: UIScreen.main.bounds.size.width/2,
-                                                      y: UIScreen.main.bounds.size.height*0.4)
+    @State private var scale: CGFloat = 1
+    @State private var lastScale: CGFloat = 1
+    @State private var offset: CGPoint = .zero
+    @State private var lastTranslation: CGSize = .zero
 
-    private let minScale = 1.0
-    private let maxScale = 5.0
-    private let defaultLocation = CGPoint(x: UIScreen.main.bounds.size.width/2, y: UIScreen.main.bounds.size.height*0.4)
+    private let minScale: CGFloat = 1
+    private let maxScale: CGFloat = 5
 
     var artworkName: String?
     var imageNum: String?
@@ -47,16 +45,38 @@ struct ImageView: View {
                         url: url,
                         height: geo.size.height,
                         width: geo.size.width)
-                .aspectRatio(contentMode: .fit)
-                .position(location)
-                .scaleEffect(scale)
-                .gesture(dragGesture)
-                .gesture(magnificationGesture)
-                .foregroundColor(Color.theme.buttonForeground)
+            .aspectRatio(contentMode: .fit)
+            .scaleEffect(scale)
+            .offset(x: offset.x, y: offset.y)
+            .onTapGesture(count: 2, perform: onImageDoubleTapped)
+            .gesture(dragGesture(size: geo.size))
+            .gesture(magnificationGesture(size: geo.size))
+            .foregroundColor(Color.theme.buttonForeground)
         }
     }
 
-    // Close button to allow the user to dismiss the image presented
+    /// Reset the scale and offset
+    func resetState() {
+        withAnimation(.interactiveSpring()) {
+            scale = minScale
+            offset = .zero
+        }
+    }
+
+    /// When the user double taps the image either zoom in to the center or reset the view
+    func onImageDoubleTapped() {
+        if scale == minScale {
+            // Zoom in
+            withAnimation(.spring()) {
+                scale = maxScale
+            }
+        } else {
+            // Zoom out
+            resetState()
+        }
+    }
+
+    /// Close button to allow the user to dismiss the image presented
     private var closeButton: some View {
         Button {
             dismiss()
@@ -69,51 +89,26 @@ struct ImageView: View {
                 .clipShape(Circle())
         }
         // Don't show the close button if the image is zoomed in
-        .opacity(scale != 1.0 ? 0.0 : 1.0)
-        .disabled(scale != 1.0)
+        .opacity(scale != minScale ? 0.0 : 1.0)
+        .disabled(scale != minScale)
         .padding()
-    }
-
-    /// Zoom in or out when the user performs a pinch gesture
-    private var magnificationGesture: some Gesture {
-        MagnificationGesture()
-            .onChanged { state in
-                adjustScale(from: state)
-            }
-            .onEnded { _ in
-                withAnimation {
-                    // When the gesture ends, check that the image is in an allowed state
-                    // i.e. the scale remains is within the maximum and minimum value
-                    validateScaleLimits()
-                    lastScale = 1.0
-                    maybeResetLocation()
-                    logger.info("User set scale to \(scale)")
-                }
-            }
-    }
-
-    private var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { state in
-                location.x += (state.predictedEndLocation.x - state.startLocation.x)/(0.1*defaultLocation.x)
-                location.y += (state.predictedEndLocation.y - state.startLocation.y)/(0.1*defaultLocation.y)
-                limitLocation()
-            }
-            .onEnded { _ in
-                // When the gesture ends, check that the
-                // image is in an allowed state
-                withAnimation {
-                    maybeResetLocation()
-                }
-                logger.info("User dragged image to x: \(location.x), y: \(location.y)")
-            }
     }
 
     /// Scale the image when the user perform the magnification gesture
     private func adjustScale(from state: MagnificationGesture.Value) {
         let delta = state / lastScale
-        scale *= delta
         lastScale = state
+
+        // To minimize jittering
+        if abs(1 - delta) > 0.01 {
+            scale *= delta
+        }
+    }
+
+    /// Ensure the image scale is within the allowed range
+    private func validateScaleLimits() {
+        scale = getMinimumScaleAllowed()
+        scale = getMaximumScaleAllowed()
     }
 
     private func getMinimumScaleAllowed() -> CGFloat {
@@ -124,34 +119,57 @@ struct ImageView: View {
         return min(maxScale, scale)
     }
 
-    /// Ensure the image scale is within the allowed range
-    private func validateScaleLimits() {
-        scale = getMinimumScaleAllowed()
-        scale = getMaximumScaleAllowed()
+    /// Allow the user to zoom in with a pinch gesture
+    private func magnificationGesture(size: CGSize) -> some Gesture {
+        MagnificationGesture()
+            .onChanged { state in
+                adjustScale(from: state)
+            }
+            .onEnded { _ in
+                lastScale = 1
+                withAnimation {
+                    validateScaleLimits()
+                }
+                adjustMaxOffset(size: size)
+            }
     }
 
-    /// Reset the image location if the user zooms out and releases
-    private func maybeResetLocation() {
-        if scale <= 1.0 {
-            location = defaultLocation
-        }
+    /// Allow the user to pan around the image with a one fingered drag gesture
+    private func dragGesture(size: CGSize) -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                let diff = CGPoint(
+                    x: value.translation.width - lastTranslation.width,
+                    y: value.translation.height - lastTranslation.height
+                )
+                offset = .init(x: offset.x + diff.x, y: offset.y + diff.y)
+                lastTranslation = value.translation
+            }
+            .onEnded { _ in
+                adjustMaxOffset(size: size)
+            }
     }
 
-    /// Ensure the image location coordinates are within the allowed ranges
-    private func limitLocation() {
-        // Bound the x coordinate
-        if location.x >= defaultLocation.x {
-            location.x = min(location.x, 1.5*defaultLocation.x)
-        } else {
-            location.x = max(location.x, 0.5*defaultLocation.x)
+    /// Ensure that the user doesn't navigate out of the image boundary
+    private func adjustMaxOffset(size: CGSize) {
+        let maxOffsetX = (size.width * (scale - 1)) / 2
+        let maxOffsetY = (size.height * (scale - 1)) / 2
+
+        var newOffset = offset
+
+        if abs(newOffset.x) > maxOffsetX {
+            newOffset.x = maxOffsetX * (abs(newOffset.x) / newOffset.x)
+        }
+        if abs(newOffset.y) > maxOffsetY {
+            newOffset.y = maxOffsetY * (abs(newOffset.y) / newOffset.y)
         }
 
-        // Bound the y coordinate
-        if location.y >= defaultLocation.y {
-            location.y = min(location.y, 1.25*defaultLocation.y)
-        } else {
-            location.y = max(location.y, 0.75*defaultLocation.y)
+        if newOffset != offset {
+            withAnimation {
+                offset = newOffset
+            }
         }
+        lastTranslation = .zero
     }
 }
 
