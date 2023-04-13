@@ -15,7 +15,7 @@ import Foundation
 ///   - type: "image" or "text"
 ///   - read: True if the message has been read by the recipient
 struct Message: Identifiable, Codable {
-    var id: String
+    let id: String
     var content: String
     var isCustomer: Bool
     var timestamp: Date

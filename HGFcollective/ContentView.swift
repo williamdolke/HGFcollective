@@ -142,6 +142,7 @@ struct ContentView: View {
                     if tabBarState.unreadMessages != messagesManager.unreadMessages {
                         logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")
                         tabBarState.unreadMessages = messagesManager.unreadMessages
+                        UIApplication.shared.applicationIconBadgeNumber = messagesManager.unreadMessages
                     }
                 }
         }

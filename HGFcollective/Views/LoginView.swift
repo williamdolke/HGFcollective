@@ -11,6 +11,8 @@ import FirebaseAnalytics
 import FirebaseCrashlytics
 
 struct LoginView: View {
+    @EnvironmentObject var messagesManager: MessagesManager
+
     @State private var email = ""
     @State private var password = ""
     @State private var loginStatusMessage = ""
@@ -100,9 +102,13 @@ struct LoginView: View {
         NavigationLink(destination: InboxView().environmentObject(UserManager()).navigationBarBackButtonHidden(true),
                        isActive: $showInbox) {
             Button {
-                // Attempt to sign in as admin
                 logger.info("User tapped the login button")
-                signInUser()
+
+                // We don't need to sign the anonymous user out before we log in as they do not have
+                // an account and so there is nothing to sign out of
+
+                // Attempt to sign in as admin
+                signAdminIn()
             } label: {
                 HStack {
                     Spacer()
@@ -120,8 +126,8 @@ struct LoginView: View {
         }
     }
 
-    /// Attempt to sign the user in. An error message is presented if the attempt fails.
-    private func signInUser() {
+    /// Attempt to sign the user in with email and password. An error message is presented if the attempt fails.
+    private func signAdminIn() {
         logger.info("Logging into Firebase with existing credentials.")
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
@@ -132,8 +138,19 @@ struct LoginView: View {
                 return
             }
 
+            // Login was successful so clean up after the anonymous user
+            deleteFCMtoken()
+            messagesManager.cleanup()
+
             UserDefaults.standard.setValue(true, forKey: "isAdmin")
             UserDefaults.standard.set(result!.user.uid, forKey: "uid")
+
+            // The FCM token may not have changed so we need to store it
+            // as this won't be done by the app delegate
+            if let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String {
+                storeFCMtoken(token: fcmToken)
+            }
+
             logger.info("Successfully logged in as user: \(result!.user.uid)")
 
             Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Email"])

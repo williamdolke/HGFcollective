@@ -14,7 +14,7 @@ import Foundation
 ///   - read: Has the user receiving the message read the message
 ///   - sender: The UUID of the user who sent the most recent message
 struct User: Identifiable, Codable {
-    var id: String
+    let id: String
     var messagePreview: String
     var latestTimestamp: Date
     var read: Bool

@@ -28,6 +28,23 @@ struct ChatView: View {
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(ChatView.self)",
                                                AnalyticsParameterScreenClass: "\(ChatView.self)"])
+
+                let unread = (messagesManager.user?.read == false)
+                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+
+                // Set as read and recalculate the number of unread messages
+                // if we're not the sender and it is currently unread
+                if (unread && notSender) {
+                    messagesManager.setAsRead()
+                    messagesManager.countUnreadMessages()
+                }
+
+                // Update the badge count on the chat tab
+                if tabBarState.unreadMessages != messagesManager.unreadMessages {
+                    logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")
+                    tabBarState.unreadMessages = messagesManager.unreadMessages
+                    UIApplication.shared.applicationIconBadgeNumber = messagesManager.unreadMessages
+                }
             }
         }
         // On iPad, navigationLinks don't work in InboxView without the following
@@ -50,22 +67,6 @@ struct ChatView: View {
                 withAnimation {
                     proxy.scrollTo(messagesManager.latestMessageId, anchor: .bottom)
                 }
-
-                let unread = (messagesManager.user?.read == false)
-                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
-
-                // Set as read and recalculate the number of unread messages
-                // if we're not the sender and it is currently unread
-                if (unread && notSender) {
-                    messagesManager.setAsRead()
-                    messagesManager.countUnreadMessages()
-                }
-
-                // Update the badge count on the chat tab
-                if tabBarState.unreadMessages != messagesManager.unreadMessages {
-                    logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")
-                    tabBarState.unreadMessages = messagesManager.unreadMessages
-                }
             }
             // Scroll to the bottom of the conversation when a new message is created or received
             .onChange(of: messagesManager.latestMessageId) { id in
@@ -79,8 +80,9 @@ struct ChatView: View {
                 let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
 
                 // Set as read and recalculate the number of unread messages
-                // if we're not the sender and it is currently unread
-                if (unread && notSender) {
+                // if we're not the sender, it is currently unread and the
+                // chat tab is active
+                if (unread && notSender && tabBarState.selection == 3) {
                     messagesManager.setAsRead()
                     messagesManager.countUnreadMessages()
                 }

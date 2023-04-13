@@ -6,14 +6,14 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 import FirebaseAnalytics
-import FirebaseCrashlytics
 
 struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject var userManager: UserManager
+    // We only need to access this in this view when signing out of the admin account
+    @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showLogOutOptions: Bool = false
@@ -55,18 +55,34 @@ struct InboxView: View {
         .actionSheet(isPresented: $showLogOutOptions) {
             .init(title: Text("Sign out?"), buttons: [
                 .destructive(Text("Yes"), action: {
-                    logger.info("User tapped the Yes button")
+                    logger.info("User tapped the 'Yes' button.")
+
                     // Sign out of the admin account
-                    signOutUser()
+                    // TODO: Move this all into a function
+                    // TODO: Turn this into userManager functions
+                    userManager.listener?.remove()
+                    signAdminOut()
 
                     // Create a new anonymous user so that chat will work
                     // again as a customer
-                    signInAnonymously()
+                    let block: () -> Void = {
+                        // Refresh the properties of messagesManager since we are creating a new anonymous user.
+                        // We need to add some additional code to signInAnonymously which can be done through a
+                        // closure block.
+                        // swiftlint: disable force_cast
+                        messagesManager.refresh(uid: UserDefaults.standard.object(forKey: "uid") as! String)
+                        // swiftlint: enable force_cast
+                    }
+                    signInAnonymously(closure: block)
+
+                    if let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String {
+                        storeFCMtoken(token: fcmToken)
+                    }
 
                     dismiss()
                 }),
                 .cancel(Text("Cancel"), action: {
-                    logger.info("User tapped 'Cancel' button")
+                    logger.info("User tapped 'Cancel' button.")
                 })
             ])
         }
@@ -90,6 +106,7 @@ struct InboxView: View {
                             let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as? String)
                             if (unread && notSender) {
                                 // tabBarState.unreadMessages -= messagesManager.unreadMessages
+                                // UIApplication.shared.applicationIconBadgeNumber -= messagesManager.unreadMessages
                                 messagesManager.setAsRead()
                             }
                         })
@@ -106,32 +123,21 @@ struct InboxView: View {
             if tabBarState.unreadMessages != userManager.unreadMessages {
                 logger.info("Setting the badge count on the chat tab to \(userManager.unreadMessages).")
                 // tabBarState.unreadMessages = userManager.unreadMessages
+                // UIApplication.shared.applicationIconBadgeNumber = userManager.unreadMessages
             }
         }
-    }
-
-    /// Sign the admin out
-    private func signOutUser() {
-        logger.info("Logging out of Firebase with existing credentials.")
-        do {
-            try Auth.auth().signOut()
-            UserDefaults.standard.setValue(nil, forKey: "isAdmin")
-            UserDefaults.standard.setValue(nil, forKey: "uid")
-        } catch let signOutError as NSError {
-            Crashlytics.crashlytics().record(error: signOutError)
-            logger.error("Error signing out: \(signOutError)")
-        }
-        logger.info("Successfully logged out.")
     }
 }
 
 struct InboxView_Previews: PreviewProvider {
+    static let userManager = UserManager()
+
     static var previews: some View {
         InboxView()
-            .environmentObject(UserManager())
+            .environmentObject(userManager)
 
         InboxView()
-            .environmentObject(UserManager())
+            .environmentObject(userManager)
             .preferredColorScheme(.dark)
     }
 }

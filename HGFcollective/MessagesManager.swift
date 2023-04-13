@@ -16,12 +16,14 @@ class MessagesManager: ObservableObject {
     @Published private(set) var user: User?
     @Published private(set) var latestMessageId: String = ""
     // Identifies whether a view is being presented to a user or an admin
-    @Published var isCustomer: Bool
+    let isCustomer: Bool
     let notificationName: String
     // Customer uid
     var uid: String = ""
     // The unread message count for this user
     var unreadMessages: Int = 0
+    var messagesListener: ListenerRegistration?
+    var userListener: ListenerRegistration?
 
     // Create an instance of our Firestore database (for messages) and Firebase Storage (for images)
     let firestoreDB = Firestore.firestore()
@@ -43,7 +45,7 @@ class MessagesManager: ObservableObject {
     /// Retrieve messages from  the Firestore database
     private func getMessages() {
         // Read message from Firestore in real-time with the addSnapShotListener
-        firestoreDB.collection("users").document(uid).collection("messages")
+        messagesListener = firestoreDB.collection("users").document(uid).collection("messages")
             .addSnapshotListener { querySnapshot, error in
                 // If we don't have documents, exit the function
                 guard let documents = querySnapshot?.documents else {
@@ -82,7 +84,7 @@ class MessagesManager: ObservableObject {
     /// Retrieve user document from  the Firestore database
     private func getUser() {
         // Read message from Firestore in real-time with the addSnapShotListener
-        firestoreDB.collection("users").document(uid)
+        userListener = firestoreDB.collection("users").document(uid)
             .addSnapshotListener { documentSnapshot, error in
                 guard let document = documentSnapshot else {
                     Crashlytics.crashlytics().record(error: error!)
@@ -136,14 +138,16 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    /// Add an image to the Firestore database
+    /// Add an image to the Firebase storage
     func sendImage(image: UIImage) {
+        // Create the path where the image will be stored in storage
         let storagePath = "users/" + uid + "/" + UUID().uuidString
         let ref = Storage.storage().reference(withPath: storagePath)
 
         // Convert the image to jpeg format and compress
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
 
+        // Store the image in Firebase storage
         ref.putData(imageData, metadata: nil) { _, error in
             if let error = error {
                 Crashlytics.crashlytics().record(error: error)
@@ -157,6 +161,7 @@ class MessagesManager: ObservableObject {
                     return
                 }
                 logger.info("Successfully stored image with url: \(url?.absoluteString ?? "")")
+                // Store the url of the image in the database
                 self.sendMessage(text: url!.absoluteString, type: "image")
             }
         }
@@ -187,6 +192,18 @@ class MessagesManager: ObservableObject {
                     logger.info("Successfully set message as read.")
                 }
             }
+
+        // Clear notifications for the specified category.
+        let categoryIdentifier = user?.id
+        // The cloud function script uses the customer's uid as the categoryIdentifier.
+        // This means that the customer and admin can use the same category identifier
+        // to clear notification for a particular conversation.
+        UNUserNotificationCenter.current().getDeliveredNotifications { notifications in
+            let identifiers = notifications
+                .filter { $0.request.content.categoryIdentifier == categoryIdentifier }
+                .map { $0.request.identifier }
+            UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiers)
+        }
     }
 
     /// Count and store the number of unread messages from this user
@@ -206,11 +223,30 @@ class MessagesManager: ObservableObject {
         }
 
         if counter != unreadMessages {
-            unreadMessages = counter
-            logger.info("Setting unread message count to \(unreadMessages).")
+            logger.info("Setting unread message count to \(counter).")
 
             NotificationCenter.default.post(name: Notification.Name(notificationName),
-                                            object: unreadMessages)
+                                            object: counter-unreadMessages)
+            unreadMessages = counter
         }
+    }
+
+    /// Clean up when after signing out
+    func cleanup() {
+        self.messages = []
+        self.user = nil
+        self.latestMessageId = ""
+        self.uid = ""
+        self.unreadMessages = 0
+        // Stop listening for database changes
+        self.messagesListener?.remove()
+        self.userListener?.remove()
+    }
+
+    /// When we authenticate anonymously and have previously been anonymously authenticated we need to update these variables
+    func refresh(uid: String) {
+        self.uid = uid
+        self.getUser()
+        self.getMessages()
     }
 }

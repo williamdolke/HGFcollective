@@ -14,6 +14,7 @@ class UserManager: ObservableObject {
     @Published private(set) var users: [User] = []
     // The cumulative unread messages count for all users
     var unreadMessages: Int = 0
+    var listener: ListenerRegistration?
 
     // Create an instance of our Firestore database
     let firestoreDB = Firestore.firestore()
@@ -26,7 +27,7 @@ class UserManager: ObservableObject {
     /// Fetch all user documents from the database
     private func getUsers() {
         // Read users from Firestore in real-time with the addSnapShotListener
-        firestoreDB.collection("users").addSnapshotListener { querySnapshot, error in
+        listener = firestoreDB.collection("users").addSnapshotListener { querySnapshot, error in
 
             // If we don't have documents, exit the function
             guard let documents = querySnapshot?.documents else {
