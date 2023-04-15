@@ -67,7 +67,7 @@ struct ContentView: View {
             // taps the active tab in the tab bar
             if $0 == tabBarState.selection {
                 logger.info("User reset tab \(tabBarState.selection).")
-                NavigationUtil.popToRootView()
+                NavigationUtils.popToRootView()
             } else {
                 tabBarState.selection = $0
             }
@@ -160,31 +160,4 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(artistManager)
             .preferredColorScheme(.dark)
     }
-}
-
-struct NavigationUtil {
-  static func popToRootView() {
-    findNavigationController(viewController: UIApplication.shared.windows.first?.rootViewController)?
-      .popToRootViewController(animated: true)
-  }
-
-  static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
-    guard let viewController = viewController else {
-      return nil
-    }
-
-    if let navigationController = viewController as? UITabBarController {
-      return findNavigationController(viewController: navigationController.selectedViewController)
-    }
-
-    if let navigationController = viewController as? UINavigationController {
-      return navigationController
-    }
-
-    for childViewController in viewController.children {
-      return findNavigationController(viewController: childViewController)
-    }
-
-    return nil
-  }
 }

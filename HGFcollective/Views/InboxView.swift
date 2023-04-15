@@ -12,7 +12,7 @@ struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject var userManager: UserManager
-    // We only need to access this in this view when signing out of the admin account
+    // We only need to access messagesManager in this view when signing out of the admin account
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
 
@@ -44,7 +44,7 @@ struct InboxView: View {
             Spacer()
             Button {
                 showLogOutOptions.toggle()
-                logger.info("User tapped the settings button")
+                logger.info("User tapped the settings button.")
             } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 28, weight: .bold))
@@ -57,28 +57,7 @@ struct InboxView: View {
                 .destructive(Text("Yes"), action: {
                     logger.info("User tapped the 'Yes' button.")
 
-                    // Sign out of the admin account
-                    // TODO: Move this all into a function
-                    // TODO: Turn this into userManager functions
-                    userManager.listener?.remove()
-                    signAdminOut()
-
-                    // Create a new anonymous user so that chat will work
-                    // again as a customer
-                    let block: () -> Void = {
-                        // Refresh the properties of messagesManager since we are creating a new anonymous user.
-                        // We need to add some additional code to signInAnonymously which can be done through a
-                        // closure block.
-                        // swiftlint: disable force_cast
-                        messagesManager.refresh(uid: UserDefaults.standard.object(forKey: "uid") as! String)
-                        // swiftlint: enable force_cast
-                    }
-                    signInAnonymously(closure: block)
-
-                    if let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String {
-                        storeFCMtoken(token: fcmToken)
-                    }
-
+                    signOutButtonAction()
                     dismiss()
                 }),
                 .cancel(Text("Cancel"), action: {
@@ -87,6 +66,28 @@ struct InboxView: View {
             ])
         }
         .background(Color.theme.accent)
+    }
+
+    private func signOutButtonAction() {
+        // Sign out of the admin account
+        userManager.listener?.remove()
+        LoginUtils.signAdminOut()
+
+        // Create a new anonymous user so that chat will work
+        // again as a customer
+        let block: () -> Void = {
+            // Refresh the properties of messagesManager since we are creating a new anonymous user.
+            // We need to add some additional code to signInAnonymously which can be done through a
+            // closure block.
+            // swiftlint: disable force_cast
+            messagesManager.refresh(uid: UserDefaults.standard.object(forKey: "uid") as! String)
+            // swiftlint: enable force_cast
+        }
+        LoginUtils.signInAnonymously(closure: block)
+
+        if let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String {
+            LoginUtils.storeFCMtoken(token: fcmToken)
+        }
     }
 
     private var conversationRows: some View {

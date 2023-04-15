@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 import FirebaseAnalytics
 
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
+
+    @State private var showDeleteChatOptions: Bool = false
 
     var body: some View {
         VStack {
@@ -20,6 +24,8 @@ struct AdminChatView: View {
                 .environmentObject(messagesManager)
         }
         .navigationBarTitleDisplayMode(.inline)
+        // Display a trash can which allows admins to delete chats
+        .navigationBarItems(trailing: deleteChatButton)
         .onAppear {
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(AdminChatView.self)",
@@ -68,6 +74,58 @@ struct AdminChatView: View {
                 // if we're not the sender and it is currently unread
                 if (unread && notSender) {
                     messagesManager.setAsRead()
+                }
+            }
+        }
+    }
+
+    private var deleteChatButton: some View {
+        Button {
+            showDeleteChatOptions.toggle()
+            logger.info("User tapped the settings button.")
+        } label: {
+            Image(systemName: "trash")
+                .imageScale(.large)
+        }
+        .actionSheet(isPresented: $showDeleteChatOptions) {
+            .init(title: Text("Delete all chat history?"), buttons: [
+                .destructive(Text("Yes"), action: {
+                    logger.info("User tapped the 'Yes' button.")
+
+                    deleteChat()
+                }),
+                .cancel(Text("Cancel"), action: {
+                    logger.info("User tapped 'Cancel' button.")
+                })
+            ])
+        }
+    }
+
+    private func deleteChat() {
+        deleteDocumentWithSubcollection(collection: "users", documentId: messagesManager.uid, subCollection: "messages")
+    }
+
+    // TODO: Move to extension
+    private func deleteDocumentWithSubcollection(collection: String, documentId: String, subCollection: String) {
+        let firestoreDB = Firestore.firestore()
+        let documentRef = firestoreDB.collection(collection).document(documentId)
+
+        // Delete the document itself
+        documentRef.delete { error in
+            if let error = error {
+                logger.error("Error deleting document: \(error)")
+                return
+            }
+
+            // Delete all subcollections
+            documentRef.collection(subCollection).getDocuments { (snapshot, error) in
+                guard let snapshot = snapshot else {
+                    logger.error("Error retrieving subcollections: \(String(describing: error))")
+                    return
+                }
+
+                for document in snapshot.documents {
+                    document.reference.delete()
                 }
             }
         }

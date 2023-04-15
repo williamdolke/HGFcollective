@@ -72,6 +72,8 @@
 		60ADDD642958B8B400676A3C /* TermsAndConditions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD632958B8B200676A3C /* TermsAndConditions.txt */; };
 		60BB546829D9E1E4008586F2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 60BB546729D9E1E4008586F2 /* FirebaseMessaging */; };
 		60BB546B29DA3012008586F2 /* TabBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BB546A29DA3012008586F2 /* TabBarState.swift */; };
+		60BD97AD29EAA5EF00901398 /* NavigationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BD97AC29EAA5ED00901398 /* NavigationUtils.swift */; };
+		60BD97AF29EAA75400901398 /* LoginUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BD97AE29EAA75400901398 /* LoginUtils.swift */; };
 		60D098F1297C78CF00F9CE6C /* CustomListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F0297C78CF00F9CE6C /* CustomListRow.swift */; };
 		60D098F3297CAC1000F9CE6C /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */; };
 		60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */; };
@@ -147,6 +149,8 @@
 		60ADDD632958B8B200676A3C /* TermsAndConditions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TermsAndConditions.txt; sourceTree = "<group>"; };
 		60BB546929D9E5D1008586F2 /* HGFcollective.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HGFcollective.entitlements; sourceTree = "<group>"; };
 		60BB546A29DA3012008586F2 /* TabBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarState.swift; sourceTree = "<group>"; };
+		60BD97AC29EAA5ED00901398 /* NavigationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtils.swift; sourceTree = "<group>"; };
+		60BD97AE29EAA75400901398 /* LoginUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUtils.swift; sourceTree = "<group>"; };
 		60D098F0297C78CF00F9CE6C /* CustomListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListRow.swift; sourceTree = "<group>"; };
 		60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPicker.swift; sourceTree = "<group>"; };
 		60E43E562974742100279D1B /* aboutScreenShown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = aboutScreenShown.swift; sourceTree = "<group>"; };
@@ -254,6 +258,7 @@
 		6032FF0528CD5E7200C4F22C /* HGFcollective */ = {
 			isa = PBXGroup;
 			children = (
+				60BD97AB29EAA5C200901398 /* Utilities */,
 				60BB546929D9E5D1008586F2 /* HGFcollective.entitlements */,
 				6080923F29451BFF0075B42D /* Info.plist */,
 				6079AE0128D8DC4C00725F73 /* Extensions */,
@@ -338,6 +343,15 @@
 				6079AE0228D8DC7C00725F73 /* Color.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		60BD97AB29EAA5C200901398 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				60BD97AC29EAA5ED00901398 /* NavigationUtils.swift */,
+				60BD97AE29EAA75400901398 /* LoginUtils.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		FBE1C62F8367A7251F8B75C1 /* Pods */ = {
@@ -570,6 +584,7 @@
 				602BCA3428FCC75F0096E607 /* ImagePickerView.swift in Sources */,
 				6083EEE128D6BD1E0038A547 /* ImageBubble.swift in Sources */,
 				6032FF0928CD5E7200C4F22C /* ContentView.swift in Sources */,
+				60BD97AF29EAA75400901398 /* LoginUtils.swift in Sources */,
 				604557F228E24190003EB09B /* UserManager.swift in Sources */,
 				60E43E5929747ADB00279D1B /* HCenterAlignment.swift in Sources */,
 				60ADDD542957CA8600676A3C /* MenuView.swift in Sources */,
@@ -607,6 +622,7 @@
 				60496E4228D4FBDC003465EF /* Mail.swift in Sources */,
 				60D098F3297CAC1000F9CE6C /* SegmentedPicker.swift in Sources */,
 				6079AE0528D8EBF600725F73 /* ImageView.swift in Sources */,
+				60BD97AD29EAA5EF00901398 /* NavigationUtils.swift in Sources */,
 				6032FF1A28CD5EA600C4F22C /* ArtistsView.swift in Sources */,
 				6003C1F728CEA35300ABA79E /* ChatTitleRow.swift in Sources */,
 				604557F428E24857003EB09B /* User.swift in Sources */,

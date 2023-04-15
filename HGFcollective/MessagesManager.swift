@@ -243,7 +243,8 @@ class MessagesManager: ObservableObject {
         self.userListener?.remove()
     }
 
-    /// When we authenticate anonymously and have previously been anonymously authenticated we need to update these variables
+    /// When we authenticate anonymously and have previously been anonymously
+    /// authenticated we need to update these variables
     func refresh(uid: String) {
         self.uid = uid
         self.getUser()

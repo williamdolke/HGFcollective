@@ -139,7 +139,7 @@ struct LoginView: View {
             }
 
             // Login was successful so clean up after the anonymous user
-            deleteFCMtoken()
+            LoginUtils.deleteFCMtoken()
             messagesManager.cleanup()
 
             UserDefaults.standard.setValue(true, forKey: "isAdmin")
@@ -148,7 +148,7 @@ struct LoginView: View {
             // The FCM token may not have changed so we need to store it
             // as this won't be done by the app delegate
             if let fcmToken = UserDefaults.standard.value(forKey: "fcmToken") as? String {
-                storeFCMtoken(token: fcmToken)
+                LoginUtils.storeFCMtoken(token: fcmToken)
             }
 
             logger.info("Successfully logged in as user: \(result!.user.uid)")
