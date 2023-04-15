@@ -9,6 +9,17 @@ import SwiftUI
 
 struct ConversationPreviewRow: View {
     var user: User
+    var displayName: String
+
+    init(user: User) {
+        self.user = user
+
+        if let preferredName = user.preferredName {
+            displayName = preferredName.count > 18 ? preferredName.prefix(15) + "..." : preferredName
+        } else {
+            displayName = user.id.prefix(12) + "..."
+        }
+    }
 
     var body: some View {
         VStack {
@@ -26,7 +37,7 @@ struct ConversationPreviewRow: View {
                     )
 
                 VStack(alignment: .leading) {
-                    Text(user.id.prefix(12) + "...")
+                    Text(displayName)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(Color.theme.systemBackgroundInvert)
                     Text(user.messagePreview.prefix(18) + "...")
@@ -49,6 +60,7 @@ struct ConversationPreviewRow: View {
 
 struct ConversationPreviewRow_Previews: PreviewProvider {
     static var user = User(id: UUID().uuidString,
+                           preferredName: "John Doe",
                            messagePreview: "This Is A Message Preview",
                            latestTimestamp: Date.now,
                            read: false,

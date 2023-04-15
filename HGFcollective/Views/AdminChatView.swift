@@ -6,15 +6,18 @@
 //
 
 import SwiftUI
+import FirebaseAnalytics
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import FirebaseAnalytics
+import FirebaseCrashlytics
 
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showDeleteChatOptions: Bool = false
+    @State private var showAlert = false
+    @State private var displayNameInput: String = ""
 
     var body: some View {
         VStack {
@@ -26,10 +29,20 @@ struct AdminChatView: View {
         .navigationBarTitleDisplayMode(.inline)
         // Display a trash can which allows admins to delete chats
         .navigationBarItems(trailing: deleteChatButton)
+        // Display an alert where the admin can enter a name for the customer.
+        // This name will be displayed in place of the customer's uid in any view.
+        .navigationBarItems(trailing: enterDisplayNameButton)
         .onAppear {
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(AdminChatView.self)",
                                            AnalyticsParameterScreenClass: "\(AdminChatView.self)"])
+        }
+        .alert("Enter a display name", isPresented: $showAlert) {
+            TextField("Enter name", text: $displayNameInput)
+            Button("OK", action: storePreferredName)
+            Button("Cancel", role: .cancel) { }
+        } message: {
+            Text("Please enter a name for this customer.\nThis will be shown in place of their unique identifier.")
         }
     }
 
@@ -79,10 +92,34 @@ struct AdminChatView: View {
         }
     }
 
+    private var enterDisplayNameButton: some View {
+        Button {
+            showAlert = true
+            logger.info("User tapped the enter display name button.")
+        } label: {
+            Image(systemName: "person.crop.circle.badge.questionmark.fill")
+                .imageScale(.large)
+        }
+    }
+
+    private func storePreferredName() {
+        let firestoreDB = Firestore.firestore()
+
+        firestoreDB.collection("users").document(messagesManager.user!.id)
+            .setData(["preferredName": displayNameInput], merge: true) { error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error sending preferredName to Firestore: \(error)")
+                } else {
+                    logger.info("Successfully sent preferredName to database.")
+                }
+            }
+    }
+
     private var deleteChatButton: some View {
         Button {
             showDeleteChatOptions.toggle()
-            logger.info("User tapped the settings button.")
+            logger.info("User tapped the delete button.")
         } label: {
             Image(systemName: "trash")
                 .imageScale(.large)
