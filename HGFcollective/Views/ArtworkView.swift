@@ -21,7 +21,7 @@ struct ArtworkView: View {
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
 
-    let artwork: Artwork
+    var artwork: Artwork
 
     var body: some View {
         // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
@@ -44,6 +44,12 @@ struct ArtworkView: View {
                     _VSpacer(minHeight: 0.6 * geo.size.height)
 
                     imageIndexIndicator
+
+                    if artwork.description != nil {
+                        description
+                            .padding(.horizontal)
+                    }
+
                     artworkInfo
                         .padding(.horizontal)
 
@@ -120,11 +126,37 @@ struct ArtworkView: View {
         }
     }
 
+    /// Display a description of the artwork if it exists
+    private var description: some View {
+        VStack {
+            HStack {
+                Text("Description")
+                    .font(.title2)
+                // Align the title to the left
+                Spacer()
+            }
+
+            Text(artwork.description ?? "")
+                .padding()
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+    }
+
     /// Display all known information about the artwork
     private var artworkInfo: some View {
-        artistManager.getArtworkInfo(artwork: artwork)
-            .padding()
-            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        VStack {
+            HStack {
+                Text("Details")
+                    .font(.title2)
+                // Align the title to the left
+                Spacer()
+            }
+
+            artistManager.getArtworkInfo(artwork: artwork)
+                // The padding must come before the background
+                .padding()
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
     }
 
     private var enquireButton: some View {
