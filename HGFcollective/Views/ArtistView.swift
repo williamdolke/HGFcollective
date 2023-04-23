@@ -83,10 +83,19 @@ struct ArtistView: View {
 
     /// Display the artist's biography
     private var biography: some View {
-        Text(artist.biography)
-            .padding()
-            .background(.ultraThinMaterial,
-                        in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        VStack {
+            HStack {
+                Text("Biography")
+                    .font(.title2)
+                // Align the title to the left
+                Spacer()
+            }
+
+            Text(artist.biography)
+                .padding()
+                .background(.ultraThinMaterial,
+                            in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
     }
 }
 

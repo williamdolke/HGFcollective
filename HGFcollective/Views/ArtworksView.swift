@@ -112,15 +112,25 @@ struct ArtworksView: View {
                 ForEach(artist.artworks!) { artwork in
                     if filteredArtists.1.contains(artwork.name) {
                         NavigationLink(destination: ArtworkView(artwork: artwork)) {
-                            ImageBubble(assetName: artwork.name + " 1",
-                                        height: nil,
-                                        width: 0.45 * width,
-                                        fill: true)
-                            .background(Color.theme.accent)
-                            .cornerRadius(0.1 * min(height, width))
-                            .overlay(
-                                favourites.contains(artwork.name) ? heart : nil
-                            )
+                            VStack {
+                                ImageBubble(assetName: artwork.name + " 1",
+                                            height: nil,
+                                            width: 0.45 * width,
+                                            fill: true)
+                                .background(Color.theme.accent)
+                                .cornerRadius(0.1 * min(height, width))
+                                .overlay(
+                                    favourites.contains(artwork.name) ? heart : nil
+                                )
+
+                                Text(artwork.name)
+                                HStack(spacing: 0) {
+                                    Text(artist.name)
+                                    if let year = artwork.year {
+                                        Text(", \(year)")
+                                    }
+                                }.font(.subheadline).italic()
+                            }
                         }
                     }
                 }
@@ -137,7 +147,7 @@ struct ArtworksView: View {
                 Text(filteredArtist.name)
                     .font(.title).bold()
                     .foregroundColor(Color.theme.systemBackgroundInvert)
-                    .padding(.horizontal)
+                    .padding([.horizontal, .top])
                 Spacer()
             }
 

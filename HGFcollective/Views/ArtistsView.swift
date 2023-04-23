@@ -106,12 +106,16 @@ struct ArtistsView: View {
             ForEach(filteredArtists) { artist in
                 let artwork = (artist.artworks?.isEmpty == false) ? artist.artworks![0] : Artwork(name: "")
                 NavigationLink(destination: ArtistView(artist: artist)) {
-                    ImageBubble(assetName: artwork.name + " 1",
-                                height: nil,
-                                width: 0.45 * width,
-                                fill: true)
-                    .background(Color.theme.accent)
-                    .cornerRadius(0.1 * min(height, width))
+                    VStack {
+                        ImageBubble(assetName: artwork.name + " 1",
+                                    height: nil,
+                                    width: 0.45 * width,
+                                    fill: true)
+                        .background(Color.theme.accent)
+                        .cornerRadius(0.1 * min(height, width))
+
+                        Text(artist.name)
+                    }
                 }
             }
         }

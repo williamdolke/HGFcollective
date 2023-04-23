@@ -50,8 +50,9 @@ struct ArtworkView: View {
                             .padding(.horizontal)
                     }
 
-                    artworkInfo
-                        .padding(.horizontal)
+                    if let artworkInfo = artistManager.getArtworkInfo(artwork: artwork) {
+                        artworkInfoSection(artworkInfo: artworkInfo)
+                    }
 
                     Text("Price: " + (artwork.price ?? "POA"))
                         .font(.title2)
@@ -143,7 +144,8 @@ struct ArtworkView: View {
     }
 
     /// Display all known information about the artwork
-    private var artworkInfo: some View {
+    private func artworkInfoSection(artworkInfo: Text) -> some View {
+        // Only display this section if there is artwork info to display
         VStack {
             HStack {
                 Text("Details")
@@ -152,11 +154,12 @@ struct ArtworkView: View {
                 Spacer()
             }
 
-            artistManager.getArtworkInfo(artwork: artwork)
+            artworkInfo
                 // The padding must come before the background
                 .padding()
                 .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
+        .padding(.horizontal)
     }
 
     private var enquireButton: some View {

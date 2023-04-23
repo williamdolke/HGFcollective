@@ -130,7 +130,7 @@ class ArtistManager: ObservableObject {
 
     // swiftlint:disable cyclomatic_complexity
     /// Create a text view that contains all information available about an artwork
-    func getArtworkInfo(artwork: Artwork) -> Text {
+    func getArtworkInfo(artwork: Artwork) -> Text? {
         var info = ""
 
         // Add all the information we have about an artwork to the text string
@@ -168,6 +168,10 @@ class ArtistManager: ObservableObject {
         // Make sure the string doesn't end in a newline
         if info.hasSuffix("\n") {
             info.removeLast()
+        }
+
+        if info == "" {
+            return nil
         }
 
         // We need to parse the markdown (info) to interpret the text in asterisks as bold text
