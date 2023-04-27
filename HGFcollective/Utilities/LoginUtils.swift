@@ -41,6 +41,23 @@ struct LoginUtils {
         }
     }
 
+    /// Sign an admin out of Firestore
+    static func signAdminOut() {
+        logger.info("Logging out of Firebase admin account.")
+        do {
+            deleteFCMtoken()
+
+            try Auth.auth().signOut()
+
+            UserDefaults.standard.set(nil, forKey: "uid")
+            UserDefaults.standard.set(nil, forKey: "isAdmin")
+        } catch let signOutError as NSError {
+            Crashlytics.crashlytics().record(error: signOutError)
+            logger.error("Error signing out as admin: \(signOutError)")
+        }
+        logger.info("Successfully logged out as admin.")
+    }
+
     /// Store the FCM token in the Firestore database. The location depends on whether the user is
     /// a customer or an admin.
     static func storeFCMtoken(token: String?) {
@@ -87,23 +104,6 @@ struct LoginUtils {
                 storeFCMtoken(token: token)
             }
         }
-    }
-
-    /// Sign an admin out of Firestore
-    static func signAdminOut() {
-        logger.info("Logging out of Firebase admin account.")
-        do {
-            deleteFCMtoken()
-
-            try Auth.auth().signOut()
-
-            UserDefaults.standard.set(nil, forKey: "uid")
-            UserDefaults.standard.set(nil, forKey: "isAdmin")
-        } catch let signOutError as NSError {
-            Crashlytics.crashlytics().record(error: signOutError)
-            logger.error("Error signing out as admin: \(signOutError)")
-        }
-        logger.info("Successfully logged out as admin.")
     }
 
     /// Delete the customer/admin FCM token from the database

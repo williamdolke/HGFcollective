@@ -224,10 +224,11 @@ class MessagesManager: ObservableObject {
 
         if counter != unreadMessages {
             logger.info("Setting unread message count to \(counter).")
+            // This needs to be completed before the notification is posted below.
+            unreadMessages = counter
 
             NotificationCenter.default.post(name: Notification.Name(notificationName),
-                                            object: counter-unreadMessages)
-            unreadMessages = counter
+                                            object: unreadMessages)
         }
     }
 

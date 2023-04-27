@@ -36,7 +36,7 @@ struct AboutView: View {
                                     in: RoundedRectangle(cornerRadius: 20, style: .continuous))
 
                     // Show the dismiss button if this is the first time launching the app
-                    if !UserDefaults.standard.aboutScreenShown {
+                    if !UserDefaults.standard.bool(forKey: "aboutScreenShown") {
                         dismissButton
                     }
                 }

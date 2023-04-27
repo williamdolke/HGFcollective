@@ -9,6 +9,7 @@ import SwiftUI
 import FirebaseAnalytics
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 import FirebaseCrashlytics
 
 struct AdminChatView: View {
@@ -129,7 +130,7 @@ struct AdminChatView: View {
                 .destructive(Text("Yes"), action: {
                     logger.info("User tapped the 'Yes' button.")
 
-                    deleteChat()
+                    deleteChatHistory()
                 }),
                 .cancel(Text("Cancel"), action: {
                     logger.info("User tapped 'Cancel' button.")
@@ -138,11 +139,45 @@ struct AdminChatView: View {
         }
     }
 
-    private func deleteChat() {
+    /// Delete all chat messages and images
+    private func deleteChatHistory() {
+        // Delete chat images
+        deleteFolderContentsFromStorage(folder: "users/\(messagesManager.uid)")
+
+        // Delete chat messages
         deleteDocumentWithSubcollection(collection: "users", documentId: messagesManager.uid, subCollection: "messages")
     }
 
+    // TODO: Move to an extension
+    private func deleteFolderContentsFromStorage(folder: String) {
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let folderRef = storageRef.child(folder)
+
+        // List the contents of the folder and delete each individual file.
+        // The folder will cease to exist once it has no contents.
+        folderRef.listAll { (result, error) in
+            if let error = error {
+                logger.error("Error listing files in storage: \(error)")
+            } else if let result = result {
+                // Delete each file found in the folder from storage.
+                logger.info("wd2: \(result.items)")
+                for file in result.items {
+                    file.delete { error in
+                        if let error = error {
+                            logger.error("Error deleting \(file) from storage: \(error)")
+                        } else {
+                            logger.info("\(file) successfully deleted from storage.")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // TODO: Move to extension
+    /// Delete a document and it's subcollection. This isn't recursive so will not delete subcollections contained
+    /// within the subcollection.
     private func deleteDocumentWithSubcollection(collection: String, documentId: String, subCollection: String) {
         let firestoreDB = Firestore.firestore()
         let documentRef = firestoreDB.collection(collection).document(documentId)
