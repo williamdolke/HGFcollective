@@ -142,65 +142,33 @@ struct AdminChatView: View {
     /// Delete all chat messages and images
     private func deleteChatHistory() {
         // Delete chat images
+        logger.info("Deleting chat image history.")
         deleteFolderContentsFromStorage(folder: "users/\(messagesManager.uid)")
 
         // Delete chat messages
-        deleteDocumentWithSubcollection(collection: "users", documentId: messagesManager.uid, subCollection: "messages")
+        logger.info("Deleting chat message history.")
+        deleteDocumentAndSubcollectionDocumentsFromFirestore(collection: "users",
+                                                     documentId: messagesManager.uid,
+                                                     subCollection: "messages")
     }
 
-    // TODO: Move to an extension
     private func deleteFolderContentsFromStorage(folder: String) {
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let folderRef = storageRef.child(folder)
 
-        // List the contents of the folder and delete each individual file.
-        // The folder will cease to exist once it has no contents.
-        folderRef.listAll { (result, error) in
-            if let error = error {
-                logger.error("Error listing files in storage: \(error)")
-            } else if let result = result {
-                // Delete each file found in the folder from storage.
-                logger.info("wd2: \(result.items)")
-                for file in result.items {
-                    file.delete { error in
-                        if let error = error {
-                            logger.error("Error deleting \(file) from storage: \(error)")
-                        } else {
-                            logger.info("\(file) successfully deleted from storage.")
-                        }
-                    }
-                }
-            }
-        }
+        folderRef.deleteFolderContents()
     }
 
-    // TODO: Move to extension
-    /// Delete a document and it's subcollection. This isn't recursive so will not delete subcollections contained
-    /// within the subcollection.
-    private func deleteDocumentWithSubcollection(collection: String, documentId: String, subCollection: String) {
+    private func deleteDocumentAndSubcollectionDocumentsFromFirestore(collection: String,
+                                                                      documentId: String,
+                                                                      subCollection: String) {
         let firestoreDB = Firestore.firestore()
         let documentRef = firestoreDB.collection(collection).document(documentId)
 
-        // Delete the document itself
-        documentRef.delete { error in
-            if let error = error {
-                logger.error("Error deleting document: \(error)")
-                return
-            }
-
-            // Delete all subcollections
-            documentRef.collection(subCollection).getDocuments { (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    logger.error("Error retrieving subcollections: \(String(describing: error))")
-                    return
-                }
-
-                for document in snapshot.documents {
-                    document.reference.delete()
-                }
-            }
-        }
+        documentRef.deleteDocumentAndSubcollectionDocuments(collection: collection,
+                                                    documentId: documentId,
+                                                    subCollection: subCollection)
     }
 }
 

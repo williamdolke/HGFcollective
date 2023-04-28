@@ -1,5 +1,5 @@
 //
-//  Color.swift
+//  Color+Extension.swift
 //  HGF Collective
 //
 //  Created by William Dolke on 19/09/2022.

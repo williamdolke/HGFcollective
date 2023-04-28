@@ -47,27 +47,14 @@ class MessagesManager: ObservableObject {
         // Read message from Firestore in real-time with the addSnapShotListener
         messagesListener = firestoreDB.collection("users").document(uid).collection("messages")
             .addSnapshotListener { querySnapshot, error in
-                // If we don't have documents, exit the function
-                guard let documents = querySnapshot?.documents else {
-                    Crashlytics.crashlytics().record(error: error!)
-                    logger.error("Error fetching documents: \(String(describing: error))")
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error fetching message documents: \(error)")
                     return
                 }
 
                 // Map the documents to Message instances
-                self.messages = documents.compactMap { document -> Message? in
-                    do {
-                        // Convert each document into the Message model
-                        return try document.data(as: Message.self)
-                    } catch {
-                        Crashlytics.crashlytics().record(error: error)
-                        logger.error("Error decoding document into Message: \(error)")
-
-                        // Return nil if we run into an error - the compactMap will
-                        // not include it in the final array
-                        return nil
-                    }
-                }
+                self.messages = (querySnapshot?.decodeDocuments() ?? []) as [Message]
 
                 // Sort the messages by sent date and count the number of
                 // messages that the local user hasn't read

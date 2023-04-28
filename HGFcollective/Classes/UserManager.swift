@@ -28,28 +28,14 @@ class UserManager: ObservableObject {
     private func getUsers() {
         // Read users from Firestore in real-time with the addSnapShotListener
         listener = firestoreDB.collection("users").addSnapshotListener { querySnapshot, error in
-
-            // If we don't have documents, exit the function
-            guard let documents = querySnapshot?.documents else {
-                Crashlytics.crashlytics().record(error: error!)
-                logger.error("Error fetching user document: \(String(describing: error))")
+            if let error = error {
+                Crashlytics.crashlytics().record(error: error)
+                logger.error("Error fetching user document: \(error)")
                 return
             }
 
             // Map the documents to User instances
-            self.users = documents.compactMap { document -> User? in
-                do {
-                    // Convert each document into the User model
-                    return try document.data(as: User.self)
-                } catch {
-                    Crashlytics.crashlytics().record(error: error)
-                    logger.error("Error decoding document into User: \(error)")
-
-                    // Return nil if we run into an error - the compactMap will
-                    // not include it in the final array
-                    return nil
-                }
-            }
+            self.users = (querySnapshot?.decodeDocuments() ?? []) as [User]
             self.sortUsers()
         }
     }

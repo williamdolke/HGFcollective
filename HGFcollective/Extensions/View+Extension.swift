@@ -1,5 +1,5 @@
 //
-//  cornerRadius.swift
+//  View+Extension.swift
 //  HGF Collective
 //
 //  Created by William Dolke on 12/09/2022.

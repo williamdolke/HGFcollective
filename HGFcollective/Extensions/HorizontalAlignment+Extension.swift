@@ -1,5 +1,5 @@
 //
-//  HCenterAlignment.swift
+//  HorizontalAlignment+Extension.swift
 //  HGFcollective
 //
 //  Created by William Dolke on 15/01/2023.

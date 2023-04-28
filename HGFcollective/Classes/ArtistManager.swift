@@ -33,28 +33,15 @@ class ArtistManager: ObservableObject {
         logger.info("Retrieving artists from database.")
         // Read artists from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("artists").addSnapshotListener { [self] querySnapshot, error in
-
-            // If we don't have documents, exit the function
-            guard let documents = querySnapshot?.documents else {
-                Crashlytics.crashlytics().record(error: error!)
-                logger.error("Error fetching documents: \(String(describing: error))")
+            if let error = error {
+                Crashlytics.crashlytics().record(error: error)
+                logger.error("Error fetching artist documents: \(error)")
                 return
             }
 
             // Map the documents to Artist instances
-            self.artists = documents.compactMap { document -> Artist? in
-                do {
-                    // Convert each document into the Artist model
-                    return try document.data(as: Artist.self)
-                } catch {
-                    Crashlytics.crashlytics().record(error: error)
-                    logger.error("Error decoding document into Artist: \(error)")
+            self.artists = (querySnapshot?.decodeDocuments() ?? []) as [Artist]
 
-                    // Return nil if we run into an error - the compactMap will
-                    // not include it in the final array
-                    return nil
-                }
-            }
             // Select an artist to be featured at random
             featuredArtistIndex = Int.random(in: 0..<artists.count)
             repeat {
@@ -77,31 +64,19 @@ class ArtistManager: ObservableObject {
             // Read artworks from Firestore in real-time with the addSnapShotListener
             firestoreDB.collection("artists").document(artist.name).collection("artworks")
                 .addSnapshotListener { [self] querySnapshot, error in
-
-                // If we don't have documents, exit the function
-                guard let documents = querySnapshot?.documents else {
-                    Crashlytics.crashlytics().record(error: error!)
-                    logger.error("Error fetching documents: \(String(describing: error))")
-                    return
-                }
-
-                // Get the index of the artist that created the artwork that we are fetching
-                if let idx = artists.firstIndex(where: { $0.name == artist.name }) {
-                    artists[idx].artworks = documents.compactMap { document -> Artwork? in
-                        do {
-                            // Convert each document into the Artwork model
-                            return try document.data(as: Artwork.self)
-                        } catch {
-                            Crashlytics.crashlytics().record(error: error)
-                            logger.error("Error decoding document into Artwork: \(error)")
-
-                            // Return nil if we run into an error - the compactMap will not include it in the final
-                            // array
-                            return nil
-                        }
+                    if let error = error {
+                        Crashlytics.crashlytics().record(error: error)
+                        logger.error("Error fetching artwork documents: \(error)")
+                        return
                     }
-                    logger.info("Retrieved \(artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
-                }
+
+                    // Get the index of the artist that created the artwork that we are fetching
+                    if let idx = artists.firstIndex(where: { $0.name == artist.name }) {
+                        // Map the documents to Artwork instances
+                        artists[idx].artworks = (querySnapshot?.decodeDocuments() ?? []) as [Artwork]
+
+                        logger.info("Retrieved \(artists[idx].artworks?.count ?? 0) artworks for \(artist.name).")
+                    }
             }
         }
     }

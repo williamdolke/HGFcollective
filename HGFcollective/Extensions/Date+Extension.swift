@@ -1,5 +1,5 @@
 //
-//  formattedDateString.swift
+//  Date+Extension.swift
 //  HGF Collective
 //
 //  Created by William Dolke on 30/09/2022.
