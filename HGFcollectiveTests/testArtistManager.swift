@@ -9,10 +9,9 @@ import XCTest
 import SwiftUI
 @testable import HGFcollective
 
-final class testArtistManager: XCTestCase {
-    
+final class TestArtistManager: XCTestCase {
     var artistManager: ArtistManager!
-    
+
     override func setUp() {
         super.setUp()
         artistManager = ArtistManager()
@@ -61,7 +60,7 @@ final class testArtistManager: XCTestCase {
         let expectedText = Text(try AttributedString(markdown: expectedString,
                                             options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
                                                     .inlineOnlyPreservingWhitespace)))
-        
+
         XCTAssertEqual(info, expectedText)
     }
 
@@ -83,7 +82,7 @@ final class testArtistManager: XCTestCase {
         let expectedText = Text(try AttributedString(markdown: expectedString,
                                             options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
                                                     .inlineOnlyPreservingWhitespace)))
-        
+
         XCTAssertEqual(info, expectedText)
     }
 
@@ -91,10 +90,7 @@ final class testArtistManager: XCTestCase {
         let artwork = Artwork(name: "Artwork")
         let info = artistManager.getArtworkInfo(artwork: artwork)
         let expectedString = ""
-        let expectedText = Text(try AttributedString(markdown: expectedString,
-                                            options: AttributedString.MarkdownParsingOptions(interpretedSyntax:
-                                                    .inlineOnlyPreservingWhitespace)))
-        
-        XCTAssertEqual(info, expectedText)
+
+        XCTAssertNil(info)
     }
 }

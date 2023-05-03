@@ -32,9 +32,9 @@ struct MailView: UIViewControllerRepresentable {
             defer {
                 presentation = false
             }
-            guard error == nil else {
-                Crashlytics.crashlytics().record(error: error!)
-                self.result = .failure(error!)
+            if let error = error {
+                Crashlytics.crashlytics().record(error: error)
+                self.result = .failure(error)
                 return
             }
             self.result = .success(result)
