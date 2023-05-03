@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NavigationUtils {
     static func popToRootView() {
+        logger.info("Popping to root view.")
+
         findNavigationController(viewController: UIApplication.shared.windows.first?.rootViewController)?
             .popToRootViewController(animated: true)
     }

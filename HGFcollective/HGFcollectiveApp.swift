@@ -79,7 +79,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 extension AppDelegate: MessagingDelegate {
     // This callback is fired at each app startup and whenever a new token is generated
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        logger.info("FCM token retrieved.")
+        logger.info("FCM token received.")
 
         UserDefaults.standard.set(fcmToken, forKey: "fcmToken")
         LoginUtils.storeFCMtoken(token: fcmToken)

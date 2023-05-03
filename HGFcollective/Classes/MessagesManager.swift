@@ -42,8 +42,10 @@ class MessagesManager: ObservableObject {
         self.getUser()
     }
 
-    /// Retrieve messages from  the Firestore database
+    /// Retrieve messages from the Firestore database
     private func getMessages() {
+        logger.info("Retrieving chat history from database.")
+
         // Read message from Firestore in real-time with the addSnapShotListener
         messagesListener = firestoreDB.collection("users").document(uid).collection("messages")
             .addSnapshotListener { querySnapshot, error in
@@ -68,8 +70,10 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    /// Retrieve user document from  the Firestore database
+    /// Retrieve user document from the Firestore database
     private func getUser() {
+        logger.info("Retrieving user document from database.")
+
         // Read message from Firestore in real-time with the addSnapShotListener
         userListener = firestoreDB.collection("users").document(uid)
             .addSnapshotListener { documentSnapshot, error in
@@ -87,9 +91,11 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    /// Add a message to the Firestore database
+    /// Add a new chat message to the Firestore database
     func sendMessage(text: String, type: String) {
         do {
+            logger.info("Sending new chat message to database.")
+
             // Create a new Message instance, with a unique ID, the text we passed,
             // a received value and a timestamp
             let date = Date()
@@ -125,8 +131,10 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    /// Add an image to the Firebase storage
+    /// Upload an image to Firebase storage
     func sendImage(image: UIImage) {
+        logger.info("Sending new chat image to database.")
+
         // Create the path where the image will be stored in storage
         let storagePath = "users/" + uid + "/" + UUID().uuidString
         let ref = Storage.storage().reference(withPath: storagePath)
@@ -138,16 +146,16 @@ class MessagesManager: ObservableObject {
         ref.putData(imageData, metadata: nil) { _, error in
             if let error = error {
                 Crashlytics.crashlytics().record(error: error)
-                logger.error("Failed to push image to Storage: \(error)")
+                logger.error("Failed to upload image to Storage: \(error)")
                 return
             }
             ref.downloadURL { url, error in
                 if let error = error {
                     Crashlytics.crashlytics().record(error: error)
-                    logger.error("Failed to retrieve downloadURL: \(error)")
+                    logger.error("Failed to retrieve image URL: \(error)")
                     return
                 }
-                logger.info("Successfully stored image with url: \(url?.absoluteString ?? "")")
+                logger.info("Successfully stored image with URL: \(url?.absoluteString ?? "")")
                 // Store the url of the image in the database
                 self.sendMessage(text: url!.absoluteString, type: "image")
             }

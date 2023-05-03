@@ -12,7 +12,7 @@ import FirebaseFirestoreSwift
 
 class EnquiryManager: ObservableObject {
     @Published var chat: Chat?
-    @Published var mail: Mail
+    @Published var mail = Mail(recipients: [])
 
     // Create an instance of our Firestore database
     let firestoreDB = Firestore.firestore()
@@ -20,48 +20,43 @@ class EnquiryManager: ObservableObject {
     // On initialisation of the EnquiryManager class, get the chat and
     // email enquiries contact information from Firestore
     init() {
-        self.mail = Mail(recipients: [])
-
+        let collection = "enquiries"
         // Set to high priority to minimise the time we wait for data.
         // We don't necessarily need to load this in advance as users
         // are not likely to enquire by email frequently.
         Task(priority: .high) {
-            await self.getChatEnquiryInfo()
-            await self.getMailEnquiryInfo()
+            // Fetch the chat title name and icon, this allows admins to
+            // override the built in chat name/icon from the database
+            logger.info("Retrieving chat enquiry information.")
+            if let chatInfo: Chat = await self.getEnquiryInfo(collection: collection, document: "chat") {
+                self.chat = chatInfo
+            }
+
+            // Fetch the email recipients and email subject + body templates
+            logger.info("Retrieving email enquiry information.")
+            if let mailInfo: Mail = await self.getEnquiryInfo(collection: collection, document: "email") {
+                self.mail = mailInfo
+            }
         }
     }
 
-    /// Fetch the email recipients and email subject + body templates
-    private func getMailEnquiryInfo() async {
+    // Read a document from a collection in Firestore and convert to a generic type
+    private func getEnquiryInfo<T: Codable>(collection: String, document: String) async -> T? {
         do {
-            let document = try await firestoreDB.collection("enquiries").document("email").getDocument()
+            let document = try await firestoreDB.collection(collection).document(document).getDocument()
 
-            // Convert the document into the Mail model
-            if let mailInfo = try? document.data(as: Mail.self) {
-                DispatchQueue.main.async {
-                    self.mail = mailInfo
-                }
+            // Convert the document to the model
+            if let data = try? document.data(as: T.self) {
+                logger.info("Successfully decoded document to \(T.self).")
+                return data
+            } else {
+                logger.error("Error decoding document to \(T.self).")
             }
+            return nil
         } catch {
             Crashlytics.crashlytics().record(error: error)
-            logger.error("Error fetching email enquiry information: \(error)")
-        }
-    }
-
-    /// Fetch the chat title name and icon, this allows admins to override the built in name/icon from the database
-    private func getChatEnquiryInfo() async {
-        do {
-            let document = try await firestoreDB.collection("enquiries").document("chat").getDocument()
-
-            // Convert the document into the Chat model
-            if let chatInfo = try? document.data(as: Chat.self) {
-                DispatchQueue.main.async {
-                    self.chat = chatInfo
-                }
-            }
-        } catch {
-            Crashlytics.crashlytics().record(error: error)
-            logger.error("Error fetching chat enquiry information: \(error)")
+            logger.error("Error fetching \(T.self) enquiry information: \(error)")
+            return nil
         }
     }
 }

@@ -31,6 +31,7 @@ class ArtistManager: ObservableObject {
     /// Fetch all artist documents from the database
     private func getArtists() {
         logger.info("Retrieving artists from database.")
+
         // Read artists from Firestore in real-time with the addSnapShotListener
         firestoreDB.collection("artists").addSnapshotListener { [self] querySnapshot, error in
             if let error = error {
@@ -59,6 +60,8 @@ class ArtistManager: ObservableObject {
 
     /// Fetch the artwork documents from the database for all artworks
     private func getArtworks() {
+        logger.info("Retrieving artworks from database.")
+
         for artist in artists {
             logger.info("Retrieving artworks for \(artist.name).")
             // Read artworks from Firestore in real-time with the addSnapShotListener
@@ -84,6 +87,7 @@ class ArtistManager: ObservableObject {
     /// Randomly select artists to be included in the discovery section. To do this we generate an array of
     /// unique random indexes that correspond to the indices of the selected artists in the array of all artists.
     private func getDiscoverArtists() {
+        logger.info("Determining artists for Home screen discover section.")
         discoverArtistIndexes = getUniqueRandomNumbers(min: 0,
                                                        max: artists.count-1, count: numDiscoverArtists)
     }
@@ -156,7 +160,7 @@ class ArtistManager: ObservableObject {
                                                     .inlineOnlyPreservingWhitespace)))
         } catch {
             Crashlytics.crashlytics().record(error: error)
-            logger.error("Couldn't convert artwork info to bold.")
+            logger.error("Failed to convert artwork info to bold.")
             return Text(info)
         }
     }

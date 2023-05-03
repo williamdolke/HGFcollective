@@ -16,15 +16,17 @@ struct LoginUtils {
     /// The closure parameter allows us to optionally pass a closure block, allowing us to execute
     /// additional code after a successful login.
     static func signInAnonymously(closure: (() -> Void)? = nil) {
+        logger.info("Attempting to authenticate anonymously.")
+
         if UserDefaults.standard.string(forKey: "uid") == nil {
             // Sign the user in to Firestore anonymously
             Auth.auth().signInAnonymously { authResult, error in
                 if let error = error {
                     Crashlytics.crashlytics().record(error: error)
-                    logger.error("Error signing into database: \(error)")
+                    logger.error("Error authenticating anonymously: \(error)")
                 } else {
                     Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Anonymous"])
-                    logger.info("Sucessfully signed in to database anonymously.")
+                    logger.info("Sucessfully signed in anonymously.")
                 }
                 guard let user = authResult?.user else { return }
 
@@ -61,6 +63,8 @@ struct LoginUtils {
     /// Store the FCM token in the Firestore database. The location depends on whether the user is
     /// a customer or an admin.
     static func storeFCMtoken(token: String?) {
+        logger.info("Attempting to store FCM token.")
+
         // We need to know the customer's/admin's id in order to store the FCM token in the database.
         // However, if we don't know it yet e.g. on the first launch of the app we may receive the FCM
         // token before the Firebase UID. To handle this, wait for a small period of time and attempt
@@ -99,7 +103,7 @@ struct LoginUtils {
             // Wait for a second before trying to store the FCM token again, hopefully we will
             // know our uid by then.
             let delayInSeconds = 1.0
-            logger.error("Could not retrieve uid, waiting for \(delayInSeconds) to retry.")
+            logger.error("Failed to retrieve uid, waiting for \(delayInSeconds) to retry.")
             DispatchQueue.main.asyncAfter(deadline: .now() + delayInSeconds) {
                 storeFCMtoken(token: token)
             }
@@ -108,6 +112,8 @@ struct LoginUtils {
 
     /// Delete the customer/admin FCM token from the database
     static func deleteFCMtoken() {
+        logger.info("Attempting to delete FCM token.")
+
         // Nullify the FCM token in the database before we sign out and before the uid is nullified
         if let uid = UserDefaults.standard.value(forKey: "uid") as? String {
             if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
@@ -116,7 +122,7 @@ struct LoginUtils {
                 let documentData = [field: FieldValue.delete()]
                 Firestore.firestore().collection("admin").document("fcmToken").updateData(documentData) { error in
                     if let error = error {
-                        logger.error("Error deleting Admin FCM token: \(error)")
+                        logger.error("Error deleting admin FCM token: \(error)")
                     } else {
                         logger.info("Admin FCM token successfully deleted.")
                     }

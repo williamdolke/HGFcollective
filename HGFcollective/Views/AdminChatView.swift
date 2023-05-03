@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 import FirebaseStorage
 import FirebaseCrashlytics
 
+/// Similar to the ChatView but with some additional functionality for admins.
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
@@ -38,6 +39,9 @@ struct AdminChatView: View {
                                parameters: [AnalyticsParameterScreenName: "\(AdminChatView.self)",
                                            AnalyticsParameterScreenClass: "\(AdminChatView.self)"])
         }
+        // An alert that allows the admin to set a display name for the user which will be
+        // shown in the inboxView instead of the customer's uid. This allows admins to
+        // easily identify users as uid's are hard to remember.
         .alert("Enter a display name", isPresented: $showAlert) {
             TextField("Enter name", text: $displayNameInput)
             Button("OK", action: storePreferredName)
@@ -103,6 +107,8 @@ struct AdminChatView: View {
         }
     }
 
+    /// Store the preferred name for the customer that the admin has entered.
+    /// This is used in place of the customer's uid in UI elements such as in the inboxView as well as in notifications.
     private func storePreferredName() {
         let firestoreDB = Firestore.firestore()
 
@@ -117,6 +123,7 @@ struct AdminChatView: View {
             }
     }
 
+    /// Show options to allow the admin to delete the chat. This includes all images and chat messages sent.
     private var deleteChatButton: some View {
         Button {
             showDeleteChatOptions.toggle()
