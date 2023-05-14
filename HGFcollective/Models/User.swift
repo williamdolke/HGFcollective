@@ -14,6 +14,7 @@ import Foundation
 ///   - latestTimestamp: The time that the latest message was sent
 ///   - read: Has the user receiving the message read the message
 ///   - sender: The UUID of the user who sent the most recent message
+///   - isCustomer: True if the last message was sent by the customer
 struct User: Identifiable, Codable {
     let id: String
     var preferredName: String?
@@ -21,4 +22,5 @@ struct User: Identifiable, Codable {
     var latestTimestamp: Date
     var read: Bool
     var sender: String
+    var isCustomer: Bool
 }

@@ -24,8 +24,8 @@ struct ConversationPreviewRow: View {
     var body: some View {
         VStack {
             HStack(spacing: 16) {
-                let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as? String)
-                let latestMessageUnread = (notSender && !user.read)
+                let unread = (user.read == false)
+                let latestMessageUnread = (unread && user.isCustomer)
                 // Show a closed envelope if we have messages to read and an open envelope otherwise
                 Image(systemName: latestMessageUnread ? "envelope.fill" : "envelope.open.fill")
                     .font(.system(size: 32))
@@ -64,7 +64,8 @@ struct ConversationPreviewRow_Previews: PreviewProvider {
                            messagePreview: "This Is A Message Preview",
                            latestTimestamp: Date.now,
                            read: false,
-                           sender: UUID().uuidString)
+                           sender: UUID().uuidString,
+                           isCustomer: false)
 
     static var previews: some View {
         ConversationPreviewRow(user: user)

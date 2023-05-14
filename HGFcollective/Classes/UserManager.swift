@@ -42,7 +42,7 @@ class UserManager: ObservableObject {
 
     /// Sort users by the timestamp of their most recent messages
     private func sortUsers() {
-        logger.info("Sorting users.")
+        logger.info("Sorting \(users.count) users.")
         self.users.sort(by: { $0.latestTimestamp > $1.latestTimestamp })
     }
 }

@@ -15,6 +15,7 @@ import FirebaseCrashlytics
 /// Similar to the ChatView but with some additional functionality for admins.
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
+    @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showDeleteChatOptions: Bool = false
@@ -69,11 +70,11 @@ struct AdminChatView: View {
                 }
 
                 let unread = (messagesManager.user?.read == false)
-                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+                let sentByCustomer = (messagesManager.user?.isCustomer == true)
 
                 // Set as read and recalculate the number of unread messages
                 // if we're not the sender and it is currently unread
-                if (unread && notSender) {
+                if (unread && sentByCustomer) {
                     messagesManager.setAsRead()
                 }
             }
@@ -86,11 +87,11 @@ struct AdminChatView: View {
             // Set messages as read when the admin is viewing the chat
             .onChange(of:messagesManager.user?.latestTimestamp) { _ in
                 let unread = (messagesManager.user?.read == false)
-                let notSender = (messagesManager.user?.sender != UserDefaults.standard.object(forKey: "uid") as? String)
+                let sentByCustomer = (messagesManager.user?.isCustomer == true)
 
                 // Set as read and recalculate the number of unread messages
                 // if we're not the sender and it is currently unread
-                if (unread && notSender) {
+                if (unread && sentByCustomer) {
                     messagesManager.setAsRead()
                 }
             }

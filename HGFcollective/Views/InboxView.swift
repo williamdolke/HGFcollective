@@ -12,7 +12,8 @@ struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
 
     @EnvironmentObject var userManager: UserManager
-    // We only need to access messagesManager in this view when signing out of the admin account
+    // We only need to access messagesManager in this view when signing out of the admin account.
+    // This is the messagesManager that is created by ContentView before signing in as an admin.
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
 
@@ -104,8 +105,7 @@ struct InboxView: View {
                         .onEnded {
                             // Set messages as read when the admin taps on the chat
                             let unread = (user.read == false)
-                            let notSender = (user.sender != UserDefaults.standard.object(forKey: "uid") as? String)
-                            if (unread && notSender) {
+                            if (unread && user.isCustomer) {
                                 // tabBarState.unreadMessages -= messagesManager.unreadMessages
                                 // UIApplication.shared.applicationIconBadgeNumber -= messagesManager.unreadMessages
                                 messagesManager.setAsRead()

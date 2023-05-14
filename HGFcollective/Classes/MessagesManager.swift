@@ -58,9 +58,7 @@ class MessagesManager: ObservableObject {
                 // Map the documents to Message instances
                 self.messages = (querySnapshot?.decodeDocuments() ?? []) as [Message]
 
-                // Sort the messages by sent date and count the number of
-                // messages that the local user hasn't read
-                self.messages.sort { $0.timestamp < $1.timestamp }
+                self.sortMessages()
                 self.countUnreadMessages()
 
                 // Get the ID of the last message so we can automatically scroll to it in ChatView
@@ -113,8 +111,9 @@ class MessagesManager: ObservableObject {
                                   latestTimestamp: date,
                                   read: false,
                                   // swiftlint:disable force_cast
-                                  sender: UserDefaults.standard.value(forKey: "uid") as! String)
+                                  sender: UserDefaults.standard.value(forKey: "uid") as! String,
                                   // swiftlint:enable force_cast
+                                  isCustomer: isCustomer)
 
             // Create a new document in Firestore with the newMessage and userUpdate variable
             // above. Use setData(from:) to convert the Message properties into document fields.
@@ -199,6 +198,12 @@ class MessagesManager: ObservableObject {
                 .map { $0.request.identifier }
             UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: identifiers)
         }
+    }
+
+    /// Sort the messages by sent date and count the number of messages that the local user hasn't read
+    private func sortMessages() {
+        logger.info("Sorting \(messages.count) messages.")
+        self.messages.sort { $0.timestamp < $1.timestamp }
     }
 
     /// Count and store the number of unread messages from this user
