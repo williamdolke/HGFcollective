@@ -15,7 +15,6 @@ import FirebaseCrashlytics
 /// Similar to the ChatView but with some additional functionality for admins.
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
-    @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showDeleteChatOptions: Bool = false
@@ -181,7 +180,7 @@ struct AdminChatView: View {
 }
 
 struct AdminChatView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager(uid: "test", isCustomer: false, notificationName: "test")
+    static let messagesManager = MessagesManager(uid: "test", isCustomer: false)
 
     static var previews: some View {
         AdminChatView()

@@ -18,13 +18,16 @@ struct ContentView: View {
     // AppStorage is a property wrapper for accessing values stored in UserDefaults
     @AppStorage("aboutScreenShown")
     var aboutScreenShown: Bool = false
-    // swiftlint:disable force_cast
-    var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String,
-                                          notificationName: "CustomerUnreadMessageCountChanged")
-    // swiftlint:enable force_cast
+    // swiftlint:disable:next force_cast
+    var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String)
+    var userManager: UserManager?
     var enquiryManager = EnquiryManager()
 
     init() {
+        if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
+            userManager = UserManager()
+        }
+
         // Navigation bar colours
         let coloredAppearance = UINavigationBarAppearance()
         coloredAppearance.backgroundColor = UIColor(Color.theme.accent)
@@ -125,24 +128,14 @@ struct ContentView: View {
 
     @ViewBuilder
     private func customerOrAdminView() -> some View {
-        if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
-            NavigationView {
-                InboxView()
-                    .environmentObject(UserManager())
-            }
+        let isAdmin = UserDefaults.standard.bool(forKey: "isAdmin")
+        if isAdmin {
+            InboxView()
+                .environmentObject(userManager!)
+                .environmentObject(messagesManager)
         } else {
             ChatView()
                 .environmentObject(messagesManager)
-                // Update the badge count on the chat tab
-                // swiftlint:disable line_length
-                .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CustomerUnreadMessageCountChanged"))) { _ in
-                // swiftlint:enable line_length
-                    if tabBarState.unreadMessages != messagesManager.unreadMessages {
-                        logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")
-                        tabBarState.unreadMessages = messagesManager.unreadMessages
-                        UIApplication.shared.applicationIconBadgeNumber = messagesManager.unreadMessages
-                    }
-                }
         }
     }
 }

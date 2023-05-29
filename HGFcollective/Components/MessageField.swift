@@ -94,7 +94,7 @@ struct MessageField: View {
 }
 
 struct MessageField_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager(uid: "test", notificationName: "test")
+    static let messagesManager = MessagesManager(uid: "test")
 
     static var previews: some View {
         MessageField()

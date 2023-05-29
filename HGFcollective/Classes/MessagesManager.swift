@@ -17,7 +17,7 @@ class MessagesManager: ObservableObject {
     @Published private(set) var latestMessageId: String = ""
     // Identifies whether a view is being presented to a user or an admin
     let isCustomer: Bool
-    let notificationName: String
+    let notificationName: String = "CustomerUnreadMessageCountChanged"
     // Customer uid
     var uid: String = ""
     // The unread message count for this user
@@ -29,10 +29,9 @@ class MessagesManager: ObservableObject {
     let firestoreDB = Firestore.firestore()
     let storage = Storage.storage()
 
-    init(uid: String, isCustomer: Bool = true, notificationName: String) {
+    init(uid: String, isCustomer: Bool = true) {
         self.uid = uid
         self.isCustomer = isCustomer
-        self.notificationName = notificationName
 
         // On initialisation of the MessagesManager class, get the messages
         // for a particular customer uid from Firestore and count the number of
@@ -110,9 +109,8 @@ class MessagesManager: ObservableObject {
                                   messagePreview: String(text.prefix(30)),
                                   latestTimestamp: date,
                                   read: false,
-                                  // swiftlint:disable force_cast
+                                  // swiftlint:disable:next force_cast
                                   sender: UserDefaults.standard.value(forKey: "uid") as! String,
-                                  // swiftlint:enable force_cast
                                   isCustomer: isCustomer)
 
             // Create a new document in Firestore with the newMessage and userUpdate variable
@@ -227,8 +225,7 @@ class MessagesManager: ObservableObject {
             // This needs to be completed before the notification is posted below.
             unreadMessages = counter
 
-            NotificationCenter.default.post(name: Notification.Name(notificationName),
-                                            object: unreadMessages)
+            NotificationCenter.default.post(name: Notification.Name(notificationName), object: nil)
         }
     }
 

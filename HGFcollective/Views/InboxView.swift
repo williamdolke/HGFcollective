@@ -20,15 +20,17 @@ struct InboxView: View {
     @State private var showLogOutOptions: Bool = false
 
     var body: some View {
-        VStack {
-            conversationTitleRow
-            conversationRows
-        }
-        .navigationBarHidden(true)
-        .onAppear {
-            Analytics.logEvent(AnalyticsEventScreenView,
-                               parameters: [AnalyticsParameterScreenName: "\(InboxView.self)",
-                                           AnalyticsParameterScreenClass: "\(InboxView.self)"])
+        NavigationView {
+            VStack {
+                conversationTitleRow
+                conversationRows
+            }
+            .navigationBarHidden(true)
+            .onAppear {
+                Analytics.logEvent(AnalyticsEventScreenView,
+                                   parameters: [AnalyticsParameterScreenName: "\(InboxView.self)",
+                                               AnalyticsParameterScreenClass: "\(InboxView.self)"])
+            }
         }
     }
 
@@ -80,9 +82,8 @@ struct InboxView: View {
             // Refresh the properties of messagesManager since we are creating a new anonymous user.
             // We need to add some additional code to signInAnonymously which can be done through a
             // closure block.
-            // swiftlint: disable force_cast
+            // swiftlint:disable:next force_cast
             messagesManager.refresh(uid: UserDefaults.standard.object(forKey: "uid") as! String)
-            // swiftlint: enable force_cast
         }
         LoginUtils.signInAnonymously(closure: block)
 
@@ -94,10 +95,7 @@ struct InboxView: View {
     private var conversationRows: some View {
         ScrollView {
             ForEach(userManager.users) { user in
-                let messagesManager = MessagesManager(uid: user.id,
-                                                      isCustomer: false,
-                                                      notificationName: "AdminUnreadMessageCountChanged")
-                NavigationLink(destination: AdminChatView().environmentObject(messagesManager)) {
+                NavigationLink(destination: AdminChatView().environmentObject(userManager.messagesManagers[user.id]!)) {
                     ConversationPreviewRow(user: user)
                 }
                 .simultaneousGesture(
@@ -105,26 +103,28 @@ struct InboxView: View {
                         .onEnded {
                             // Set messages as read when the admin taps on the chat
                             let unread = (user.read == false)
+
                             if (unread && user.isCustomer) {
-                                // tabBarState.unreadMessages -= messagesManager.unreadMessages
-                                // UIApplication.shared.applicationIconBadgeNumber -= messagesManager.unreadMessages
-                                messagesManager.setAsRead()
+                                tabBarState.unreadMessages = userManager.unreadMessages
+                                UIApplication.shared.applicationIconBadgeNumber = userManager.unreadMessages
+                                userManager.messagesManagers[user.id]!.setAsRead()
                             }
                         })
                 .navigationTitle("Inbox")
             }
         }
         // swiftlint:disable line_length
-        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("AdminUnreadMessageCountChanged"))) { notification in
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CustomerUnreadMessageCountChanged"))) { _ in
         // swiftlint:enable line_length
-            if let intObject = notification.object as? NSInteger {
-                userManager.unreadMessages += intObject
-            }
-
+            userManager.countUnreadMessages()
+        }
+        // swiftlint:disable line_length
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("AdminUnreadMessageCountChanged"))) { _ in
+        // swiftlint:enable line_length
             if tabBarState.unreadMessages != userManager.unreadMessages {
                 logger.info("Setting the badge count on the chat tab to \(userManager.unreadMessages).")
-                // tabBarState.unreadMessages = userManager.unreadMessages
-                // UIApplication.shared.applicationIconBadgeNumber = userManager.unreadMessages
+                tabBarState.unreadMessages = userManager.unreadMessages
+                UIApplication.shared.applicationIconBadgeNumber = userManager.unreadMessages
             }
         }
     }

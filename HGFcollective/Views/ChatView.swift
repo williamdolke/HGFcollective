@@ -46,6 +46,16 @@ struct ChatView: View {
                     UIApplication.shared.applicationIconBadgeNumber = messagesManager.unreadMessages
                 }
             }
+            // swiftlint:disable line_length
+            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CustomerUnreadMessageCountChanged"))) { _ in
+            // swiftlint:enable line_length
+                // Update the badge count on the chat tab
+                if tabBarState.unreadMessages != messagesManager.unreadMessages {
+                    logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")
+                    tabBarState.unreadMessages = messagesManager.unreadMessages
+                    UIApplication.shared.applicationIconBadgeNumber = messagesManager.unreadMessages
+                }
+            }
         }
         // On iPad, navigationLinks don't work in InboxView without the following
         .navigationViewStyle(StackNavigationViewStyle())
@@ -92,7 +102,7 @@ struct ChatView: View {
 }
 
 struct ChatView_Previews: PreviewProvider {
-    static let messagesManager = MessagesManager(uid: "test", notificationName: "test")
+    static let messagesManager = MessagesManager(uid: "test")
     static let enquiryManager = EnquiryManager()
 
     static var previews: some View {

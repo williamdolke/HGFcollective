@@ -12,6 +12,8 @@ import FirebaseFirestoreSwift
 
 class UserManager: ObservableObject {
     @Published private(set) var users: [User] = []
+    @Published private(set) var messagesManagers: [String: MessagesManager] = [:]
+    let notificationName: String = "AdminUnreadMessageCountChanged"
     // The cumulative unread messages count for all users
     var unreadMessages: Int = 0
     var listener: ListenerRegistration?
@@ -37,6 +39,7 @@ class UserManager: ObservableObject {
             // Map the documents to User instances
             self.users = (querySnapshot?.decodeDocuments() ?? []) as [User]
             self.sortUsers()
+            self.getMessagesManagers()
         }
     }
 
@@ -44,5 +47,37 @@ class UserManager: ObservableObject {
     private func sortUsers() {
         logger.info("Sorting \(users.count) users.")
         self.users.sort(by: { $0.latestTimestamp > $1.latestTimestamp })
+    }
+
+    /// Initialise a messagesManager for each user
+    private func getMessagesManagers() {
+        logger.info("Getting message managers for \(users.count) users.")
+        for user in users {
+            if !messagesManagers.keys.contains(user.id) {
+                logger.info("Getting message manager for user.")
+                messagesManagers[user.id] = MessagesManager(uid: user.id,
+                                                            isCustomer: false)
+            } else {
+                logger.info("No message manager found for user.")
+            }
+        }
+    }
+
+    /// Calculate and store the number of unread messages from all users
+    func countUnreadMessages() {
+        logger.info("Calculating unread messages from all users.")
+
+        var counter = 0
+        for manager in messagesManagers.values {
+            counter += manager.unreadMessages
+        }
+
+        if counter != unreadMessages {
+            logger.info("Setting unread message count to \(counter).")
+            // This needs to be completed before the notification is posted below.
+            unreadMessages = counter
+
+            NotificationCenter.default.post(name: Notification.Name(notificationName), object: nil)
+        }
     }
 }
