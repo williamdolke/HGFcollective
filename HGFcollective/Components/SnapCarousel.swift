@@ -74,7 +74,17 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
 }
 
 struct SnapCarousel_Previews: PreviewProvider {
+    static let artistManager = ArtistManager()
+    static let appDelegate = AppDelegate()
+
     static var previews: some View {
         ContentView()
+            .environmentObject(artistManager)
+            .environmentObject(appDelegate.tabBarState)
+
+        ContentView()
+            .environmentObject(artistManager)
+            .environmentObject(appDelegate.tabBarState)
+            .preferredColorScheme(.dark)
     }
 }

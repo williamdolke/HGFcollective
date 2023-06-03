@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import FirebaseFirestore
 import FirebaseCrashlytics
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 class UserManager: ObservableObject {
     @Published private(set) var users: [User] = []
@@ -79,5 +78,19 @@ class UserManager: ObservableObject {
 
             NotificationCenter.default.post(name: Notification.Name(notificationName), object: nil)
         }
+    }
+
+    /// Store the preferred name for the customer that the admin has entered.
+    /// This is used in place of the customer's uid in UI elements such as in the inboxView as well as in notifications.
+    func storePreferredName(name: String, id: String) {
+        firestoreDB.collection("users").document(id)
+            .setData(["preferredName": name], merge: true) { error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error sending preferredName to Firestore: \(error)")
+                } else {
+                    logger.info("Successfully sent preferredName to database.")
+                }
+            }
     }
 }

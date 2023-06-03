@@ -29,7 +29,6 @@
 		6032FF1C28CD5EAC00C4F22C /* ArtworksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF1B28CD5EAC00C4F22C /* ArtworksView.swift */; };
 		6032FF2028CD7F9600C4F22C /* ArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */; };
 		6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF2128CD7FCC00C4F22C /* ArtistView.swift */; };
-		6033368C29463A20008A4444 /* HGFcollectiveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033368B29463A20008A4444 /* HGFcollectiveTests.swift */; };
 		6033369329463B2B008A4444 /* testArtistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033369229463B2B008A4444 /* testArtistManager.swift */; };
 		6033369529464135008A4444 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369429464135008A4444 /* FirebaseDatabase */; };
 		6033369729464135008A4444 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369629464135008A4444 /* FirebaseDatabaseSwift */; };
@@ -51,6 +50,11 @@
 		6055E91328D64A7300968099 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6055E91228D64A7300968099 /* FirebaseAuth */; };
 		6055E91728D6760900968099 /* Chat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6055E91628D6760900968099 /* Chat.swift */; };
 		60610D6F28E7A7FC00C95711 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60610D6E28E7A7FC00C95711 /* Date+Extension.swift */; };
+		60622CC12A26A0E40007E973 /* AddNewArtistOrArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CC02A26A0E40007E973 /* AddNewArtistOrArtworkView.swift */; };
+		60622CC32A27CCFD0007E973 /* Firestore+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CC22A27CCFD0007E973 /* Firestore+Extension.swift */; };
+		60622CC52A295E0C0007E973 /* CustomToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CC42A295E0C0007E973 /* CustomToolbarItems.swift */; };
+		60622CC72A29FA410007E973 /* Storage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CC62A29FA410007E973 /* Storage+Extension.swift */; };
+		60622CCB2A2AB7C10007E973 /* MultipleImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CCA2A2AB7C10007E973 /* MultipleImagePickerView.swift */; };
 		607391AE28D136C6009BBFBD /* ArtistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607391AD28D136C6009BBFBD /* ArtistManager.swift */; };
 		607391B028D1371A009BBFBD /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607391AF28D1371A009BBFBD /* Artist.swift */; };
 		607391B228D29A5D009BBFBD /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607391B128D29A5C009BBFBD /* Artwork.swift */; };
@@ -80,11 +84,14 @@
 		60D098F1297C78CF00F9CE6C /* CustomListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F0297C78CF00F9CE6C /* CustomListRow.swift */; };
 		60D098F3297CAC1000F9CE6C /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */; };
 		60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */; };
+		60DD63F12A24DE7D00AF8EA3 /* AddNewArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DD63F02A24DE7D00AF8EA3 /* AddNewArtistView.swift */; };
+		60DD63F32A250A6B00AF8EA3 /* AddNewArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */; };
 		60E43E53296E24EE00279D1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60E43E52296E24EE00279D1B /* FirebaseAnalytics */; };
 		60E43E5929747ADB00279D1B /* HorizontalAlignment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E43E5829747ADB00279D1B /* HorizontalAlignment+Extension.swift */; };
 		60EDFFF129FAECE4008B1F68 /* StorageReference+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDFFF029FAECE4008B1F68 /* StorageReference+Extension.swift */; };
 		60EDFFF329FB0E72008B1F68 /* DocumentReference+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDFFF229FB0E72008B1F68 /* DocumentReference+Extension.swift */; };
 		60EDFFF529FB43E2008B1F68 /* QuerySnapshot+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDFFF429FB43E2008B1F68 /* QuerySnapshot+Extension.swift */; };
+		60EDFFF929FC907D008B1F68 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 60EDFFF829FC907D008B1F68 /* FirebaseMessaging */; };
 		60FBD7FE2919AFFE007CB313 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = 60FBD7FD2919AFFE007CB313 /* Logging */; };
 /* End PBXBuildFile section */
 
@@ -140,7 +147,6 @@
 		6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkView.swift; sourceTree = "<group>"; };
 		6032FF2128CD7FCC00C4F22C /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		6033368929463A20008A4444 /* HGFcollectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HGFcollectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6033368B29463A20008A4444 /* HGFcollectiveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HGFcollectiveTests.swift; sourceTree = "<group>"; };
 		6033369229463B2B008A4444 /* testArtistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testArtistManager.swift; sourceTree = "<group>"; };
 		603336A4294946AF008A4444 /* SnapCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapCarousel.swift; sourceTree = "<group>"; };
 		603336A6294948EF008A4444 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
@@ -155,6 +161,11 @@
 		6055E90F28D6329000968099 /* LaunchScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScreen.swift; sourceTree = "<group>"; };
 		6055E91628D6760900968099 /* Chat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chat.swift; sourceTree = "<group>"; };
 		60610D6E28E7A7FC00C95711 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		60622CC02A26A0E40007E973 /* AddNewArtistOrArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtistOrArtworkView.swift; sourceTree = "<group>"; };
+		60622CC22A27CCFD0007E973 /* Firestore+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Firestore+Extension.swift"; sourceTree = "<group>"; };
+		60622CC42A295E0C0007E973 /* CustomToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolbarItems.swift; sourceTree = "<group>"; };
+		60622CC62A29FA410007E973 /* Storage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Extension.swift"; sourceTree = "<group>"; };
+		60622CCA2A2AB7C10007E973 /* MultipleImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleImagePickerView.swift; sourceTree = "<group>"; };
 		607391AD28D136C6009BBFBD /* ArtistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistManager.swift; sourceTree = "<group>"; };
 		607391AF28D1371A009BBFBD /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		607391B128D29A5C009BBFBD /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
@@ -182,6 +193,8 @@
 		60BD97B829EDDEEA00901398 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		60D098F0297C78CF00F9CE6C /* CustomListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListRow.swift; sourceTree = "<group>"; };
 		60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPicker.swift; sourceTree = "<group>"; };
+		60DD63F02A24DE7D00AF8EA3 /* AddNewArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtistView.swift; sourceTree = "<group>"; };
+		60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtworkView.swift; sourceTree = "<group>"; };
 		60E43E5829747ADB00279D1B /* HorizontalAlignment+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HorizontalAlignment+Extension.swift"; sourceTree = "<group>"; };
 		60EDFFF029FAECE4008B1F68 /* StorageReference+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StorageReference+Extension.swift"; sourceTree = "<group>"; };
 		60EDFFF229FB0E72008B1F68 /* DocumentReference+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentReference+Extension.swift"; sourceTree = "<group>"; };
@@ -215,6 +228,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60EDFFF929FC907D008B1F68 /* FirebaseMessaging in Frameworks */,
 				6033369F2946415F008A4444 /* SDWebImageSwiftUI in Frameworks */,
 				6033369729464135008A4444 /* FirebaseDatabaseSwift in Frameworks */,
 				6033369B2946414A008A4444 /* FirebaseStorage in Frameworks */,
@@ -248,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				6003C1F628CEA35300ABA79E /* ChatTitleRow.swift */,
+				60622CC42A295E0C0007E973 /* CustomToolbarItems.swift */,
 				6003C1FB28CEA6B800ABA79E /* MessageBubble.swift */,
 				604223962968E21200F96D5D /* CustomTextField.swift */,
 				60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */,
@@ -345,6 +360,10 @@
 				60A103A928E00EF800DB6A00 /* InboxView.swift */,
 				60A103B328E08B4400DB6A00 /* AdminChatView.swift */,
 				602BCA3328FCC75F0096E607 /* ImagePickerView.swift */,
+				60DD63F02A24DE7D00AF8EA3 /* AddNewArtistView.swift */,
+				60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */,
+				60622CC02A26A0E40007E973 /* AddNewArtistOrArtworkView.swift */,
+				60622CCA2A2AB7C10007E973 /* MultipleImagePickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -352,7 +371,6 @@
 		6033368A29463A20008A4444 /* HGFcollectiveTests */ = {
 			isa = PBXGroup;
 			children = (
-				6033368B29463A20008A4444 /* HGFcollectiveTests.swift */,
 				6033369229463B2B008A4444 /* testArtistManager.swift */,
 			);
 			path = HGFcollectiveTests;
@@ -379,6 +397,8 @@
 				60EDFFF029FAECE4008B1F68 /* StorageReference+Extension.swift */,
 				60EDFFF229FB0E72008B1F68 /* DocumentReference+Extension.swift */,
 				60EDFFF429FB43E2008B1F68 /* QuerySnapshot+Extension.swift */,
+				60622CC22A27CCFD0007E973 /* Firestore+Extension.swift */,
+				60622CC62A29FA410007E973 /* Storage+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -484,6 +504,7 @@
 				6033369C29464151008A4444 /* Logging */,
 				6033369E2946415F008A4444 /* SDWebImageSwiftUI */,
 				60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */,
+				60EDFFF829FC907D008B1F68 /* FirebaseMessaging */,
 			);
 			productName = HGFcollectiveTests;
 			productReference = 6033368929463A20008A4444 /* HGFcollectiveTests.xctest */;
@@ -675,9 +696,12 @@
 				6032FF2028CD7F9600C4F22C /* ArtworkView.swift in Sources */,
 				6055E91728D6760900968099 /* Chat.swift in Sources */,
 				602BCA3428FCC75F0096E607 /* ImagePickerView.swift in Sources */,
+				60622CC32A27CCFD0007E973 /* Firestore+Extension.swift in Sources */,
 				6083EEE128D6BD1E0038A547 /* ImageBubble.swift in Sources */,
 				6032FF0928CD5E7200C4F22C /* ContentView.swift in Sources */,
 				60BD97AF29EAA75400901398 /* LoginUtils.swift in Sources */,
+				60622CCB2A2AB7C10007E973 /* MultipleImagePickerView.swift in Sources */,
+				60622CC72A29FA410007E973 /* Storage+Extension.swift in Sources */,
 				604557F228E24190003EB09B /* UserManager.swift in Sources */,
 				60EDFFF329FB0E72008B1F68 /* DocumentReference+Extension.swift in Sources */,
 				60E43E5929747ADB00279D1B /* HorizontalAlignment+Extension.swift in Sources */,
@@ -686,6 +710,7 @@
 				6003C20228CEA97C00ABA79E /* MessagesManager.swift in Sources */,
 				6003C1FC28CEA6B800ABA79E /* MessageBubble.swift in Sources */,
 				603336A5294946AF008A4444 /* SnapCarousel.swift in Sources */,
+				60DD63F32A250A6B00AF8EA3 /* AddNewArtworkView.swift in Sources */,
 				60610D6F28E7A7FC00C95711 /* Date+Extension.swift in Sources */,
 				60A103B228E0863E00DB6A00 /* ConversationPreviewRow.swift in Sources */,
 				6003C1FE28CEA88000ABA79E /* ChatView.swift in Sources */,
@@ -698,10 +723,12 @@
 				6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */,
 				60ADDD5E2958770F00676A3C /* AboutView.swift in Sources */,
 				60EDFFF529FB43E2008B1F68 /* QuerySnapshot+Extension.swift in Sources */,
+				60622CC52A295E0C0007E973 /* CustomToolbarItems.swift in Sources */,
 				607391B228D29A5D009BBFBD /* Artwork.swift in Sources */,
 				607391AE28D136C6009BBFBD /* ArtistManager.swift in Sources */,
 				60BB546B29DA3012008586F2 /* TabBarState.swift in Sources */,
 				60D098F1297C78CF00F9CE6C /* CustomListRow.swift in Sources */,
+				60622CC12A26A0E40007E973 /* AddNewArtistOrArtworkView.swift in Sources */,
 				60A103B428E08B4400DB6A00 /* AdminChatView.swift in Sources */,
 				60A103AA28E00EF800DB6A00 /* InboxView.swift in Sources */,
 				6055E91028D6329000968099 /* LaunchScreen.swift in Sources */,
@@ -711,6 +738,7 @@
 				60496E4428D53476003465EF /* EnquiryManager.swift in Sources */,
 				607391B028D1371A009BBFBD /* Artist.swift in Sources */,
 				6003C1FA28CEA65A00ABA79E /* Message.swift in Sources */,
+				60DD63F12A24DE7D00AF8EA3 /* AddNewArtistView.swift in Sources */,
 				60EDFFF129FAECE4008B1F68 /* StorageReference+Extension.swift in Sources */,
 				6003C1F428CE751900ABA79E /* MailView.swift in Sources */,
 				60A103A628DF53E600DB6A00 /* LoginView.swift in Sources */,
@@ -730,7 +758,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6033369329463B2B008A4444 /* testArtistManager.swift in Sources */,
-				6033368C29463A20008A4444 /* HGFcollectiveTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1211,6 +1238,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		60EDFFF829FC907D008B1F68 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		60FBD7FD2919AFFE007CB313 /* Logging */ = {
 			isa = XCSwiftPackageProductDependency;

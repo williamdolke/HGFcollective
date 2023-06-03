@@ -28,5 +28,8 @@ struct HTMLView: UIViewRepresentable {
 struct HTMLView_Previews: PreviewProvider {
     static var previews: some View {
         HTMLView(filePath: "PrivacyPolicy", ofType: "txt")
+
+        HTMLView(filePath: "PrivacyPolicy", ofType: "txt")
+            .preferredColorScheme(.dark)
     }
 }

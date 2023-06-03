@@ -6,9 +6,8 @@
 //
 
 import Foundation
-import FirebaseFirestore
 import FirebaseCrashlytics
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import SwiftUI
 
 class ArtistManager: ObservableObject {
@@ -165,4 +164,69 @@ class ArtistManager: ObservableObject {
         }
     }
     // swiftlint:enable cyclomatic_complexity
+
+    func createNewArtist(data: [String:Any]) {
+        logger.info("Creating new artist.")
+
+        // swiftlint:disable:next force_cast
+        firestoreDB.collection("artists").document(data["name"] as! String)
+            .setData(data, merge: false) { error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error creating new artist: \(error)")
+                } else {
+                    logger.info("Successfully created new artist.")
+                }
+            }
+    }
+
+    func deleteArtist(artist: String) {
+        logger.info("Deleting artist: \(artist)")
+
+        // Documents in subcollections i.e. artwork documents are not deleted by this operation.
+        // This allows admins to add all artworks for an artist without this being visible to
+        // customers and finally add the artist to make then all appear at the same time.
+        let docPath = "artists/" + artist
+        firestoreDB.deleteDocument(docPath: docPath) { error in
+            if let error = error {
+                logger.error("Error deleting artist \(artist): \(error)")
+            } else {
+                logger.info("Artist \(artist) deleted successfully.")
+                NavigationUtils.popToRootView()
+            }
+        }
+    }
+
+    /// Admins can add all the artworks for an artist without it being visible to users
+    /// and finally add the artist to make then all appear in the app at the same time.
+    func createNewArtwork(artist: String, artwork: String, data: [String: Any]) {
+        logger.info("Creating new artwork.")
+
+        firestoreDB.collection("artists").document(artist).collection("artworks").document(artwork)
+            .setData(data) { error in
+                if let error = error {
+                    Crashlytics.crashlytics().record(error: error)
+                    logger.error("Error creating new artist: \(error)")
+                } else {
+                    logger.info("Successfully created new artist.")
+                }
+            }
+    }
+
+    func deleteArtwork(artist: String, artwork: String) {
+        logger.info("Deleting artwork: \(artwork) for artist: \(artist)")
+
+        // TODO: Delete any images from storage
+
+        // Delete the artwork document
+        let docPath = "artists/" + artist + "/artworks/" + artwork
+        firestoreDB.deleteDocument(docPath: docPath) { error in
+            if let error = error {
+                logger.error("Error deleting artwork \(artwork): \(error)")
+            } else {
+                logger.info("Artwork \(artwork) deleted successfully.")
+                NavigationUtils.popToRootView()
+            }
+        }
+    }
 }

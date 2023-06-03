@@ -54,13 +54,16 @@ struct LaunchScreen: View {
 
 struct LaunchScreen_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
+    static var appDelegate = AppDelegate()
 
     static var previews: some View {
         LaunchScreen()
             .environmentObject(artistManager)
+            .environmentObject(appDelegate.tabBarState)
 
         LaunchScreen()
             .environmentObject(artistManager)
+            .environmentObject(appDelegate.tabBarState)
             .preferredColorScheme(.dark)
     }
 }

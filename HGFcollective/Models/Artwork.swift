@@ -10,13 +10,13 @@ import Foundation
 /// - Parameters
 ///   - id: identifier
 ///   - name: Name of the artwork
-///   - url: URL of the image of the artwork
+///   - urls: Array of URLs of the artwork images
 ///   - editionNumber: Edition number
 ///   - editionSize: Number of pieces produced in  the edition
 ///   - material: Materials used to produce the artwork
 ///   - dimensionUnframed: Unframed dimensions
 ///   - dimensionFramed: Framed dimensions
-///   - year: Year of creation
+///   - year: Year of creation/release
 ///   - signed: "Yes" if the artwork is signed, "No" otherwise
 ///   - numbered: "Yes" if the artwork is numbered, "No" otherwise
 ///   - stamped: "Yes" if the artwork is stamped, "No" otherwise

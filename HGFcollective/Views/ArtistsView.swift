@@ -13,6 +13,8 @@ struct ArtistsView: View {
 
     @State private var searchQuery = ""
     @State private var segmentationSelection: ProfileSection = .grid
+    @State private var showAddArtistOrArtworkView = false
+
     private let height = UIScreen.main.bounds.size.height
     private let width = UIScreen.main.bounds.size.width
 
@@ -44,12 +46,11 @@ struct ArtistsView: View {
             }
             .navigationTitle("Artists")
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image("IconCircle")
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                }
+                CustomToolbarItems(showView: $showAddArtistOrArtworkView)
+            }
+            .sheet(isPresented: $showAddArtistOrArtworkView) {
+                AddNewArtistOrArtworkView()
+                    .accentColor(Color.theme.navigationBarAccent)
             }
             .searchable(text: $searchQuery, prompt: "Search By Artist Name")
             .onAppear {
@@ -115,6 +116,7 @@ struct ArtistsView: View {
                         .cornerRadius(0.1 * min(height, width))
 
                         Text(artist.name)
+                            .foregroundColor(Color.theme.systemBackgroundInvert)
                     }
                 }
             }

@@ -14,6 +14,8 @@ struct ArtworksView: View {
 
     @State private var searchQuery = ""
     @State private var segmentationSelection: ProfileSection = .grid
+    @State private var showAddArtistOrArtworkView = false
+
     private let height = UIScreen.main.bounds.size.height
     private let width = UIScreen.main.bounds.size.width
 
@@ -46,15 +48,13 @@ struct ArtworksView: View {
             }
             .navigationTitle("Artworks")
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image("IconCircle")
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                }
+                CustomToolbarItems(showView: $showAddArtistOrArtworkView)
+            }
+            .sheet(isPresented: $showAddArtistOrArtworkView) {
+                AddNewArtistOrArtworkView()
+                    .accentColor(Color.theme.navigationBarAccent)
             }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
-            .transition(.asymmetric(insertion: .move(edge: .trailing), removal: .move(edge: .leading)))
             .onAppear {
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(ArtworksView.self)",
@@ -111,7 +111,7 @@ struct ArtworksView: View {
             ForEach(filteredArtists.0) { artist in
                 ForEach(artist.artworks!) { artwork in
                     if filteredArtists.1.contains(artwork.name) {
-                        NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                        NavigationLink(destination: ArtworkView(artistName: artist.name, artwork: artwork)) {
                             VStack {
                                 ImageBubble(assetName: artwork.name + " 1",
                                             height: nil,
@@ -124,12 +124,15 @@ struct ArtworksView: View {
                                 )
 
                                 Text(artwork.name)
+                                    .foregroundColor(Color.theme.systemBackgroundInvert)
                                 HStack(spacing: 0) {
                                     Text(artist.name)
                                     if let year = artwork.year {
                                         Text(", \(year)")
                                     }
-                                }.font(.subheadline).italic()
+                                }
+                                .font(.subheadline).italic()
+                                .foregroundColor(Color.theme.systemBackgroundInvert)
                             }
                         }
                     }
@@ -155,7 +158,7 @@ struct ArtworksView: View {
             // that meets the filter criteria
             ForEach(filteredArtist.artworks!) { artwork in
                 if filteredArtists.1.contains(artwork.name) {
-                    NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                    NavigationLink(destination: ArtworkView(artistName: filteredArtist.name, artwork: artwork)) {
                         VStack {
                             HStack {
                                 CustomListRow(assetName: artwork.name + " 1", url: artwork.urls?[0], text: artwork.name)
@@ -186,7 +189,7 @@ struct ArtworksView: View {
             ForEach(filteredArtists.0) { artist in
                 ForEach(artist.artworks!) { artwork in
                     if (filteredArtists.1.contains(artwork.name) && favourites.contains(artwork.name)) {
-                        NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                        NavigationLink(destination: ArtworkView(artistName: artist.name, artwork: artwork)) {
                             ImageBubble(assetName: artwork.name + " 1",
                                         height: nil,
                                         width: 0.45 * width,

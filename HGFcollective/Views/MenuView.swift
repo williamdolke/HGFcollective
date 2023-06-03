@@ -9,6 +9,8 @@ import SwiftUI
 import FirebaseAnalytics
 
 struct MenuView: View {
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         NavigationView {
             Form {
@@ -27,10 +29,18 @@ struct MenuView: View {
     private var generalSection: some View {
         Section {
             NavigationLink(destination: AboutView()) {
-                Text("About")
+                HStack {
+                    Image(systemName: "questionmark.square.fill")
+                        .foregroundColor(colorScheme == .dark ? Color.theme.systemBackgroundInvert : Color.theme.accent)
+                    Text("About")
+                }
             }
             NavigationLink(destination: ReportView()) {
-                Text("Report a problem")
+                HStack {
+                    Image(systemName: "exclamationmark.bubble.fill")
+                        .foregroundColor(colorScheme == .dark ? Color.theme.systemBackgroundInvert : Color.theme.accent)
+                    Text("Report a problem")
+                }
             }
         } header: {
             Text("General")
@@ -41,30 +51,33 @@ struct MenuView: View {
         Section {
             NavigationLink(destination: HTMLView(filePath: "PrivacyPolicy", ofType: "txt")
                 .navigationTitle("Privacy Policy")) {
-                Text("Privacy Policy")
-            }
-            .onTapGesture {
-                Analytics.logEvent(AnalyticsEventScreenView,
-                                   parameters: [AnalyticsParameterScreenName: "PrivacyPolicyScreen",
-                                               AnalyticsParameterScreenClass: "PrivacyPolicyScreen"])
+                    HStack {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .foregroundColor(colorScheme == .dark ?
+                                             Color.theme.systemBackgroundInvert :
+                                                Color.theme.accent)
+                        Text("Privacy Policy")
+                    }
             }
             NavigationLink(destination: HTMLView(filePath: "TermsAndConditions", ofType: "txt")
                 .navigationTitle("Terms and Conditions")) {
-                Text("Terms and Conditions")
-            }
-            .onTapGesture {
-                Analytics.logEvent(AnalyticsEventScreenView,
-                                   parameters: [AnalyticsParameterScreenName: "TermsAndConditionsScreen",
-                                               AnalyticsParameterScreenClass: "TermsAndConditionsScreen"])
+                    HStack {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .foregroundColor(colorScheme == .dark ?
+                                             Color.theme.systemBackgroundInvert :
+                                                Color.theme.accent)
+                        Text("Terms and Conditions")
+                    }
             }
             NavigationLink(destination: HTMLView(filePath: "EULA", ofType: "txt")
                 .navigationTitle("End User License Agreement")) {
-                Text("End User License Agreement")
-            }
-            .onTapGesture {
-                Analytics.logEvent(AnalyticsEventScreenView,
-                                   parameters: [AnalyticsParameterScreenName: "EULAScreen",
-                                               AnalyticsParameterScreenClass: "EULAScreen"])
+                    HStack {
+                        Image(systemName: "doc.text.magnifyingglass")
+                            .foregroundColor(colorScheme == .dark ?
+                                             Color.theme.systemBackgroundInvert :
+                                                Color.theme.accent)
+                        Text("End User License Agreement")
+                    }
             }
         } header: {
             Text("Legal")
@@ -75,5 +88,8 @@ struct MenuView: View {
 struct MenuView_Previews: PreviewProvider {
     static var previews: some View {
         MenuView()
+
+        MenuView()
+            .preferredColorScheme(.dark)
     }
 }

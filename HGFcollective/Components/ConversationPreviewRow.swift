@@ -14,6 +14,8 @@ struct ConversationPreviewRow: View {
     init(user: User) {
         self.user = user
 
+        // Display the customers displayed name has been specified or their uid if not.
+        // If the string is long cut it off and add an ellipse
         if let preferredName = user.preferredName {
             displayName = preferredName.count > 18 ? preferredName.prefix(15) + "..." : preferredName
         } else {
@@ -40,12 +42,14 @@ struct ConversationPreviewRow: View {
                     Text(displayName)
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(Color.theme.systemBackgroundInvert)
-                    Text(user.messagePreview.prefix(18) + "...")
+                    // If the message is long cut it off and add an ellipse
+                    Text(user.messagePreview.prefix(18) + (user.messagePreview.count > 18 ? "..." : ""))
                         .font(.system(size: 16))
                         .foregroundColor(Color.theme.accentSecondary)
                 }
                 Spacer()
 
+                // Timestamp of the most recent message
                 Text(user.latestTimestamp.formattedDateString(format: "E, d MMM HH:mm:ss"))
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(Color.theme.accentSecondary)

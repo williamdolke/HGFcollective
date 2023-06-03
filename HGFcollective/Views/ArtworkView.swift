@@ -20,7 +20,11 @@ struct ArtworkView: View {
     @State private var currentIndex: Int = 0
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
+    @State private var showDeleteOptions: Bool = false
 
+    @AppStorage("isAdmin") var isAdmin: Bool = false
+
+    var artistName: String
     var artwork: Artwork
 
     var body: some View {
@@ -69,6 +73,31 @@ struct ArtworkView: View {
             }
         }
         .navigationBarTitle(artwork.name, displayMode: .inline)
+        .toolbar {
+            if isAdmin {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        logger.info("User tapped the delete button.")
+                        showDeleteOptions.toggle()
+                    } label: {
+                        Image(systemName: "trash")
+                            .imageScale(.large)
+                    }
+                }
+            }
+        }
+        .actionSheet(isPresented: $showDeleteOptions) {
+            .init(title: Text("Are you sure you'd like to delete this artwork?"),
+                  buttons: [
+                    .destructive(Text("Yes"), action: {
+                        logger.info("User tapped the 'Yes' button.")
+                        artistManager.deleteArtwork(artist: artistName, artwork: artwork.name)
+                    }),
+                    .cancel(Text("Cancel"), action: {
+                        logger.info("User tapped 'Cancel' button.")
+                    })
+                  ])
+        }
         .onAppear {
             // Check for images of the artwork to display
             for index in 1...10 {
@@ -210,19 +239,21 @@ struct ArtworkView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
     static let favourites = Favourites()
 
+    static let artistName = "Banksy"
     static let artwork = Artwork(name: "Artwork",
-                                     editionNumber: "1",
-                                     editionSize: "Original",
-                                     material: "Oil paint on canvas",
-                                     signed: "Yes",
-                                     price: "£1000")
+                                 description: "This is a large original oil painting.",
+                                 editionNumber: "1",
+                                 editionSize: "Original",
+                                 material: "Oil paint on canvas",
+                                 signed: "Yes",
+                                 price: "£1000")
 
     static var previews: some View {
-        ArtworkView(artwork: artwork)
+        ArtworkView(artistName: artistName, artwork: artwork)
             .environmentObject(artistManager)
             .environmentObject(favourites)
 
-        ArtworkView(artwork: artwork)
+        ArtworkView(artistName: artistName, artwork: artwork)
             .environmentObject(artistManager)
             .environmentObject(favourites)
             .preferredColorScheme(.dark)

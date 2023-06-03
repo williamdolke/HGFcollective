@@ -9,7 +9,6 @@ import Foundation
 import FirebaseAuth
 import FirebaseAnalytics
 import FirebaseFirestore
-import FirebaseFirestoreSwift
 import FirebaseCrashlytics
 
 struct LoginUtils {

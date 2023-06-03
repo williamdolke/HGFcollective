@@ -85,5 +85,6 @@ struct MessageBubble_Previews: PreviewProvider {
         MessageBubble(message: message, isCustomer: message.isCustomer)
 
         MessageBubble(message: image, isCustomer: message.isCustomer)
+            .preferredColorScheme(.dark)
     }
 }

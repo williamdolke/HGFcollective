@@ -9,7 +9,9 @@ import SwiftUI
 
 /// - Parameters
 ///   - id: identifier
-///   - assetName: Name fo the image in Assets.xcassets
+///   - assetName: Name of the image in Assets.xcassets
+///   - index: Index of the image
+///   - url: URL of the image
 struct Asset: Identifiable {
     var id = UUID().uuidString
     var assetName: String

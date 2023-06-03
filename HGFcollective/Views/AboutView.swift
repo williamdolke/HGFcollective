@@ -10,8 +10,7 @@ import FirebaseAnalytics
 
 struct AboutView: View {
     // AppStorage is a property wrapper for accessing values stored in UserDefaults
-    @AppStorage("aboutScreenShown")
-    var aboutScreenShown: Bool = false
+    @AppStorage("aboutScreenShown") var aboutScreenShown: Bool = false
 
     let path = Bundle.main.path(forResource: "About", ofType: "txt")
 
@@ -22,14 +21,18 @@ struct AboutView: View {
             ScrollView(showsIndicators: false) {
                 VStack {
                     let squareDimension = 0.4 * min(geo.size.height, geo.size.width)
-
                     Image("IconSquare")
                         .resizable()
                         .frame(width: squareDimension, height: squareDimension)
                         .padding()
 
-                    let content = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+                    HStack {
+                        Text("About")
+                            .font(.title)
+                        Spacer()
+                    }
 
+                    let content = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
                     Text(content ?? "")
                         .padding()
                         .background(.ultraThinMaterial,

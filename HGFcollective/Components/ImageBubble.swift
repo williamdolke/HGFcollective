@@ -60,5 +60,10 @@ struct ImageBubble_Previews: PreviewProvider {
         ImageBubble(assetName: "Artwork 1",
                     height: 400,
                     width: 300)
+
+        ImageBubble(assetName: "Artwork 1",
+                    height: 400,
+                    width: 300)
+        .preferredColorScheme(.dark)
     }
 }

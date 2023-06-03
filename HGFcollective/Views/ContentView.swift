@@ -15,9 +15,10 @@ struct ContentView: View {
 
     @StateObject var favourites = Favourites()
 
-    // AppStorage is a property wrapper for accessing values stored in UserDefaults
-    @AppStorage("aboutScreenShown")
-    var aboutScreenShown: Bool = false
+    // AppStorage is a property wrapper for accessing values stored in UserDefaults.
+    // When the value stored changes, these variables will be updated automatically.
+    @AppStorage("aboutScreenShown") var aboutScreenShown: Bool = false
+    @AppStorage("isAdmin") var isAdmin: Bool = false
     // swiftlint:disable:next force_cast
     var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String)
     var userManager: UserManager?
@@ -128,11 +129,12 @@ struct ContentView: View {
 
     @ViewBuilder
     private func customerOrAdminView() -> some View {
-        let isAdmin = UserDefaults.standard.bool(forKey: "isAdmin")
         if isAdmin {
             InboxView()
                 .environmentObject(userManager!)
                 .environmentObject(messagesManager)
+                // On iPad, navigationLinks don't work in InboxView without the following
+                .navigationViewStyle(StackNavigationViewStyle())
         } else {
             ChatView()
                 .environmentObject(messagesManager)
@@ -142,13 +144,16 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static let artistManager = ArtistManager()
+    static let appDelegate = AppDelegate()
 
     static var previews: some View {
         ContentView()
             .environmentObject(artistManager)
+            .environmentObject(appDelegate.tabBarState)
 
         ContentView()
             .environmentObject(artistManager)
+            .environmentObject(appDelegate.tabBarState)
             .preferredColorScheme(.dark)
     }
 }

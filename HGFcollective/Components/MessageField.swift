@@ -16,15 +16,18 @@ struct MessageField: View {
     @State private var message = ""
     @State private var showImagePicker = false
     @State private var showLogin: Bool = false
-    @State private var selectedItem: PhotosPickerItem?
+
+    @FocusState private var isFocused: Bool
+
+    var placeholder = Text("Enter your message here")
+    var editingChanged: (Bool) -> Void = { _ in }
+    var commit: () -> Void = { }
 
     var body: some View {
         HStack {
             mediaButton
 
-            CustomTextField(text: $message, image: $image, placeholder: Text("Enter your message here"))
-                .padding()
-                .contentShape(Rectangle())
+            textAndImageInput
 
             sendButton
         }
@@ -64,6 +67,35 @@ struct MessageField: View {
         }
     }
 
+    private var textAndImageInput: some View {
+        ZStack(alignment: .leading) {
+            VStack {
+                CustomTextField(title: "Enter your message here", text: $message, isFocused: $isFocused) {
+                    isFocused = true
+                }
+                .padding()
+
+                // Display an image if the user has specified one to send
+                if (image != nil) {
+                    Image(uiImage: image!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .overlay {
+                            // Overlay a cross which lets the user delete the picture
+                            Button {
+                                logger.info("User pressed the close button to delete the image from the chat message")
+                                image = nil
+                            } label: {
+                                Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(Color.theme.favourite)
+                            }
+                        }
+                }
+            }
+        }
+    }
+
     private var sendButton: some View {
         NavigationLink(destination: LoginView().navigationBarBackButtonHidden(true), isActive: $showLogin) {
             Button {
@@ -95,6 +127,8 @@ struct MessageField: View {
 
 struct MessageField_Previews: PreviewProvider {
     static let messagesManager = MessagesManager(uid: "test")
+    @State static var text = ""
+    @State static var image = UIImage(systemName: "photo.artframe")
 
     static var previews: some View {
         MessageField()

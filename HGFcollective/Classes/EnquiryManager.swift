@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseCrashlytics
-import FirebaseFirestoreSwift
 
 class EnquiryManager: ObservableObject {
     @Published var chat: Chat?

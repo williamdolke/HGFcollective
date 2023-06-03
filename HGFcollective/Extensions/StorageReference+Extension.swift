@@ -10,7 +10,7 @@ import FirebaseStorage
 import FirebaseCrashlytics
 
 extension StorageReference {
-    /// Delete the each file/folder contained in a folder in Firebase Storage
+    /// Delete every file/folder contained in a folder in Firebase Storage
     func deleteFolderContents() {
         // List the contents of the folder and delete each individual file/folder.
         // The folder will cease to exist once it has no contents.

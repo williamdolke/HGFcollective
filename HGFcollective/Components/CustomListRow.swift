@@ -35,5 +35,8 @@ struct CustomListRow: View {
 struct CustomListRow_Previews: PreviewProvider {
     static var previews: some View {
         CustomListRow(assetName: "", text: "Artist")
+
+        CustomListRow(assetName: "", text: "Artist")
+            .preferredColorScheme(.dark)
     }
 }

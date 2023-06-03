@@ -20,7 +20,7 @@ extension DocumentReference {
                 return
             }
 
-            // Delete the subcollection
+            // Delete the subcollection documents
             self.collection(subCollection).getDocuments { (snapshot, error) in
                 if let error = error {
                     Crashlytics.crashlytics().record(error: error)

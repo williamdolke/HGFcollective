@@ -9,12 +9,17 @@ import SwiftUI
 import FirebaseAnalytics
 
 struct ArtistView: View {
-    var artist: Artist
+    @EnvironmentObject var artistManager: ArtistManager
 
     // Store images to be shown in the snap carousel
     @State private var images: [Asset] = []
     // Store the current image in the snap carousel
     @State private var currentIndex: Int = 0
+    @State private var showDeleteOptions: Bool = false
+
+    @AppStorage("isAdmin") var isAdmin: Bool = false
+
+    var artist: Artist
 
     var body: some View {
         // The GeometryReader needs to be defined outside the ScrollView, otherwise it won't
@@ -24,7 +29,8 @@ struct ArtistView: View {
                 VStack {
                     SnapCarousel(index: $currentIndex, items: images) { image in
                         let haveURL = image.url != ""
-                        NavigationLink(destination: ArtworkView(artwork: (artist.artworks?[image.index])!)) {
+                        NavigationLink(destination: ArtworkView(artistName: artist.name,
+                                                                artwork: (artist.artworks?[image.index])!)) {
                             ImageBubble(assetName: image.assetName,
                                         url: haveURL ? image.url : nil,
                                         height: 0.6 * geo.size.height,
@@ -40,6 +46,32 @@ struct ArtistView: View {
             }
         }
         .navigationBarTitle(artist.name, displayMode: .inline)
+        .toolbar {
+            if isAdmin {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        logger.info("User tapped the delete button.")
+                        showDeleteOptions.toggle()
+                    } label: {
+                        Image(systemName: "trash")
+                            .imageScale(.large)
+                    }
+                }
+            }
+        }
+        .actionSheet(isPresented: $showDeleteOptions) {
+            .init(title: Text("Are you sure you'd like to delete this artist?"),
+                  message: Text("This will delete all of the artist's artworks."),
+                  buttons: [
+                    .destructive(Text("Yes"), action: {
+                        logger.info("User tapped the 'Yes' button.")
+                        artistManager.deleteArtist(artist: artist.name)
+                    }),
+                    .cancel(Text("Cancel"), action: {
+                        logger.info("User tapped 'Cancel' button.")
+                    })
+                  ])
+        }
         .onAppear {
             // Check which artworks have a primary/first image to display
             for index in 1...10 {
@@ -103,7 +135,6 @@ struct ArtistView_Previews: PreviewProvider {
     static let artist = Artist(name: "Artist",
                         biography: """
                         I am an artist that likes to paint with oil paints.
-                        My favourite thing to paint is the sea!
                         """,
                         artworks: [Artwork(name: "Mr monopoly man"),
                                    Artwork(name: "Mr monopoly man vinyl and opening night memorabilia")])

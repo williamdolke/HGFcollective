@@ -35,7 +35,7 @@ struct LoginView: View {
             loginButton
 
             // Show the error message if the login fails
-            Text(self.loginStatusMessage)
+            Text(loginStatusMessage)
                 .foregroundColor(Color.theme.favourite)
         }
         .padding()
@@ -50,16 +50,11 @@ struct LoginView: View {
     /// Text fields for the user to enter their email and password
     private var textFields: some View {
         Group {
-            TextField("Email", text: $email)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                .accentColor(Color.theme.systemBackgroundInvert)
-                // Allows the user to tap anywhere, including
-                // the padded area, to focus the text field
-                .focused($isEmailFocused)
-                .onTapGesture {
-                    isEmailFocused = true
-                }
+            CustomTextField(title: "Email", text: $email, isFocused: $isEmailFocused) {
+                isEmailFocused = true
+            }
+            .keyboardType(.emailAddress)
+            .autocapitalization(.none)
 
             if isSecured {
                 // Hide the password from the user
@@ -131,8 +126,8 @@ struct LoginView: View {
         logger.info("Logging into Firebase with existing credentials.")
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
-                logger.error("Failed to login user: \(error)")
-                loginStatusMessage = "Failed to login user: \(error)"
+                logger.error("Log in failed: \(error)")
+                loginStatusMessage = "Log in failed: \(error)"
 
                 Crashlytics.crashlytics().record(error: error)
                 return

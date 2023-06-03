@@ -56,17 +56,18 @@ struct InboxView: View {
         .foregroundColor(Color.theme.navigationBarAccent)
         .padding()
         .actionSheet(isPresented: $showLogOutOptions) {
-            .init(title: Text("Sign out?"), buttons: [
-                .destructive(Text("Yes"), action: {
-                    logger.info("User tapped the 'Yes' button.")
+            .init(title: Text("Sign out?"),
+                  buttons: [
+                    .destructive(Text("Yes"), action: {
+                        logger.info("User tapped the 'Yes' button.")
 
-                    signOutButtonAction()
-                    dismiss()
-                }),
-                .cancel(Text("Cancel"), action: {
-                    logger.info("User tapped 'Cancel' button.")
-                })
-            ])
+                        signOutButtonAction()
+                        dismiss()
+                    }),
+                    .cancel(Text("Cancel"), action: {
+                        logger.info("User tapped 'Cancel' button.")
+                    })
+                  ])
         }
         .background(Color.theme.accent)
     }

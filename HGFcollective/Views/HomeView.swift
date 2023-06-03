@@ -12,6 +12,7 @@ struct HomeView: View {
     @EnvironmentObject var artistManager: ArtistManager
 
     @State private var showMenu = false
+    @State private var showAddArtistOrArtworkView = false
 
     var body: some View {
         NavigationStack {
@@ -33,12 +34,11 @@ struct HomeView: View {
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Image("IconCircle")
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                }
+                CustomToolbarItems(showView: $showAddArtistOrArtworkView)
+            }
+            .sheet(isPresented: $showAddArtistOrArtworkView) {
+                AddNewArtistOrArtworkView()
+                    .accentColor(Color.theme.navigationBarAccent)
             }
             .sheet(isPresented: $showMenu) {
                 MenuView()
@@ -63,8 +63,7 @@ struct HomeView: View {
                 logger.info("User tapped the menu button")
             } label: {
                 Image(systemName: "line.3.horizontal")
-                    .resizable()
-                    .frame(width: 28, height: 28)
+                    .imageScale(.large)
                     .padding()
             }
         }
@@ -125,7 +124,7 @@ struct HomeView: View {
                     // the artwork as well as the rest of the images of the artwork.
                     ForEach(0..<(featuredArtist.artworks?.count ?? 0), id: \.self) { index in
                         let artwork = featuredArtist.artworks![index]
-                        NavigationLink(destination: ArtworkView(artwork: artwork)) {
+                        NavigationLink(destination: ArtworkView(artistName: featuredArtist.name, artwork: artwork)) {
                             ImageBubble(assetName: artwork.name + " 1",
                                         url: artwork.urls?[0],
                                         height: geo.size.height,
