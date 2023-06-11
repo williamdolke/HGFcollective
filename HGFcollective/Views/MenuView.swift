@@ -19,6 +19,8 @@ struct MenuView: View {
             }
             .navigationTitle("Menu")
             .onAppear {
+                logger.info("Presenting menu view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(MenuView.self)",
                                                AnalyticsParameterScreenClass: "\(MenuView.self)"])

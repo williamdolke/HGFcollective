@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 import FirebaseCrashlytics
 import FirebaseFirestore
-import SwiftUI
+import FirebaseStorage
 
 class ArtistManager: ObservableObject {
     @Published var artists: [Artist] = []
@@ -165,7 +166,29 @@ class ArtistManager: ObservableObject {
     }
     // swiftlint:enable cyclomatic_complexity
 
-    func createNewArtist(data: [String:Any]) {
+    /// Check if the artist already exists before attempting to add it. It is required that
+    /// the artist has a document at this path for it to exist and have associated artworks
+    /// displayed in the app.
+    func createArtistIfDoesNotExist(name: String, biography: String, completion: @escaping (String?) -> Void) {
+        let artistPath = "artists/" + name
+        firestoreDB.checkDocumentExists(docPath: artistPath) { exists, error in
+            if let error = error {
+                logger.error("Error checking if artist \(name) already exists: \(error)")
+                completion("Error: An error occurred when checking if the artist already exists.")
+            } else {
+                if exists {
+                    logger.info("User has attempted to add an artist that already exists: \(name)")
+                    completion("Error: An artist with the name \(name) already exists.")
+                } else {
+                    logger.info("Artist \(name) does not already exist. Creating new artist.")
+                    let newArtistData = ["name": name, "biography": biography]
+                    self.createNewArtist(data: newArtistData)
+                }
+            }
+        }
+    }
+
+    private func createNewArtist(data: [String:Any]) {
         logger.info("Creating new artist.")
 
         // swiftlint:disable:next force_cast
@@ -206,17 +229,28 @@ class ArtistManager: ObservableObject {
             .setData(data) { error in
                 if let error = error {
                     Crashlytics.crashlytics().record(error: error)
-                    logger.error("Error creating new artist: \(error)")
+                    logger.error("Error creating new artwork: \(error)")
                 } else {
-                    logger.info("Successfully created new artist.")
+                    logger.info("Successfully created new artwork.")
                 }
             }
     }
 
-    func deleteArtwork(artist: String, artwork: String) {
+    func deleteArtwork(artist: String, artwork: String, urls: [String]?) {
         logger.info("Deleting artwork: \(artwork) for artist: \(artist)")
 
-        // TODO: Delete any images from storage
+        // Pop to root before deleting database documents and/or images to
+        // avoid errors displaying images that don't exist anymore.
+        // A crash was occurring when deleting an artwork that was navigated
+        // to through the ArtistView when popping to root after everything
+        // had been deleted.
+        NavigationUtils.popToRootView()
+
+        // If the artwork contains images that are not build into the app then
+        // delete all the images from Storage if that's where they are located
+        if let urls = urls {
+            Storage.storage().deleteFiles(atURLs: urls)
+        }
 
         // Delete the artwork document
         let docPath = "artists/" + artist + "/artworks/" + artwork
@@ -225,7 +259,6 @@ class ArtistManager: ObservableObject {
                 logger.error("Error deleting artwork \(artwork): \(error)")
             } else {
                 logger.info("Artwork \(artwork) deleted successfully.")
-                NavigationUtils.popToRootView()
             }
         }
     }

@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseAnalytics
 
+/// Present the launch screen when the app first launches and then the content view after a defined period of time.
 struct LaunchScreen: View {
     @State private var isActive = false // True when ContentView is presented
     @State private var size = 0.8
@@ -21,7 +22,11 @@ struct LaunchScreen: View {
                 .onAppear {
                     logger.info("Presenting launch screen.")
 
-                    // Switch to the home view tab after a delay
+                    Analytics.logEvent(AnalyticsEventScreenView,
+                                       parameters: [AnalyticsParameterScreenName: "\(LaunchScreen.self)",
+                                                   AnalyticsParameterScreenClass: "\(LaunchScreen.self)"])
+
+                    // Switch to the content view after a delay
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
                         isActive = true
                     }
@@ -44,10 +49,6 @@ struct LaunchScreen: View {
                 size = 0.9
                 opacity = 1.0
             }
-
-            Analytics.logEvent(AnalyticsEventScreenView,
-                               parameters: [AnalyticsParameterScreenName: "\(LaunchScreen.self)",
-                                           AnalyticsParameterScreenClass: "\(LaunchScreen.self)"])
         }
     }
 }

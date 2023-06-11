@@ -42,6 +42,10 @@ class Favourites: ObservableObject {
         save()
     }
 
+    func isEmpty() -> Bool {
+        return artworkNames.isEmpty
+    }
+
     /// Save the set of artwork names to UserDefaults
     private func save() {
         if let encoded = try? JSONEncoder().encode(artworkNames) {

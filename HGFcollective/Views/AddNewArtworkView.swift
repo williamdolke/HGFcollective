@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAnalytics
+import FirebaseStorage
 import PhotosUI
 
 struct AddNewArtworkView: View {
@@ -15,7 +16,7 @@ struct AddNewArtworkView: View {
     @State private var artistName = ""
     @State private var artworkName = ""
     @State private var description = ""
-    @State private var urls: [String] = []
+    @State private var urls: [String] = Array(repeating: "", count: Constants.maximumImages)
     @State private var editionNumber = ""
     @State private var editionSize = ""
     @State private var material = ""
@@ -36,25 +37,42 @@ struct AddNewArtworkView: View {
     @State private var isAdvancedExpanded = false
 
     // Photos
-    private var limit = 10
     @State private var images = [UIImage]()
     @State private var showImagePicker = false
     @State private var compressionRatio: Double = 0.5
 
-    @FocusState private var isArtworkNameFocused: Bool
-    @FocusState private var isArtistNameFocused: Bool
-    @FocusState private var isDescriptionFocused: Bool
-    @FocusState private var isEditionNumberFocused: Bool
-    @FocusState private var isEditionSizeFocused: Bool
-    @FocusState private var isMaterialFocused: Bool
-    @FocusState private var isDimensionUnframedFocused: Bool
-    @FocusState private var isDimensionFramedFocused: Bool
-    @FocusState private var isYearFocused: Bool
-    @FocusState private var isSignedFocused: Bool
-    @FocusState private var isNumberedFocused: Bool
-    @FocusState private var isStampedFocused: Bool
-    @FocusState private var isAuthenticityFocused: Bool
-    @FocusState private var isPriceFocused: Bool
+    enum ArtworkField: Hashable {
+        case artworkName
+        case artistName
+        case description
+        case editionNumber
+        case editionSize
+        case material
+        case dimensionUnframed
+        case dimensionFramed
+        case yearCreated
+        case signed
+        case numbered
+        case stamped
+        case authenticity
+        case price
+    }
+
+    enum UrlField: Int, Hashable, CaseIterable {
+        case url1
+        case url2
+        case url3
+        case url4
+        case url5
+        case url6
+        case url7
+        case url8
+        case url9
+        case url10
+    }
+
+    @FocusState var artworkFieldInFocus: ArtworkField?
+    @FocusState var urlFieldInFocus: UrlField?
 
     @EnvironmentObject var artistManager: ArtistManager
     @Environment(\.colorScheme) var colorScheme
@@ -81,7 +99,8 @@ struct AddNewArtworkView: View {
                         .foregroundColor(Color.theme.accentSecondary)
                 }
 
-                textFields
+                // Sections for the user to provide information/photos for the artwork
+                mainFields
                 detailSection
                 photoSection
                 advancedSection
@@ -95,9 +114,11 @@ struct AddNewArtworkView: View {
             .padding()
         }
         .sheet(isPresented: $showImagePicker) {
-            MultipleImagePickerView(images: $images, limit: limit-images.count)
+            MultipleImagePickerView(images: $images, limit: Constants.maximumImages-images.count)
         }
         .onAppear {
+            logger.info("Presenting add new artwork view.")
+
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(AddNewArtworkView.self)",
                                            AnalyticsParameterScreenClass: "\(AddNewArtworkView.self)"])
@@ -105,20 +126,23 @@ struct AddNewArtworkView: View {
     }
 
     /// Text fields for the user to enter information about the artwork
-    private var textFields: some View {
+    private var mainFields: some View {
         VStack {
             Group {
-                CustomTextField(title: "Artist *", text: $artistName, isFocused: $isArtistNameFocused) {
-                    isArtistNameFocused = true
-                }
+                CustomTextField(title: "Artist *",
+                                   text: $artistName,
+                                   focusedField: $artworkFieldInFocus,
+                                   field: .artistName)
 
-                CustomTextField(title: "Title *", text: $artworkName, isFocused: $isArtworkNameFocused) {
-                    isArtworkNameFocused = true
-                }
+                CustomTextField(title: "Title *",
+                                   text: $artworkName,
+                                   focusedField: $artworkFieldInFocus,
+                                   field: .artworkName)
 
-                CustomTextField(title: "Description", text: $description, isFocused: $isDescriptionFocused) {
-                    isDescriptionFocused = true
-                }
+                CustomTextField(title: "Description",
+                                   text: $description,
+                                   focusedField: $artworkFieldInFocus,
+                                   field: .description)
             }
             .padding()
             .background(Color.theme.bubble)
@@ -135,6 +159,7 @@ struct AddNewArtworkView: View {
                         UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.endEditing(true)
                     }
             )
+
             Text("""
                  The artist field is case-sensitive and must be typed identically for all artworks by the same artist.
                  """)
@@ -142,39 +167,13 @@ struct AddNewArtworkView: View {
         }
     }
 
+    /// Button to compile all the information/photos provided and add the artwork to the database.
+    /// This includes the upload of photos to storage and including references to their locations in
+    /// the artwork document
     private var submitButton: some View {
         Button {
             logger.info("User tapped the submit button.")
-
-            // TODO: Update this logic
-            if artworkName.isEmpty {
-                logger.info("User has not completed all required fields.")
-                statusMessage = "Error: All required and must be completed."
-            } else {
-                // TODO: Upload images to Storage if specified
-
-                // TODO: Add urls to the data
-                let properties: [(key: String, value: String)]  = [
-                    ("name", artworkName),
-                    ("description", description),
-                    ("editionNumber", editionNumber),
-                    ("editionSize", editionSize),
-                    ("material", material),
-                    ("dimensionUnframed", dimensionUnframed),
-                    ("dimensionFramed", dimensionFramed),
-                    ("year", year),
-                    ("signed", signed),
-                    ("numbered", numbered),
-                    ("stamped", stamped),
-                    ("authenticity", authenticity),
-                    ("price", price)
-                ]
-                var newArtworkData: [String:String] = [:]
-                for property in properties where !property.value.isEmpty {
-                    newArtworkData[property.key] = property.value
-                }
-                artistManager.createNewArtwork(artist: artistName, artwork: artworkName, data: newArtworkData)
-            }
+            createArtwork()
         } label: {
             HStack {
                 Text("**Submit**")
@@ -190,66 +189,153 @@ struct AddNewArtworkView: View {
         .padding(.bottom, 10)
     }
 
+    /// Attempt to create the artwork. If the admin hasn't completed the required fields/uploaded
+    /// images then this will not be successful and an error messge will be presented
+    private func createArtwork() {
+        // TODO: Check if the artwork already exists
+        // Filter out any empty elements from urls. These correspond
+        // to fields where the admin hasn't input anything.
+        let nonEmptyURLs = urls.filter { !$0.isEmpty }
+
+        // Require that there is a name defined as well as either photo(s) from camera roll or image URL(s)
+        if !images.isEmpty && !nonEmptyURLs.isEmpty {
+            logger.info("User has provided both camera roll photo(s) and image URL(s).")
+            statusMessage = "Error: Provide either photos from your camera roll or URLs of images."
+        } else if artworkName.isEmpty || (images.isEmpty && nonEmptyURLs.isEmpty) {
+            logger.info("User has not completed all required fields.")
+            statusMessage = "Error: All required and must be completed."
+        } else {
+            // TODO: Move to function
+            let dispatchGroup = DispatchGroup()
+            var storageURLs: [String] = []
+            // Upload images to Storage if specified
+            for (index, image) in images.enumerated() {
+                logger.info("Uploading new artwork image to Storage.")
+
+                // Create the path where the image will be stored in storage
+                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(index+1)
+
+                // Convert the image to jpeg format and compress
+                guard let imageData = image.jpegData(compressionQuality: compressionRatio) else { return }
+
+                dispatchGroup.enter() // Notify the group that a task has started
+
+                Storage.storage().uploadData(path: storagePath, data: imageData) { storageURL in
+                    if let storageURL = storageURL {
+                        storageURLs.append(storageURL)
+                    }
+                    dispatchGroup.leave() // Notify the group that a task has completed
+                }
+            }
+
+            dispatchGroup.notify(queue: .main) {
+                // Code to execute once all tasks are completed
+                logger.info("All images have finished uploading.")
+                logger.info("Storage URLs: \(storageURLs)")
+
+                // Use compactMap to remove any empty strings
+                let properties: [(key: String, value: String)]  = [
+                    ("name", artworkName),
+                    ("description", description),
+                    ("editionNumber", editionNumber),
+                    ("editionSize", editionSize),
+                    ("material", material),
+                    ("dimensionUnframed", dimensionUnframed),
+                    ("dimensionFramed", dimensionFramed),
+                    ("year", year),
+                    ("signed", signed),
+                    ("numbered", numbered),
+                    ("stamped", stamped),
+                    ("authenticity", authenticity),
+                    ("price", price)
+                ]
+                    .compactMap { key, value in
+                        guard !value.isEmpty else { return nil }
+                        return (key, value)
+                    }
+
+                // Create a data object for the artwork being created
+                var newArtworkData: [String:Any] = [:]
+                for property in properties where !property.value.isEmpty {
+                    newArtworkData[property.key] = property.value
+                }
+                if !nonEmptyURLs.isEmpty {
+                    newArtworkData["urls"] = nonEmptyURLs
+                } else if !storageURLs.isEmpty {
+                    newArtworkData["urls"] = storageURLs
+                }
+
+                artistManager.createNewArtwork(artist: artistName, artwork: artworkName, data: newArtworkData)
+            }
+        }
+    }
+
     /// Fields for parameters that will be displayed in the Details section of ArtworkView
     private var detailSection: some View {
         VStack {
             sectionTitle(title: "Details", isExpanded: $isDetailExpanded)
 
             if isDetailExpanded {
+                let detailFields = [
+                    CustomTextField(title: "Edition number",
+                                    text: $editionNumber,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .editionNumber),
+
+                    CustomTextField(title: "Edition size",
+                                    text: $editionSize,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .editionSize),
+
+                    CustomTextField(title: "Unframed dimensions",
+                                    text: $dimensionUnframed,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .dimensionUnframed),
+
+                    CustomTextField(title: "Framed dimensions",
+                                    text: $dimensionFramed,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .dimensionFramed),
+
+                    CustomTextField(title: "Year",
+                                    text: $year,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .yearCreated),
+
+                    CustomTextField(title: "Signed",
+                                    text: $signed,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .signed),
+
+                    CustomTextField(title: "Numbered",
+                                    text: $numbered,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .numbered),
+
+                    CustomTextField(title: "Stamped",
+                                    text: $stamped,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .stamped),
+
+                    CustomTextField(title: "Authenticity",
+                                    text: $authenticity,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .authenticity),
+
+                    CustomTextField(title: "Price (include currency)",
+                                    text: $price,
+                                    focusedField: $artworkFieldInFocus,
+                                    field: .price)
+                ]
+
                 Group {
-                    CustomTextField(title: "Edition number", text: $editionNumber, isFocused: $isEditionNumberFocused) {
-                        isEditionNumberFocused = true
-                    }
-
-                    CustomTextField(title: "Edition size", text: $editionSize, isFocused: $isEditionSizeFocused) {
-                        isEditionSizeFocused = true
-                    }
-
-                    CustomTextField(
-                        title: "Unframed dimensions",
-                        text: $dimensionUnframed,
-                        isFocused: $isDimensionUnframedFocused
-                    ) {
-                        isDimensionUnframedFocused = true
-                    }
-
-                    CustomTextField(
-                        title: "Framed dimensions",
-                        text: $dimensionFramed,
-                        isFocused: $isDimensionFramedFocused
-                    ) {
-                        isDimensionFramedFocused = true
-                    }
-
-                    CustomTextField(title: "Year", text: $year, isFocused: $isYearFocused) {
-                        isYearFocused = true
-                    }
-
-                    CustomTextField(title: "Signed", text: $signed, isFocused: $isSignedFocused) {
-                        isSignedFocused = true
-                    }
-
-                    CustomTextField(title: "Numbered", text: $numbered, isFocused: $isNumberedFocused) {
-                        isNumberedFocused = true
-                    }
-
-                    CustomTextField(title: "Stamped", text: $stamped, isFocused: $isStampedFocused) {
-                        isStampedFocused = true
-                    }
-
-                    CustomTextField(title: "Authenticity", text: $authenticity, isFocused: $isAuthenticityFocused) {
-                        isAuthenticityFocused = true
-                    }
-
-                    CustomTextField(title: "Price", text: $price, isFocused: $isPriceFocused) {
-                        isPriceFocused = true
+                    ForEach(detailFields, id: \.self) { detailField in
+                        detailField
                     }
                 }
                 .padding()
                 .background(Color.theme.bubble)
                 .cornerRadius(25)
-                // Dismiss the keyboard with a downward drag gesture. The user can also dismiss the
-                // keyboard by pressing the 'return' key.
                 .gesture(
                     DragGesture()
                         .onChanged { value in
@@ -267,12 +353,12 @@ struct AddNewArtworkView: View {
     /// Section for the user to upload photos of the artwork or alternatively to specify URLs of images
     private var photoSection: some View {
         VStack {
-            sectionTitle(title: "Photos", isExpanded: $isPhotoExpanded)
+            sectionTitle(title: "Photos *", isExpanded: $isPhotoExpanded)
 
             if isPhotoExpanded {
                 Group {
                     // Stop displaying the button when the limit is hit
-                    if images.count < limit {
+                    if images.count < Constants.maximumImages {
                         mediaButton
                     }
 
@@ -297,13 +383,50 @@ struct AddNewArtworkView: View {
                             }
                         }
                     }
-                    Text("You can add up to 10 photos per artwork.")
+                    Text("""
+                         You can add up to \(Constants.maximumImages) photos per artwork.
+                         Alternatively, you can provide up to \(Constants.maximumImages) \
+                         links to images from the internet.
+                         """)
                         .font(.caption)
 
-                    // TODO: Let the user specify up to 10 links to images instead of uploading photos
+                    urlSection
                 }
             }
-            // TODO: Let URLs be defined instead of pictures being uploaded
+        }
+    }
+
+    // Show one text field more that the user has filled out up to a maximum number
+    private var urlSection: some View {
+        let filteredURLs = urls.filter { !$0.isEmpty }
+        let urlCount = min(filteredURLs.count + 1, Constants.maximumImages)
+
+        let textFields = (0..<urlCount).map { index in
+            CustomTextField(title: "URL of image \(index + 1)",
+                            text: $urls[index],
+                            focusedField: $urlFieldInFocus,
+                            field: UrlField.allCases[index])
+        }
+
+        return VStack {
+            Group {
+                ForEach(textFields, id: \.self) { textField in
+                    textField
+                }
+            }
+            .padding()
+            .background(Color.theme.bubble)
+            .cornerRadius(25)
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        // Ignore upward swipes
+                        guard value.translation.height > 0 else { return }
+                    }
+                    .onEnded { _ in
+                        UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.endEditing(true)
+                    }
+            )
         }
     }
 
@@ -314,7 +437,8 @@ struct AddNewArtworkView: View {
             logger.info("User tapped the image picker button")
         } label: {
             HStack {
-                Text("Select photos")
+                Text("**Select photos**")
+                    .font(.title2)
                 Image(systemName: "photo.on.rectangle.angled")
                     .foregroundColor(Color.theme.buttonForeground)
                     .font(.system(size: 25))

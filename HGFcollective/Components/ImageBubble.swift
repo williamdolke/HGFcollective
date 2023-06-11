@@ -22,7 +22,7 @@ struct ImageBubble: View {
 
     var body: some View {
         HStack {
-            if (url != nil) {
+            if (url != nil && url != "") {
                 // Prioritise displaying images via url. This allows us to update
                 // images that are built in to the app (such as artworks) by providing
                 // an image url in the database

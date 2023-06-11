@@ -34,6 +34,8 @@ struct AdminChatView: View {
         // This name will be displayed in place of the customer's uid in any view.
         .navigationBarItems(trailing: enterDisplayNameButton)
         .onAppear {
+            logger.info("Presenting admin chat view.")
+
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(AdminChatView.self)",
                                            AnalyticsParameterScreenClass: "\(AdminChatView.self)"])

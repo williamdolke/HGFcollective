@@ -11,6 +11,7 @@ import FirebaseAnalytics
 import FirebaseFirestore
 import FirebaseCrashlytics
 
+/// Firebase login functionality/utilities
 struct LoginUtils {
     /// The closure parameter allows us to optionally pass a closure block, allowing us to execute
     /// additional code after a successful login.

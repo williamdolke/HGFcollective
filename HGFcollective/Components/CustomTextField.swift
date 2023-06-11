@@ -7,32 +7,44 @@
 
 import SwiftUI
 
-struct CustomTextField: View {
+struct CustomTextField<Field: Hashable>: View, Hashable where Field: Equatable {
     let title: String
     let text: Binding<String>
-    let isFocused: FocusState<Bool>.Binding
-    let onTap: () -> Void
+    let focusedField: FocusState<Field>.Binding
+    let field: Field
 
     var body: some View {
         TextField(title, text: text)
             .accentColor(Color.theme.systemBackgroundInvert)
-            .focused(isFocused)
-            // Allows the user to tap anywhere, including
-            // the padded area, to focus the text field
-            .onTapGesture {
-                onTap()
-            }
+            .focused(focusedField, equals: field)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(text.wrappedValue)
+        hasher.combine(field)
+    }
+
+    static func == (lhs: CustomTextField<Field>, rhs: CustomTextField<Field>) -> Bool {
+        lhs.title == rhs.title &&
+        lhs.text.wrappedValue == rhs.text.wrappedValue &&
+        lhs.field == rhs.field
     }
 }
 
 struct CustomTextField_Previews: PreviewProvider {
     @State private static var text = ""
-    @FocusState private static var isFocused: Bool
+    @FocusState private static var fieldInFocus: PreviewField?
+
+    enum PreviewField {
+        case username
+        case password
+    }
 
     static var previews: some View {
-        CustomTextField(title: "Enter text", text: $text, isFocused: $isFocused, onTap: {})
+        CustomTextField(title: "Enter text", text: $text, focusedField: $fieldInFocus, field: .username)
 
-        CustomTextField(title: "Enter text", text: $text, isFocused: $isFocused, onTap: {})
+        CustomTextField(title: "Enter text", text: $text, focusedField: $fieldInFocus, field: .username)
             .preferredColorScheme(.dark)
     }
 }

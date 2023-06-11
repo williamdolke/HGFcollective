@@ -30,6 +30,8 @@ struct ReportView: View {
                 .padding()
             }
             .onAppear {
+                logger.info("Presenting report view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(ReportView.self)",
                                                AnalyticsParameterScreenClass: "\(ReportView.self)"])

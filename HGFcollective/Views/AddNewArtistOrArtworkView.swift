@@ -18,6 +18,8 @@ struct AddNewArtistOrArtworkView: View {
             }
             .navigationTitle("Add new content")
             .onAppear {
+                logger.info("Presenting add new artist or artwork view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(AddNewArtistOrArtworkView.self)",
                                                AnalyticsParameterScreenClass: "\(AddNewArtistOrArtworkView.self)"])

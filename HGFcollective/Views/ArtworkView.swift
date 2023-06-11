@@ -34,10 +34,9 @@ struct ArtworkView: View {
             ScrollView {
                 VStack {
                     SnapCarousel(index: $currentIndex, items: images) { image in
-                        let haveURL = artwork.urls?[currentIndex] != ""
                         NavigationLink(destination: ImageView(artworkName: artwork.name,
                                                               imageNum: String(currentIndex+1),
-                                                              url: haveURL ? artwork.urls?[currentIndex] : nil)
+                                                              url: artwork.urls?[currentIndex])
                             .navigationBarBackButtonHidden(true)) {
                                 ImageBubble(assetName: image.assetName,
                                             url: image.url,
@@ -91,7 +90,7 @@ struct ArtworkView: View {
                   buttons: [
                     .destructive(Text("Yes"), action: {
                         logger.info("User tapped the 'Yes' button.")
-                        artistManager.deleteArtwork(artist: artistName, artwork: artwork.name)
+                        artistManager.deleteArtwork(artist: artistName, artwork: artwork.name, urls: artwork.urls)
                     }),
                     .cancel(Text("Cancel"), action: {
                         logger.info("User tapped 'Cancel' button.")
@@ -99,20 +98,23 @@ struct ArtworkView: View {
                   ])
         }
         .onAppear {
+            logger.info("Presenting artwork view for artist: \(artistName) and artwork: \(artwork.name).")
+
             // Check for images of the artwork to display
-            for index in 1...10 {
+            for index in 1...Constants.maximumImages {
                 let artworkAssetName = artwork.name + " " + String(index)
-                // The URL is an empty string if the artwork image hasn't been overriden from the database
+                // url is an empty string if the artwork image hasn't been overriden from the database
                 let url = (artwork.urls?.count ?? 0 >= index) ? artwork.urls?[index-1] : ""
 
                 // Append the image if we have a url or it is found in
                 // Assets.xcassets and isn't already in the array
+                // TODO: This logic might be unnecessary once all arworks have a images
                 let haveURL = (url != "")
                 let haveAsset = artworkAssetName != "" &&
                                  UIImage(named: artworkAssetName) != nil
                 let image = Asset(assetName: artworkAssetName,
                                   index: index,
-                                  url: haveURL ? url : nil)
+                                  url: url)
                 if ((haveURL || haveAsset) &&
                     !images.contains { $0.assetName == image.assetName }) {
                     images.append(image)
@@ -129,10 +131,9 @@ struct ArtworkView: View {
     private var artworkImages: some View {
         GeometryReader { geo in
             SnapCarousel(index: $currentIndex, items: images) { image in
-                let haveURL = artwork.urls?[currentIndex] != ""
                 NavigationLink(destination: ImageView(artworkName: artwork.name,
                                                       imageNum: String(currentIndex+1),
-                                                      url: haveURL ? artwork.urls?[currentIndex] : nil)
+                                                      url: artwork.urls?[currentIndex])
                     .navigationBarBackButtonHidden(true)) {
                         ImageBubble(assetName: image.assetName,
                                     url: image.url,

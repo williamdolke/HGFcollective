@@ -10,15 +10,19 @@ import FirebaseAnalytics
 import FirebaseFirestore
 
 struct AddNewArtistView: View {
+    @EnvironmentObject var artistManager: ArtistManager
+    @Environment(\.colorScheme) var colorScheme
+
     @State private var artistName = ""
     @State private var biography = ""
     @State private var statusMessage = ""
 
-    @FocusState private var isNameFocused: Bool
-    @FocusState private var isBiographyFocused: Bool
+    @FocusState private var isFieldFocused: NewArtistField?
 
-    @EnvironmentObject var artistManager: ArtistManager
-    @Environment(\.colorScheme) var colorScheme
+    enum NewArtistField: Hashable {
+        case name
+        case biography
+    }
 
     var body: some View {
         ScrollView {
@@ -59,6 +63,8 @@ struct AddNewArtistView: View {
             }
             .padding()
             .onAppear {
+                logger.info("Presenting add new artist view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(AddNewArtistView.self)",
                                                AnalyticsParameterScreenClass: "\(AddNewArtistView.self)"])
@@ -69,13 +75,9 @@ struct AddNewArtistView: View {
     /// Text fields for the user to enter information about the artist
     private var textFields: some View {
         Group {
-            CustomTextField(title: "Artist name *", text: $artistName, isFocused: $isNameFocused) {
-                isNameFocused = true
-            }
+            CustomTextField(title: "Artist name *", text: $artistName, focusedField: $isFieldFocused, field: .name)
 
-            CustomTextField(title: "Biography *", text: $biography, isFocused: $isBiographyFocused) {
-                isBiographyFocused = true
-            }
+            CustomTextField(title: "Biography *", text: $biography, focusedField: $isFieldFocused, field: .biography)
         }
         .padding()
         .background(Color.theme.bubble)
@@ -118,24 +120,9 @@ struct AddNewArtistView: View {
             logger.info("User has not completed all required fields.")
             statusMessage = "Error: All fields are required and must be completed."
         } else {
-            // Check if the artist already exists before attempting to add it. It is required that
-            // the artist has a document at this path for it to exist and have associated artworks
-            // displayed in the app.
-            let artistPath = "artists/" + artistName
-            let firestoreDB = Firestore.firestore()
-            firestoreDB.checkDocumentExists(docPath: artistPath) { exists, error in
-                if let error = error {
-                    logger.error("Error checking if artist \(artistName) already exists: \(error)")
-                } else {
-                    if exists {
-                        logger.info("User has attempted to add an artist that already exists: \(artistName)")
-                        statusMessage = "Error: An artist with the name \(artistName) already exists."
-                    } else {
-                        logger.info("Artist \(artistName) does not already exist. Creating new artist.")
-                        statusMessage = ""
-                        let newArtistData = ["name": artistName, "biography": biography]
-                        artistManager.createNewArtist(data: newArtistData)
-                    }
+            artistManager.createArtistIfDoesNotExist(name: artistName, biography: biography) { message in
+                if let message = message {
+                    statusMessage = message
                 }
             }
         }

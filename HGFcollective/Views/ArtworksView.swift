@@ -56,6 +56,8 @@ struct ArtworksView: View {
             }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")
             .onAppear {
+                logger.info("Presenting artworks view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(ArtworksView.self)",
                                                AnalyticsParameterScreenClass: "\(ArtworksView.self)"])
@@ -113,7 +115,9 @@ struct ArtworksView: View {
                     if filteredArtists.1.contains(artwork.name) {
                         NavigationLink(destination: ArtworkView(artistName: artist.name, artwork: artwork)) {
                             VStack {
+                                let url = artwork.urls?.first
                                 ImageBubble(assetName: artwork.name + " 1",
+                                            url: url,
                                             height: nil,
                                             width: 0.45 * width,
                                             fill: true)
@@ -182,6 +186,12 @@ struct ArtworksView: View {
     /// Display the favourites  in a grid with two columns that extend vertically
     @ViewBuilder
     private var favouritesGrid: some View {
+        VStack(alignment: .center) {
+            if favourites.isEmpty() {
+                Text("You've not favourited any artworks!")
+            }
+        }
+
         let columns = [GridItem(), GridItem()]
         LazyVGrid(columns: columns) {
             // Create an ImageBubble for each artwork that meets the filter criteria
@@ -190,12 +200,27 @@ struct ArtworksView: View {
                 ForEach(artist.artworks!) { artwork in
                     if (filteredArtists.1.contains(artwork.name) && favourites.contains(artwork.name)) {
                         NavigationLink(destination: ArtworkView(artistName: artist.name, artwork: artwork)) {
-                            ImageBubble(assetName: artwork.name + " 1",
-                                        height: nil,
-                                        width: 0.45 * width,
-                                        fill: true)
-                            .background(Color.theme.accent)
-                            .cornerRadius(0.1 * min(height, width))
+                            VStack {
+                                let url = artwork.urls?.first
+                                ImageBubble(assetName: artwork.name + " 1",
+                                            url: url,
+                                            height: nil,
+                                            width: 0.45 * width,
+                                            fill: true)
+                                .background(Color.theme.accent)
+                                .cornerRadius(0.1 * min(height, width))
+
+                                Text(artwork.name)
+                                    .foregroundColor(Color.theme.systemBackgroundInvert)
+                                HStack(spacing: 0) {
+                                    Text(artist.name)
+                                    if let year = artwork.year {
+                                        Text(", \(year)")
+                                    }
+                                }
+                                .font(.subheadline).italic()
+                                .foregroundColor(Color.theme.systemBackgroundInvert)
+                            }
                         }
                     }
                 }

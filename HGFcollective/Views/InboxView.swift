@@ -27,6 +27,8 @@ struct InboxView: View {
             }
             .navigationBarHidden(true)
             .onAppear {
+                logger.info("Presenting inbox view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(InboxView.self)",
                                                AnalyticsParameterScreenClass: "\(InboxView.self)"])
@@ -73,6 +75,7 @@ struct InboxView: View {
     }
 
     private func signOutButtonAction() {
+        // TODO: Delete the user document if there are no messages
         // Sign out of the admin account
         userManager.listener?.remove()
         LoginUtils.signAdminOut()

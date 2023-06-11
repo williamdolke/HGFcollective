@@ -46,6 +46,8 @@ struct AboutView: View {
                 .padding()
             }
             .onAppear {
+                logger.info("Presenting about view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(AboutView.self)",
                                                AnalyticsParameterScreenClass: "\(AboutView.self)"])

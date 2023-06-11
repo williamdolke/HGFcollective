@@ -54,6 +54,8 @@ struct ArtistsView: View {
             }
             .searchable(text: $searchQuery, prompt: "Search By Artist Name")
             .onAppear {
+                logger.info("Presenting artists view with \(artistManager.artists.count) artists.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(ArtistsView.self)",
                                                AnalyticsParameterScreenClass: "\(ArtistsView.self)"])
@@ -61,6 +63,7 @@ struct ArtistsView: View {
         }
     }
 
+    // TODO: Remove duplication of this code
     /// Create the segmented picker from the enum cases
     private var segmentedControl: some View {
         SegmentedPicker(
@@ -108,7 +111,9 @@ struct ArtistsView: View {
                 let artwork = (artist.artworks?.isEmpty == false) ? artist.artworks![0] : Artwork(name: "")
                 NavigationLink(destination: ArtistView(artist: artist)) {
                     VStack {
+                        let url = artwork.urls?.first
                         ImageBubble(assetName: artwork.name + " 1",
+                                    url: url,
                                     height: nil,
                                     width: 0.45 * width,
                                     fill: true)

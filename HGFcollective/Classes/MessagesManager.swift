@@ -134,27 +134,16 @@ class MessagesManager: ObservableObject {
 
         // Create the path where the image will be stored in storage
         let storagePath = "users/" + uid + "/" + UUID().uuidString
-        let ref = Storage.storage().reference(withPath: storagePath)
 
         // Convert the image to jpeg format and compress
         guard let imageData = image.jpegData(compressionQuality: 0.5) else { return }
 
-        // Store the image in Firebase storage
-        ref.putData(imageData, metadata: nil) { _, error in
-            if let error = error {
-                Crashlytics.crashlytics().record(error: error)
-                logger.error("Failed to upload image to Storage: \(error)")
-                return
-            }
-            ref.downloadURL { url, error in
-                if let error = error {
-                    Crashlytics.crashlytics().record(error: error)
-                    logger.error("Failed to retrieve image URL: \(error)")
-                    return
-                }
-                logger.info("Successfully stored image with URL: \(url?.absoluteString ?? "")")
-                // Store the url of the image in the database
-                self.sendMessage(text: url!.absoluteString, type: "image")
+        Storage.storage().uploadData(path: storagePath, data: imageData) { storageURL in
+            if let storageURL = storageURL {
+                logger.info("Sending message after successfully storing image at URL: \(storageURL)")
+                self.sendMessage(text: storageURL, type: "image")
+            } else {
+                logger.error("Failed to send message after storing image.")
             }
         }
     }

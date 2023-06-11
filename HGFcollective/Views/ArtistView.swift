@@ -28,11 +28,10 @@ struct ArtistView: View {
             ScrollView {
                 VStack {
                     SnapCarousel(index: $currentIndex, items: images) { image in
-                        let haveURL = image.url != ""
                         NavigationLink(destination: ArtworkView(artistName: artist.name,
                                                                 artwork: (artist.artworks?[image.index])!)) {
                             ImageBubble(assetName: image.assetName,
-                                        url: haveURL ? image.url : nil,
+                                        url: image.url,
                                         height: 0.6 * geo.size.height,
                                         width: nil)
                         }
@@ -73,8 +72,10 @@ struct ArtistView: View {
                   ])
         }
         .onAppear {
+            logger.info("Presenting artist view for \(artist.name).")
+
             // Check which artworks have a primary/first image to display
-            for index in 1...10 {
+            for index in 1...Constants.maximumImages {
                 let artistArtworks = artist.artworks
                 let artworkAssetName = (artistArtworks!.count >= index) ? (artistArtworks![index-1].name + " 1") : ""
                 let urls = (artistArtworks!.count >= index) ? artistArtworks![index-1].urls : nil
@@ -85,6 +86,7 @@ struct ArtistView: View {
 
                 // Append the image if we have a url or it is found in
                 // Assets.xcassets and isn't already included in the array
+                // TODO: This logic might be unnecessary once all arworks have a images
                 let haveURL = (url != "")
                 let haveAsset = artworkAssetName != "" &&
                                  UIImage(named: artworkAssetName) != nil

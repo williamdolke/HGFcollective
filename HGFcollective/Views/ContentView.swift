@@ -26,6 +26,7 @@ struct ContentView: View {
 
     init() {
         if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
+            // TODO: Use singleton
             userManager = UserManager()
         }
 
@@ -121,6 +122,8 @@ struct ContentView: View {
         .environmentObject(enquiryManager)
         .environmentObject(favourites)
         .onAppear {
+            logger.info("Presenting content view.")
+
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(ContentView.self)",
                                            AnalyticsParameterScreenClass: "\(ContentView.self)"])

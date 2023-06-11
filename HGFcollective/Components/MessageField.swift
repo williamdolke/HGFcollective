@@ -70,10 +70,10 @@ struct MessageField: View {
     private var textAndImageInput: some View {
         ZStack(alignment: .leading) {
             VStack {
-                CustomTextField(title: "Enter your message here", text: $message, isFocused: $isFocused) {
-                    isFocused = true
-                }
-                .padding()
+                TextField("Enter your message here", text: $message)
+                    .accentColor(Color.theme.systemBackgroundInvert)
+                    .focused($isFocused)
+                    .padding()
 
                 // Display an image if the user has specified one to send
                 if (image != nil) {

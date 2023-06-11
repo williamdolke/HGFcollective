@@ -25,6 +25,8 @@ struct ChatView: View {
                     .environmentObject(messagesManager)
             }
             .onAppear {
+                logger.info("Presenting chat view.")
+
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(ChatView.self)",
                                                AnalyticsParameterScreenClass: "\(ChatView.self)"])

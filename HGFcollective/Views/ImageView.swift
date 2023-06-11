@@ -33,6 +33,8 @@ struct ImageView: View {
             .overlay(closeButton, alignment: .topTrailing)
         }
         .onAppear {
+            logger.info("Presenting image view.")
+
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(artworkName ?? "nil")",
                                            AnalyticsParameterScreenClass: "\(ImageView.self)"])

@@ -11,6 +11,11 @@ import FirebaseAnalytics
 import FirebaseCrashlytics
 
 struct LoginView: View {
+    enum LoginField: Hashable {
+        case email
+        case password
+    }
+
     @EnvironmentObject var messagesManager: MessagesManager
 
     @State private var email = ""
@@ -19,8 +24,7 @@ struct LoginView: View {
     @State private var isSecured: Bool = true
     @State private var showInbox: Bool = false
 
-    @FocusState private var isEmailFocused: Bool
-    @FocusState private var isPasswordFocused: Bool
+    @FocusState private var fieldInFocus: LoginField?
 
     var body: some View {
         VStack(spacing: 16) {
@@ -41,6 +45,8 @@ struct LoginView: View {
         .padding()
         .navigationTitle("Log In")
         .onAppear {
+            logger.info("Presenting login view.")
+
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(LoginView.self)",
                                            AnalyticsParameterScreenClass: "\(LoginView.self)"])
@@ -50,28 +56,20 @@ struct LoginView: View {
     /// Text fields for the user to enter their email and password
     private var textFields: some View {
         Group {
-            CustomTextField(title: "Email", text: $email, isFocused: $isEmailFocused) {
-                isEmailFocused = true
-            }
-            .keyboardType(.emailAddress)
-            .autocapitalization(.none)
+            CustomTextField(title: "Email", text: $email, focusedField: $fieldInFocus, field: .email)
+                .keyboardType(.emailAddress)
+                .autocapitalization(.none)
 
             if isSecured {
                 // Hide the password from the user
                 SecureField("Password", text: $password)
                     .accentColor(Color.theme.systemBackgroundInvert)
-                    .focused($isPasswordFocused)
-                    .onTapGesture {
-                        isPasswordFocused = true
-                    }
+                    .focused($fieldInFocus, equals: .password)
             } else {
                 // Show the password on screen
                 TextField("Password", text: $password)
                     .accentColor(Color.theme.systemBackgroundInvert)
-                    .focused($isPasswordFocused)
-                    .onTapGesture {
-                        isPasswordFocused = true
-                    }
+                    .focused($fieldInFocus, equals: .password)
             }
         }
         .padding()
