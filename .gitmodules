@@ -1,0 +1,3 @@
+[submodule "HGFcollective-cloud-functions"]
+	path = HGFcollective-cloud-functions
+	url = git@github.com:williamdolke/HGFcollective-cloud-functions
