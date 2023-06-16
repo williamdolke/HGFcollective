@@ -13,7 +13,6 @@ import FirebaseStorage
 /// Similar to the ChatView but with some additional functionality for admins.
 struct AdminChatView: View {
     @EnvironmentObject var messagesManager: MessagesManager
-    @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showDeleteChatOptions: Bool = false
@@ -46,7 +45,7 @@ struct AdminChatView: View {
         .alert("Enter a display name", isPresented: $showAlert) {
             TextField("Enter name", text: $displayNameInput)
             Button("OK") {
-                userManager.storePreferredName(name: displayNameInput, id: messagesManager.user!.id)
+                UserManager.shared.storePreferredName(name: displayNameInput, id: messagesManager.user!.id)
             }
             Button("Cancel", role: .cancel) { }
         } message: {
@@ -144,6 +143,8 @@ struct AdminChatView: View {
         Firestore.firestore().deleteDocumentAndSubcollectionDocuments(collection: "users",
                                                                       documentId: messagesManager.uid,
                                                                       subCollection: "messages")
+
+        NavigationUtils.popToRootView()
     }
 }
 

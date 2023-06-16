@@ -17,7 +17,7 @@ class MessagesManager: ObservableObject {
     @Published private(set) var latestMessageId: String = ""
     // Identifies whether a view is being presented to a user or an admin
     let isCustomer: Bool
-    let notificationName: String = "CustomerUnreadMessageCountChanged"
+    let notificationName: String = "UnreadMessageCountChanged"
     // Customer uid
     var uid: String = ""
     // The unread message count for this user

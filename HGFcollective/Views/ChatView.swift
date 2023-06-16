@@ -48,9 +48,7 @@ struct ChatView: View {
                     UIApplication.shared.applicationIconBadgeNumber = messagesManager.unreadMessages
                 }
             }
-            // swiftlint:disable line_length
-            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CustomerUnreadMessageCountChanged"))) { _ in
-            // swiftlint:enable line_length
+            .onReceive(NotificationCenter.default.publisher(for: Notification.Name("UnreadMessageCountChanged"))) { _ in
                 // Update the badge count on the chat tab
                 if tabBarState.unreadMessages != messagesManager.unreadMessages {
                     logger.info("Setting the badge count on the chat tab to \(messagesManager.unreadMessages).")

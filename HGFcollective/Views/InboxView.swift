@@ -11,13 +11,14 @@ import FirebaseAnalytics
 struct InboxView: View {
     @Environment(\.dismiss) private var dismiss
 
-    @EnvironmentObject var userManager: UserManager
+    @StateObject var userManager = UserManager.shared
     // We only need to access messagesManager in this view when signing out of the admin account.
     // This is the messagesManager that is created by ContentView before signing in as an admin.
     @EnvironmentObject var messagesManager: MessagesManager
     @EnvironmentObject var tabBarState: TabBarState
 
     @State private var showLogOutOptions: Bool = false
+    @State private var updateView: Bool = false
 
     var body: some View {
         NavigationView {
@@ -76,12 +77,11 @@ struct InboxView: View {
 
     private func signOutButtonAction() {
         // TODO: Delete the user document if there are no messages
-        // Sign out of the admin account
-        userManager.listener?.remove()
+        // Sign out of the admin account and cleanup
         LoginUtils.signAdminOut()
+        UserManager.shared.logout()
 
-        // Create a new anonymous user so that chat will work
-        // again as a customer
+        // Create a new anonymous user so that chat will work again as a customer
         let block: () -> Void = {
             // Refresh the properties of messagesManager since we are creating a new anonymous user.
             // We need to add some additional code to signInAnonymously which can be done through a
@@ -117,14 +117,13 @@ struct InboxView: View {
                 .navigationTitle("Inbox")
             }
         }
-        // swiftlint:disable line_length
-        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("CustomerUnreadMessageCountChanged"))) { _ in
-        // swiftlint:enable line_length
+        // When the number of unread messages associated with an individual messageManager changes
+        // we need to recount the total number of unread messages across all messageManagers
+        .onReceive(NotificationCenter.default.publisher(for: Notification.Name("UnreadMessageCountChanged"))) { _ in
             userManager.countUnreadMessages()
         }
-        // swiftlint:disable line_length
+        // swiftlint:disable:next line_length
         .onReceive(NotificationCenter.default.publisher(for: Notification.Name("AdminUnreadMessageCountChanged"))) { _ in
-        // swiftlint:enable line_length
             if tabBarState.unreadMessages != userManager.unreadMessages {
                 logger.info("Setting the badge count on the chat tab to \(userManager.unreadMessages).")
                 tabBarState.unreadMessages = userManager.unreadMessages
@@ -135,14 +134,10 @@ struct InboxView: View {
 }
 
 struct InboxView_Previews: PreviewProvider {
-    static let userManager = UserManager()
-
     static var previews: some View {
         InboxView()
-            .environmentObject(userManager)
 
         InboxView()
-            .environmentObject(userManager)
             .preferredColorScheme(.dark)
     }
 }

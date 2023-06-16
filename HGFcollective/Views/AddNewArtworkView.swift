@@ -213,6 +213,7 @@ struct AddNewArtworkView: View {
                 logger.info("Uploading new artwork image to Storage.")
 
                 // Create the path where the image will be stored in storage
+                // swiftlint:disable:next line_length
                 let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(index+1)
 
                 // Convert the image to jpeg format and compress

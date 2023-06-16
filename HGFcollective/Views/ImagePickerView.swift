@@ -15,9 +15,8 @@ struct ImagePickerView: UIViewControllerRepresentable {
 
     var sourceType: UIImagePickerController.SourceType = .photoLibrary
 
-    // swiftlint:disable line_length
+    // swiftlint:disable:next line_length
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePickerView>) -> UIImagePickerController {
-    // swiftlint:enable line_length
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = false
         imagePicker.sourceType = sourceType

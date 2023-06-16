@@ -21,13 +21,11 @@ struct ContentView: View {
     @AppStorage("isAdmin") var isAdmin: Bool = false
     // swiftlint:disable:next force_cast
     var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String)
-    var userManager: UserManager?
     var enquiryManager = EnquiryManager()
 
     init() {
         if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
-            // TODO: Use singleton
-            userManager = UserManager()
+            UserManager.shared.login()
         }
 
         // Navigation bar colours
@@ -134,7 +132,6 @@ struct ContentView: View {
     private func customerOrAdminView() -> some View {
         if isAdmin {
             InboxView()
-                .environmentObject(userManager!)
                 .environmentObject(messagesManager)
                 // On iPad, navigationLinks don't work in InboxView without the following
                 .navigationViewStyle(StackNavigationViewStyle())

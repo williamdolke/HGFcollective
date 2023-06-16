@@ -10,19 +10,29 @@ import FirebaseCrashlytics
 import FirebaseFirestore
 
 class UserManager: ObservableObject {
+    // Singleton
+    static var shared = UserManager()
+
     @Published private(set) var users: [User] = []
     @Published private(set) var messagesManagers: [String: MessagesManager] = [:]
-    let notificationName: String = "AdminUnreadMessageCountChanged"
+
     // The cumulative unread messages count for all users
     var unreadMessages: Int = 0
-    var listener: ListenerRegistration?
+    private let notificationName: String = "AdminUnreadMessageCountChanged"
 
-    // Create an instance of our Firestore database
-    let firestoreDB = Firestore.firestore()
+    private var firestoreDB = Firestore.firestore()
+    private var listener: ListenerRegistration?
 
-    // On initialisation of the UserManager class, get the users from Firestore
-    init() {
-        self.getUsers()
+    private init() {
+        logger.info("Initialise UserManager.")
+    }
+
+    func login() {
+        getUsers()
+    }
+
+    func logout() {
+        reset()
     }
 
     /// Fetch all user documents from the database
@@ -52,13 +62,9 @@ class UserManager: ObservableObject {
     private func getMessagesManagers() {
         logger.info("Getting message managers for \(users.count) users.")
         for user in users {
-            if !messagesManagers.keys.contains(user.id) {
-                logger.info("Getting message manager for user.")
-                messagesManagers[user.id] = MessagesManager(uid: user.id,
-                                                            isCustomer: false)
-            } else {
-                logger.info("No message manager found for user.")
-            }
+            logger.info("Getting message manager for user.")
+            messagesManagers[user.id] = MessagesManager(uid: user.id,
+                                                        isCustomer: false)
         }
     }
 
@@ -92,5 +98,12 @@ class UserManager: ObservableObject {
                     logger.info("Successfully sent preferredName to database.")
                 }
             }
+    }
+
+    private func reset() {
+        users = []
+        messagesManagers = [:]
+        unreadMessages = 0
+        listener?.remove()
     }
 }

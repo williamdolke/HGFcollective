@@ -22,7 +22,6 @@ struct LoginView: View {
     @State private var password = ""
     @State private var loginStatusMessage = ""
     @State private var isSecured: Bool = true
-    @State private var showInbox: Bool = false
 
     @FocusState private var fieldInFocus: LoginField?
 
@@ -91,31 +90,27 @@ struct LoginView: View {
 
     /// Button that attempts to sign the user in when tapped
     private var loginButton: some View {
-        // Create the UserManager and consequently fetch all messages with users when the admin successfully logs in
-        NavigationLink(destination: InboxView().environmentObject(UserManager()).navigationBarBackButtonHidden(true),
-                       isActive: $showInbox) {
-            Button {
-                logger.info("User tapped the login button")
+        Button {
+            logger.info("User tapped the login button")
 
-                // We don't need to sign the anonymous user out before we log in as they do not have
-                // an account and so there is nothing to sign out of
+            // We don't need to sign the anonymous user out before we log in as they do not have
+            // an account and so there is nothing to sign out of
 
-                // Attempt to sign in as admin
-                signAdminIn()
-            } label: {
-                HStack {
-                    Spacer()
-                    Text("Log In")
-                        .padding(.vertical, 12)
-                        .font(.system(size: 20, weight: .semibold))
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 22))
-                    Spacer()
-                }
-                .background(Color.theme.accent)
-                .foregroundColor(Color.theme.buttonForeground)
-                .cornerRadius(10)
+            // Attempt to sign in as admin
+            signAdminIn()
+        } label: {
+            HStack {
+                Spacer()
+                Text("Log In")
+                    .padding(.vertical, 12)
+                    .font(.system(size: 20, weight: .semibold))
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 22))
+                Spacer()
             }
+            .background(Color.theme.accent)
+            .foregroundColor(Color.theme.buttonForeground)
+            .cornerRadius(10)
         }
     }
 
@@ -135,6 +130,8 @@ struct LoginView: View {
             LoginUtils.deleteFCMtoken()
             messagesManager.cleanup()
 
+            // Login as admin
+            UserManager.shared.login()
             UserDefaults.standard.setValue(true, forKey: "isAdmin")
             UserDefaults.standard.set(result!.user.uid, forKey: "uid")
 
@@ -147,8 +144,6 @@ struct LoginView: View {
             logger.info("Successfully logged in as user: \(result!.user.uid)")
 
             Analytics.logEvent(AnalyticsEventLogin, parameters: [AnalyticsParameterMethod: "Email"])
-
-            showInbox = true
         }
     }
 }
