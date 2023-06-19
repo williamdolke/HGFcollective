@@ -20,7 +20,7 @@ struct ContentView: View {
     @AppStorage("aboutScreenShown") var aboutScreenShown: Bool = false
     @AppStorage("isAdmin") var isAdmin: Bool = false
     // swiftlint:disable:next force_cast
-    var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as! String)
+    var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as? String ?? "" )
     var enquiryManager = EnquiryManager()
 
     init() {
