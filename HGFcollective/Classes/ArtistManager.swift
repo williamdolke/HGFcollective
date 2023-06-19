@@ -43,17 +43,11 @@ class ArtistManager: ObservableObject {
             // Map the documents to Artist instances
             self.artists = (querySnapshot?.decodeDocuments() ?? []) as [Artist]
 
-            // Select an artist to be featured at random
-            featuredArtistIndex = Int.random(in: 0..<artists.count)
-            repeat {
-                featuredArtistIndex = Int.random(in: 0..<artists.count)
-            } while (artists[featuredArtistIndex!].artworks?.isEmpty == true)
-            featuredArtistName = artists[featuredArtistIndex!].name
-
             // Now the artists have been fetched we can begin fetching information about the
-            // artworks and selecting the artists that will be on in the discovery section
-            getDiscoverArtists()
+            // artworks and selecting the artists that will be on the home tab
             getArtworks()
+            getFeaturedArtist()
+            getDiscoverArtists()
         }
         logger.info("Successfully retrieved \(artists.count) artists.")
     }
@@ -90,6 +84,15 @@ class ArtistManager: ObservableObject {
         logger.info("Determining artists for Home screen discover section.")
         discoverArtistIndexes = getUniqueRandomNumbers(min: 0,
                                                        max: artists.count-1, count: numDiscoverArtists)
+    }
+
+    private func getFeaturedArtist() {
+        // Select an artist to be featured at random
+        featuredArtistIndex = Int.random(in: 0..<artists.count)
+        repeat {
+            featuredArtistIndex = Int.random(in: 0..<artists.count)
+        } while (artists[featuredArtistIndex!].artworks?.isEmpty == true)
+        featuredArtistName = artists[featuredArtistIndex!].name
     }
 
     /// Generate an array of unique random integers from a range

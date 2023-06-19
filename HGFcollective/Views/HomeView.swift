@@ -45,7 +45,7 @@ struct HomeView: View {
                     .accentColor(Color.theme.navigationBarAccent)
             }
             .onAppear {
-                logger.info("Presenting home view with featured artist: \(artistManager.featuredArtistName ?? "null").")
+                logger.info("Presenting home view with featured artist: \(artistManager.featuredArtistName ?? "null")")
 
                 Analytics.logEvent(AnalyticsEventScreenView,
                                    parameters: [AnalyticsParameterScreenName: "\(HomeView.self)",
