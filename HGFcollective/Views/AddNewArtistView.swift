@@ -110,6 +110,7 @@ struct AddNewArtistView: View {
             .foregroundColor(Color.theme.buttonForeground)
             .background(Color.theme.accent)
             .cornerRadius(40)
+            .shadow(radius: 8, x: 8, y: 8)
         }
         .contentShape(Rectangle())
         .padding(.bottom, 10)

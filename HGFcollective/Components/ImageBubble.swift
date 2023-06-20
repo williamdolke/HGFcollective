@@ -33,6 +33,7 @@ struct ImageBubble: View {
                     }
                     .aspectRatio(contentMode: fill ? .fill : .fit)
                     .frame(width: width, height: height)
+                    .shadow(radius: 5, x: 8, y: 8)
             } else if (UIImage(named: assetName) != nil) {
                 // Try to find the image in Assets.xcassets
                 // Convert a UIImage() to Image() to allow cached images to
@@ -42,12 +43,14 @@ struct ImageBubble: View {
                     .resizable()
                     .aspectRatio(contentMode: fill ? .fill : .fit)
                     .frame(width: width, height: height)
+                    .shadow(radius: 5, x: 8, y: 8)
             } else {
                 // Show a SF symbol as a last resort
                 Image(systemName: "photo.circle.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(width: width, height: height)
+                    .shadow(radius: 5, x: 8, y: 8)
                     .background(Color.theme.accent)
                     .foregroundColor(Color.theme.navigationBarAccent)
             }

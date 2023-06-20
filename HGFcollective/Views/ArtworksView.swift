@@ -123,6 +123,7 @@ struct ArtworksView: View {
                                             fill: true)
                                 .background(Color.theme.accent)
                                 .cornerRadius(0.1 * min(height, width))
+                                .shadow(radius: 5, x: 8, y: 8)
                                 .overlay(
                                     favourites.contains(artwork.name) ? heart : nil
                                 )
@@ -209,6 +210,7 @@ struct ArtworksView: View {
                                             fill: true)
                                 .background(Color.theme.accent)
                                 .cornerRadius(0.1 * min(height, width))
+                                .shadow(radius: 5, x: 8, y: 8)
 
                                 Text(artwork.name)
                                     .foregroundColor(Color.theme.systemBackgroundInvert)

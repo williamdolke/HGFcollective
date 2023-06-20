@@ -66,6 +66,7 @@ struct ArtworkView: View {
                         favouriteButton
                             .padding()
                     }
+                    .padding(.bottom) // Required to avoid cutting off shadow
                     .frame(maxWidth: .infinity,
                            alignment: Alignment(horizontal: .horizontalCenterAlignment, vertical: .center))
                 }
@@ -206,6 +207,7 @@ struct ArtworkView: View {
             .background(Color.theme.accent)
             .cornerRadius(40)
             .foregroundColor(Color.theme.buttonForeground)
+            .shadow(radius: 8, x: 8, y: 8)
         }
         .contentShape(Rectangle())
         .padding(.bottom, 10)

@@ -13,6 +13,8 @@ struct HomeView: View {
 
     @State private var showMenu = false
     @State private var showAddArtistOrArtworkView = false
+    @State private var tapIconScale: CGFloat = 0.35
+    @AppStorage("alreadyShownHomeTapPrompt") var shownTapPrompt: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -81,6 +83,9 @@ struct HomeView: View {
         GeometryReader { geo in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0.03 * geo.size.width) {
+                    Spacer()
+                        .frame(width: 5)
+
                     // Select a number of artists to be in the "discover" section, as defined by numDiscoverArtists
                     ForEach(0..<artistManager.numDiscoverArtists, id: \.self) { index in
                         let artistIndex = artistManager.discoverArtistIndexes![index]
@@ -100,18 +105,49 @@ struct HomeView: View {
                             ImageBubble(assetName: artworkAssetName + " 1",
                                         url: artworkURL,
                                         height: geo.size.height,
-                                        width: 0.45 * geo.size.width,
+                                        width: 0.42 * geo.size.width,
                                         fill: true)
                             .background(Color.theme.accent)
                             // Take the minimum so that corners radius doesn't get
                             // very large if the bubble is very tall or very wide
                             .cornerRadius(0.2 * min(geo.size.height, geo.size.width))
+                            .shadow(radius: 5, x: 8, y: 8)
+                            .overlay {
+                                Group {
+                                    if !shownTapPrompt {
+                                        Image(systemName: "hand.tap")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 200, height: 200)
+                                            .scaleEffect(tapIconScale)
+                                            .animation(Animation.linear(duration: 0.8).repeatForever())
+                                            .onAppear {
+                                                withAnimation {
+                                                    tapIconScale = 0.3
+                                                }
+                                            }
+                                            .onDisappear {
+                                                withAnimation {
+                                                    tapIconScale = 0.4
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                            .onDisappear {
+                                if !shownTapPrompt {
+                                    UserDefaults.standard.setValue(true, forKey: "alreadyShownHomeTapPrompt")
+                                }
+                            }
                         }
                     }
+
+                    Spacer()
+                        .frame(width: 5)
                 }
+                .padding(.bottom) // Required to avoid cutting off shadow
             }
         }
-        .padding(.horizontal)
     }
 
     /// Every time the app is launched a "featured artists" is chosen.
@@ -120,6 +156,9 @@ struct HomeView: View {
         GeometryReader { geo in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 0.03 * geo.size.width) {
+                    Spacer()
+                        .frame(width: 0)
+
                     let featuredArtist = artistManager.artists[artistManager.featuredArtistIndex!]
                     // Display the first image of each artwork by the featured artist.
                     // When the image is tapped a view will be presented with information about
@@ -130,18 +169,23 @@ struct HomeView: View {
                             ImageBubble(assetName: artwork.name + " 1",
                                         url: artwork.urls?[0],
                                         height: geo.size.height,
-                                        width: 0.9 * geo.size.width,
+                                        width: 0.85 * geo.size.width,
                                         fill: true)
                             .background(Color.theme.accent)
                             // Take the minimum so that corners radius doesn't get
                             // very large if the bubble is very tall or very wide
                             .cornerRadius(0.2 * min(geo.size.height, geo.size.width))
+                            .shadow(radius: 5, x: 8, y: 8)
                         }
                     }
+
+                    Spacer()
+                        .frame(width: 0)
                 }
+                .padding(.bottom) // Required to avoid cutting off shadow
             }
         }
-        .padding([.horizontal, .bottom])
+        .padding(.bottom) // Required to avoid cutting off shadow
     }
 }
 
