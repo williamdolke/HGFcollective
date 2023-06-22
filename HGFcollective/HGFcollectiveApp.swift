@@ -30,7 +30,6 @@ struct HGFcollectiveApp: App {
 }
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-    let gcmMessageIDKey = "gcm.message_id"
     var tabBarState = TabBarState()
 
     // If the app wasn’t running and the user launches it by tapping a push notification,
@@ -56,6 +55,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
             completionHandler: {_, _ in })
 
         application.registerForRemoteNotifications()
+
+        // Providing the user hasn't disabled this type of notification, schedule a notification
+        // for the future to prompt the user to return to the app if they haven't for a long period
+        @AppStorage("reminderNotificationsEnabled") var reminderNotificationsEnabled = true
+        if reminderNotificationsEnabled {
+            scheduleComeBackNotification()
+        }
 
         return true
     }
@@ -116,14 +122,50 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
-        let userInfo = response.notification.request.content.userInfo
+        if response.notification.request.identifier == "comeBackNotification" {
+            // Process come back notification
+            tabBarState.selection = 0
+        } else {
+            // Process chat message notification
+            let userInfo = response.notification.request.content.userInfo
 
-        // With swizzling disabled you must let Messaging know about the message, for Analytics
-        Messaging.messaging().appDidReceiveMessage(userInfo)
+            // With swizzling disabled you must let Messaging know about the message, for Analytics
+            Messaging.messaging().appDidReceiveMessage(userInfo)
 
-        logger.info("Switching to the chat tab after the user tapped a message notification.")
-        tabBarState.selection = 3
+            logger.info("Switching to the chat tab after the user tapped a message notification.")
+            tabBarState.selection = 3
+        }
 
         completionHandler()
+    }
+
+    func scheduleComeBackNotification() {
+        let notificationIdentifier = "comeBackNotification"
+
+        // Clear any existing notifications with the identifier
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationIdentifier])
+
+        // Create the notification content
+        let content = UNMutableNotificationContent()
+        content.title = "It's been a while!"
+        content.body = "Come back and discover our new artworks."
+
+        // Calculate the trigger date for two weeks in the future
+        let now = Date()
+        let twoWeeksTime = Calendar.current.date(byAdding: .weekOfYear, value: 2, to: now)!
+
+        let triggerDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: twoWeeksTime)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
+
+        let request = UNNotificationRequest(identifier: notificationIdentifier, content: content, trigger: trigger)
+
+        // Schedule the notification
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                logger.error("Error scheduling come back notification for \(twoWeeksTime): \(error)")
+            } else {
+                logger.info("Come back notification scheduled successfully for \(twoWeeksTime).")
+            }
+        }
     }
 }

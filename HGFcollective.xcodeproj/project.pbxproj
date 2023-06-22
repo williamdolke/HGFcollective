@@ -75,6 +75,7 @@
 		60ADDD5E2958770F00676A3C /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ADDD5D2958770F00676A3C /* AboutView.swift */; };
 		60ADDD622958AFC800676A3C /* EULA.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD612958AFC700676A3C /* EULA.txt */; };
 		60ADDD642958B8B400676A3C /* TermsAndConditions.txt in Resources */ = {isa = PBXBuildFile; fileRef = 60ADDD632958B8B200676A3C /* TermsAndConditions.txt */; };
+		60B8EA482A43984E00E72E13 /* NotificationSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B8EA472A43984D00E72E13 /* NotificationSettingsView.swift */; };
 		60BB546829D9E1E4008586F2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 60BB546729D9E1E4008586F2 /* FirebaseMessaging */; };
 		60BB546B29DA3012008586F2 /* TabBarState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BB546A29DA3012008586F2 /* TabBarState.swift */; };
 		60BD97AD29EAA5EF00901398 /* NavigationUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BD97AC29EAA5ED00901398 /* NavigationUtils.swift */; };
@@ -186,6 +187,7 @@
 		60ADDD5D2958770F00676A3C /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		60ADDD612958AFC700676A3C /* EULA.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = EULA.txt; sourceTree = "<group>"; };
 		60ADDD632958B8B200676A3C /* TermsAndConditions.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TermsAndConditions.txt; sourceTree = "<group>"; };
+		60B8EA472A43984D00E72E13 /* NotificationSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationSettingsView.swift; sourceTree = "<group>"; };
 		60BB546929D9E5D1008586F2 /* HGFcollective.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HGFcollective.entitlements; sourceTree = "<group>"; };
 		60BB546A29DA3012008586F2 /* TabBarState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarState.swift; sourceTree = "<group>"; };
 		60BD97AC29EAA5ED00901398 /* NavigationUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationUtils.swift; sourceTree = "<group>"; };
@@ -367,6 +369,7 @@
 				60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */,
 				60622CC02A26A0E40007E973 /* AddNewArtistOrArtworkView.swift */,
 				60622CCA2A2AB7C10007E973 /* MultipleImagePickerView.swift */,
+				60B8EA472A43984D00E72E13 /* NotificationSettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -703,6 +706,7 @@
 				6083EEE128D6BD1E0038A547 /* ImageBubble.swift in Sources */,
 				60AA7C112A35371600BBCDBD /* Constants.swift in Sources */,
 				6032FF0928CD5E7200C4F22C /* ContentView.swift in Sources */,
+				60B8EA482A43984E00E72E13 /* NotificationSettingsView.swift in Sources */,
 				60BD97AF29EAA75400901398 /* LoginUtils.swift in Sources */,
 				60622CCB2A2AB7C10007E973 /* MultipleImagePickerView.swift in Sources */,
 				60622CC72A29FA410007E973 /* Storage+Extension.swift in Sources */,

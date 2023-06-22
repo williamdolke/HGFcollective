@@ -15,6 +15,7 @@ struct MenuView: View {
         NavigationView {
             Form {
                 generalSection
+                settingsSection
                 legalSection
             }
             .navigationTitle("Menu")
@@ -46,6 +47,20 @@ struct MenuView: View {
             }
         } header: {
             Text("General")
+        }
+    }
+
+    private var settingsSection: some View {
+        Section {
+            NavigationLink(destination: NotificationSettingsView()) {
+                HStack {
+                    Image(systemName: "bell.and.waves.left.and.right.fill")
+                        .foregroundColor(colorScheme == .dark ? Color.theme.systemBackgroundInvert : Color.theme.accent)
+                    Text("Notifications")
+                }
+            }
+        } header: {
+            Text("Settings")
         }
     }
 
