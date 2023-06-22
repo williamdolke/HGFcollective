@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 import PhotosUI
 
 @available(iOS 16.0, *)
@@ -19,6 +20,10 @@ struct MessageField: View {
 
     @FocusState private var isFocused: Bool
 
+    // UTF-8 encoded characters are 8-bits and emojis are 32-bits.
+    // For a message only containing emojis, the maximum storage
+    // required would be approximately 4 kilobytes.
+    var maxTextLength = 1024
     var placeholder = Text("Enter your message here")
     var editingChanged: (Bool) -> Void = { _ in }
     var commit: () -> Void = { }
@@ -71,6 +76,7 @@ struct MessageField: View {
         ZStack(alignment: .leading) {
             VStack {
                 TextField("Enter your message here", text: $message)
+                    .onReceive(Just(message)) { _ in limitTextLength(maxTextLength) }
                     .accentColor(Color.theme.systemBackgroundInvert)
                     .focused($isFocused)
                     .padding()
@@ -121,6 +127,12 @@ struct MessageField: View {
                     .cornerRadius(50)
             }
             .padding([.top, .bottom], 10)
+        }
+    }
+
+    func limitTextLength(_ limit: Int) {
+        if message.count > limit {
+            message = String(message.prefix(limit))
         }
     }
 }
