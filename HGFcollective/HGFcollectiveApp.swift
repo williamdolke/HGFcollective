@@ -154,7 +154,10 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         let now = Date()
         let twoWeeksTime = Calendar.current.date(byAdding: .weekOfYear, value: 2, to: now)!
 
-        let triggerDateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second], from: twoWeeksTime)
+        let triggerDateComponents = Calendar.current.dateComponents(
+            [.year, .month, .day, .hour, .minute, .second],
+            from: twoWeeksTime
+        )
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerDateComponents, repeats: false)
 
         let request = UNNotificationRequest(identifier: notificationIdentifier, content: content, trigger: trigger)

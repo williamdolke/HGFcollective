@@ -172,38 +172,79 @@ class ArtistManager: ObservableObject {
     /// Check if the artist already exists before attempting to add it. It is required that
     /// the artist has a document at this path for it to exist and have associated artworks
     /// displayed in the app.
-    func createArtistIfDoesNotExist(name: String, biography: String, completion: @escaping (String?) -> Void) {
+    func createArtistIfDoesNotExist(name: String, biography: String, completion: @escaping (ActionResult?) -> Void) {
         let artistPath = "artists/" + name
         firestoreDB.checkDocumentExists(docPath: artistPath) { exists, error in
             if let error = error {
                 logger.error("Error checking if artist \(name) already exists: \(error)")
-                completion("Error: An error occurred when checking if the artist already exists.")
+                let result = ActionResult(success: false,
+                                          message: "Error: An error occurred when checking if the artist already exists.")
+                completion(result)
             } else {
                 if exists {
-                    logger.info("User has attempted to add an artist that already exists: \(name)")
-                    completion("Error: An artist with the name \(name) already exists.")
+                    logger.error("User has attempted to add an artist that already exists: \(name)")
+                    let result = ActionResult(success: false,
+                                              message: "Error: An artist with the name \(name) already exists.")
+                    completion(result)
                 } else {
                     logger.info("Artist \(name) does not already exist. Creating new artist.")
                     let newArtistData = ["name": name, "biography": biography]
-                    self.createNewArtist(data: newArtistData)
+                    // swiftlint:disable:next force_cast
+                    self.firestoreDB.collection("artists").document(name)
+                        .setData(newArtistData) { error in
+                            if let error = error {
+                                Crashlytics.crashlytics().record(error: error)
+                                logger.error("Error creating new artist: \(error)")
+                                let result = ActionResult(success: false,
+                                                          message: "An error occurred when creating a new artist.")
+                                completion(result)
+                            } else {
+                                logger.info("Successfully created new artist.")
+                                let result = ActionResult(success: true,
+                                                          message: "A new artist was successfully created.")
+                                completion(result)
+                            }
+                        }
                 }
             }
         }
     }
 
-    private func createNewArtist(data: [String:Any]) {
-        logger.info("Creating new artist.")
-
-        // swiftlint:disable:next force_cast
-        firestoreDB.collection("artists").document(data["name"] as! String)
-            .setData(data, merge: false) { error in
-                if let error = error {
-                    Crashlytics.crashlytics().record(error: error)
-                    logger.error("Error creating new artist: \(error)")
+    func editArtistIfAlreadyExists(name: String, biography: String, completion: @escaping (ActionResult?) -> Void) {
+        let artistPath = "artists/" + name
+        firestoreDB.checkDocumentExists(docPath: artistPath) { exists, error in
+            if let error = error {
+                logger.error("Error checking if artist \(name) already exists: \(error)")
+                let result = ActionResult(success: false,
+                                          message: "Error: An error occurred when checking if the artist already exists.")
+                completion(result)
+            } else {
+                if exists {
+                    logger.info("Artist \(name) already exists. Editing artist document.")
+                    let editArtistData = ["name": name, "biography": biography]
+                    self.firestoreDB.collection("artists").document(name)
+                        .setData(editArtistData, merge: false) { error in
+                            if let error = error {
+                                Crashlytics.crashlytics().record(error: error)
+                                logger.error("Error editing artist document: \(error)")
+                                let result = ActionResult(success: false,
+                                                          message: "Error: An error occurred when editing an artist.")
+                                completion(result)
+                            } else {
+                                logger.info("Successfully edited artist document.")
+                                let result = ActionResult(success: true,
+                                                          message: "An artist was successfully edited.")
+                                completion(result)
+                            }
+                        }
                 } else {
-                    logger.info("Successfully created new artist.")
+                    logger.error("User has attempted to edit an artist that already exists: \(name)")
+                    let result = ActionResult(success: false,
+                                              message: "Error: An artist with the name \(name) already exists.")
+                    completion(result)
                 }
             }
+        }
     }
 
     func deleteArtist(artist: String) {
@@ -225,7 +266,10 @@ class ArtistManager: ObservableObject {
 
     /// Admins can add all the artworks for an artist without it being visible to users
     /// and finally add the artist to make then all appear in the app at the same time.
-    func createNewArtwork(artist: String, artwork: String, data: [String: Any]) {
+    func createNewArtwork(artist: String,
+                          artwork: String,
+                          data: [String: Any],
+                          completion: @escaping (ActionResult?) -> Void) {
         logger.info("Creating new artwork.")
 
         firestoreDB.collection("artists").document(artist).collection("artworks").document(artwork)
@@ -233,10 +277,54 @@ class ArtistManager: ObservableObject {
                 if let error = error {
                     Crashlytics.crashlytics().record(error: error)
                     logger.error("Error creating new artwork: \(error)")
+                    let result = ActionResult(success: false,
+                                              message: "Error: An error occurred when creating a new artwork.")
+                    completion(result)
                 } else {
                     logger.info("Successfully created new artwork.")
+                    let result = ActionResult(success: true,
+                                              message: "A new artwork was successfully created.")
+                    completion(result)
                 }
             }
+    }
+
+    func editArtworkIfAlreadyExists(artist: String,
+                                    artwork: String,
+                                    data: [String:Any], completion: @escaping (ActionResult?) -> Void) {
+        let artworkPath = "artists/" + artist + "/artworks/" + artwork
+        firestoreDB.checkDocumentExists(docPath: artworkPath) { exists, error in
+            if let error = error {
+                logger.error("Error checking if artwork \(artwork) already exists for artist \(artist): \(error)")
+                let result = ActionResult(success: false,
+                                          message: "Error: An error occurred when checking if the artwork already exists.")
+                completion(result)
+            } else {
+                if exists {
+                    logger.info("Artwork \(artwork) already exists for artist \(artist). Editing artwork document.")
+                    self.firestoreDB.collection("artists").document(artist).collection("artworks").document(artwork)
+                        .setData(data, merge: false) { error in
+                            if let error = error {
+                                Crashlytics.crashlytics().record(error: error)
+                                logger.error("Error editing artwork document: \(error)")
+                                let result = ActionResult(success: false,
+                                                          message: "Error: An error occurred when editing an artwork.")
+                                completion(result)
+                            } else {
+                                logger.info("Successfully edited artwork document.")
+                                let result = ActionResult(success: true,
+                                                          message: "An artwork was successfully edited.")
+                                completion(result)
+                            }
+                        }
+                } else {
+                    logger.error("User has attempted to edit an artwork that already exists: \(artwork)")
+                    let result = ActionResult(success: false,
+                                              message: "Error: An artwork with the name \(artwork) already exists for \(artist).")
+                    completion(result)
+                }
+            }
+        }
     }
 
     func deleteArtwork(artist: String, artwork: String, urls: [String]?) {
@@ -265,4 +353,9 @@ class ArtistManager: ObservableObject {
             }
         }
     }
+}
+
+struct ActionResult {
+    let success: Bool
+    let message: String
 }

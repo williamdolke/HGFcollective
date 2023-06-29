@@ -10,9 +10,38 @@ import FirebaseAnalytics
 import FirebaseStorage
 import PhotosUI
 
+enum ArtworkField: Hashable {
+    case artworkName
+    case artistName
+    case description
+    case editionNumber
+    case editionSize
+    case material
+    case dimensionUnframed
+    case dimensionFramed
+    case yearCreated
+    case signed
+    case numbered
+    case stamped
+    case authenticity
+    case price
+}
+
+enum UrlField: Int, Hashable, CaseIterable {
+    case url1
+    case url2
+    case url3
+    case url4
+    case url5
+    case url6
+    case url7
+    case url8
+    case url9
+    case url10
+}
+
 struct AddNewArtworkView: View {
     // User input fields
-    @State private var artists: [Artist] = []
     @State private var artistName = ""
     @State private var artworkName = ""
     @State private var description = ""
@@ -41,40 +70,11 @@ struct AddNewArtworkView: View {
     @State private var showImagePicker = false
     @State private var compressionRatio: Double = 0.5
 
-    enum ArtworkField: Hashable {
-        case artworkName
-        case artistName
-        case description
-        case editionNumber
-        case editionSize
-        case material
-        case dimensionUnframed
-        case dimensionFramed
-        case yearCreated
-        case signed
-        case numbered
-        case stamped
-        case authenticity
-        case price
-    }
-
-    enum UrlField: Int, Hashable, CaseIterable {
-        case url1
-        case url2
-        case url3
-        case url4
-        case url5
-        case url6
-        case url7
-        case url8
-        case url9
-        case url10
-    }
-
     @FocusState var artworkFieldInFocus: ArtworkField?
     @FocusState var urlFieldInFocus: UrlField?
 
     @EnvironmentObject var artistManager: ArtistManager
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
@@ -108,7 +108,7 @@ struct AddNewArtworkView: View {
                 Text(statusMessage)
                     .foregroundColor(Color.theme.favourite)
 
-                submitButton
+                SubmitButton(action: createArtwork)
                     .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })
             }
             .padding()
@@ -165,29 +165,6 @@ struct AddNewArtworkView: View {
                  """)
             .font(.caption)
         }
-    }
-
-    /// Button to compile all the information/photos provided and add the artwork to the database.
-    /// This includes the upload of photos to storage and including references to their locations in
-    /// the artwork document
-    private var submitButton: some View {
-        Button {
-            logger.info("User tapped the submit button.")
-            createArtwork()
-        } label: {
-            HStack {
-                Text("**Submit**")
-                    .font(.title2)
-                Image(systemName: "checkmark.icloud")
-            }
-            .padding()
-            .foregroundColor(Color.theme.buttonForeground)
-            .background(Color.theme.accent)
-            .cornerRadius(40)
-            .shadow(radius: 8, x: 8, y: 8)
-        }
-        .contentShape(Rectangle())
-        .padding(.bottom, 10)
     }
 
     /// Attempt to create the artwork. If the admin hasn't completed the required fields/uploaded
@@ -267,7 +244,17 @@ struct AddNewArtworkView: View {
                     newArtworkData["urls"] = storageURLs
                 }
 
-                artistManager.createNewArtwork(artist: artistName, artwork: artworkName, data: newArtworkData)
+                artistManager.createNewArtwork(artist: artistName,
+                                               artwork: artworkName,
+                                               data: newArtworkData) { result in
+                    if let result = result {
+                        statusMessage = result.message
+                        // Go back to the portfolio manager menu if successful
+                        if result.success == true {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                }
             }
         }
     }
@@ -278,62 +265,56 @@ struct AddNewArtworkView: View {
             sectionTitle(title: "Details", isExpanded: $isDetailExpanded)
 
             if isDetailExpanded {
-                let detailFields = [
+                Group {
                     CustomTextField(title: "Edition number",
                                     text: $editionNumber,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .editionNumber),
+                                    field: .editionNumber)
 
                     CustomTextField(title: "Edition size",
                                     text: $editionSize,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .editionSize),
+                                    field: .editionSize)
 
                     CustomTextField(title: "Unframed dimensions",
                                     text: $dimensionUnframed,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .dimensionUnframed),
+                                    field: .dimensionUnframed)
 
                     CustomTextField(title: "Framed dimensions",
                                     text: $dimensionFramed,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .dimensionFramed),
+                                    field: .dimensionFramed)
 
                     CustomTextField(title: "Year",
                                     text: $year,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .yearCreated),
+                                    field: .yearCreated)
 
                     CustomTextField(title: "Signed",
                                     text: $signed,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .signed),
+                                    field: .signed)
 
                     CustomTextField(title: "Numbered",
                                     text: $numbered,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .numbered),
+                                    field: .numbered)
 
                     CustomTextField(title: "Stamped",
                                     text: $stamped,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .stamped),
+                                    field: .stamped)
 
                     CustomTextField(title: "Authenticity",
                                     text: $authenticity,
                                     focusedField: $artworkFieldInFocus,
-                                    field: .authenticity),
+                                    field: .authenticity)
 
                     CustomTextField(title: "Price (include currency)",
                                     text: $price,
                                     focusedField: $artworkFieldInFocus,
                                     field: .price)
-                ]
-
-                Group {
-                    ForEach(detailFields, id: \.self) { detailField in
-                        detailField
-                    }
                 }
                 .padding()
                 .background(Color.theme.bubble)

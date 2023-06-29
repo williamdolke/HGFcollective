@@ -19,7 +19,6 @@ struct ContentView: View {
     // When the value stored changes, these variables will be updated automatically.
     @AppStorage("aboutScreenShown") var aboutScreenShown: Bool = false
     @AppStorage("isAdmin") var isAdmin: Bool = false
-    // swiftlint:disable:next force_cast
     var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as? String ?? "" )
     var enquiryManager = EnquiryManager()
 

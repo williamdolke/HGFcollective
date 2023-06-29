@@ -51,7 +51,7 @@ struct ArtworksView: View {
                 CustomToolbarItems(showView: $showAddArtistOrArtworkView)
             }
             .sheet(isPresented: $showAddArtistOrArtworkView) {
-                AddNewArtistOrArtworkView()
+                PortfolioManagerView()
                     .accentColor(Color.theme.navigationBarAccent)
             }
             .searchable(text: $searchQuery, prompt: "Search By Artwork Name")

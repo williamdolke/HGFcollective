@@ -7,10 +7,15 @@
 
 import SwiftUI
 import FirebaseAnalytics
-import FirebaseFirestore
+
+enum NewArtistField: Hashable {
+    case name
+    case biography
+}
 
 struct AddNewArtistView: View {
     @EnvironmentObject var artistManager: ArtistManager
+    @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme) var colorScheme
 
     @State private var artistName = ""
@@ -18,11 +23,6 @@ struct AddNewArtistView: View {
     @State private var statusMessage = ""
 
     @FocusState private var isFieldFocused: NewArtistField?
-
-    enum NewArtistField: Hashable {
-        case name
-        case biography
-    }
 
     var body: some View {
         ScrollView {
@@ -58,17 +58,17 @@ struct AddNewArtistView: View {
                 Text(statusMessage)
                     .foregroundColor(Color.theme.favourite)
 
-                submitButton
+                SubmitButton(action: createArtistIfDoesNotExist)
                     .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })
             }
             .padding()
-            .onAppear {
-                logger.info("Presenting add new artist view.")
+        }
+        .onAppear {
+            logger.info("Presenting add new artist view.")
 
-                Analytics.logEvent(AnalyticsEventScreenView,
-                                   parameters: [AnalyticsParameterScreenName: "\(AddNewArtistView.self)",
-                                               AnalyticsParameterScreenClass: "\(AddNewArtistView.self)"])
-            }
+            Analytics.logEvent(AnalyticsEventScreenView,
+                               parameters: [AnalyticsParameterScreenName: "\(AddNewArtistView.self)",
+                                           AnalyticsParameterScreenClass: "\(AddNewArtistView.self)"])
         }
     }
 
@@ -96,34 +96,18 @@ struct AddNewArtistView: View {
         )
     }
 
-    private var submitButton: some View {
-        Button {
-            logger.info("User tapped the submit button")
-            createArtistIfDoesNotExist()
-        } label: {
-            HStack {
-                Text("**Submit**")
-                    .font(.title2)
-                Image(systemName: "checkmark.icloud")
-            }
-            .padding()
-            .foregroundColor(Color.theme.buttonForeground)
-            .background(Color.theme.accent)
-            .cornerRadius(40)
-            .shadow(radius: 8, x: 8, y: 8)
-        }
-        .contentShape(Rectangle())
-        .padding(.bottom, 10)
-    }
-
     private func createArtistIfDoesNotExist() {
         if artistName.isEmpty || biography.isEmpty {
             logger.info("User has not completed all required fields.")
             statusMessage = "Error: All fields are required and must be completed."
         } else {
-            artistManager.createArtistIfDoesNotExist(name: artistName, biography: biography) { message in
-                if let message = message {
-                    statusMessage = message
+            artistManager.createArtistIfDoesNotExist(name: artistName, biography: biography) { result in
+                if let result = result {
+                    statusMessage = result.message
+                    // Go back to the portfolio manager menu if successful
+                    if result.success == true {
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 }
             }
         }

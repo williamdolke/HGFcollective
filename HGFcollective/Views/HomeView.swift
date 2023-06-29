@@ -39,7 +39,7 @@ struct HomeView: View {
                 CustomToolbarItems(showView: $showAddArtistOrArtworkView)
             }
             .sheet(isPresented: $showAddArtistOrArtworkView) {
-                AddNewArtistOrArtworkView()
+                PortfolioManagerView()
                     .accentColor(Color.theme.navigationBarAccent)
             }
             .sheet(isPresented: $showMenu) {

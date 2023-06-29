@@ -49,7 +49,7 @@ struct ArtistsView: View {
                 CustomToolbarItems(showView: $showAddArtistOrArtworkView)
             }
             .sheet(isPresented: $showAddArtistOrArtworkView) {
-                AddNewArtistOrArtworkView()
+                PortfolioManagerView()
                     .accentColor(Color.theme.navigationBarAccent)
             }
             .searchable(text: $searchQuery, prompt: "Search By Artist Name")
