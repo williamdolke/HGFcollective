@@ -18,7 +18,7 @@ struct ReportView: View {
                     Spacer()
                 }
                 .padding()
-                // TODO: Work out why it doesn't display my email
+                // TODO: Work out why it doesn't display my email/add a send email button
                 Text("""
                      1) To report a crash open the Settings app on the device.
                      2) Go to Privacy & Security > Analytics & Improvements > Analytics Data.

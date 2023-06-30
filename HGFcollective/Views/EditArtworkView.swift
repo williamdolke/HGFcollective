@@ -69,7 +69,8 @@ struct EditArtworkView: View {
                     // selects "Select an artist" rather than an artist from the database.
                     Picker("Select an artwork", selection: $artworkName) {
                         Text("Select an artwork").tag("")
-                        ForEach(artistManager.artists.first(where: { $0.name == artistName })?.artworks ?? [Artwork(name: "No artworks")], id: \.name) { artwork in
+                        let artworks = artistManager.artists.first(where: { $0.name == artistName })?.artworks
+                        ForEach(artworks ?? [Artwork(name: "No artworks")], id: \.name) { artwork in
                             Text(artwork.name).tag(artwork.name)
                         }
                     }
@@ -90,8 +91,7 @@ struct EditArtworkView: View {
                     detailSection
 
                     Text(statusMessage)
-                        // TODO: Make a color for errors
-                        .foregroundColor(Color.theme.favourite)
+                        .foregroundColor(Color.theme.error)
 
                     SubmitButton(action: editArtwork)
                         .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })
@@ -100,7 +100,7 @@ struct EditArtworkView: View {
             .padding()
         }
         // Refresh the fields when the users selects a different artist
-        .onChange(of: artistName) { artistName in
+        .onChange(of: artistName) { _ in
             artworkName = ""
         }
         .onChange(of: artworkName) { artworkName in

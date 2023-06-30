@@ -19,6 +19,7 @@ struct ColorTheme {
     let accentSecondary = Color("AccentColorSecondary")
     let bubble = Color("BubbleColor")
     let buttonForeground = Color("ButtonForegroundColor")
+    let error = Color("Error")
     let favourite = Color("FavouriteColor")
     let imageBackground = Color("ImageBackground")
     let systemBackground = Color("SystemBackground")

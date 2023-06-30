@@ -177,8 +177,9 @@ class ArtistManager: ObservableObject {
         firestoreDB.checkDocumentExists(docPath: artistPath) { exists, error in
             if let error = error {
                 logger.error("Error checking if artist \(name) already exists: \(error)")
-                let result = ActionResult(success: false,
-                                          message: "Error: An error occurred when checking if the artist already exists.")
+                let result = ActionResult(
+                    success: false,
+                    message: "Error: An error occurred when checking if the artist already exists.")
                 completion(result)
             } else {
                 if exists {
@@ -189,7 +190,6 @@ class ArtistManager: ObservableObject {
                 } else {
                     logger.info("Artist \(name) does not already exist. Creating new artist.")
                     let newArtistData = ["name": name, "biography": biography]
-                    // swiftlint:disable:next force_cast
                     self.firestoreDB.collection("artists").document(name)
                         .setData(newArtistData) { error in
                             if let error = error {
@@ -215,8 +215,9 @@ class ArtistManager: ObservableObject {
         firestoreDB.checkDocumentExists(docPath: artistPath) { exists, error in
             if let error = error {
                 logger.error("Error checking if artist \(name) already exists: \(error)")
-                let result = ActionResult(success: false,
-                                          message: "Error: An error occurred when checking if the artist already exists.")
+                let result = ActionResult(
+                    success: false,
+                    message: "Error: An error occurred when checking if the artist already exists.")
                 completion(result)
             } else {
                 if exists {
@@ -296,8 +297,9 @@ class ArtistManager: ObservableObject {
         firestoreDB.checkDocumentExists(docPath: artworkPath) { exists, error in
             if let error = error {
                 logger.error("Error checking if artwork \(artwork) already exists for artist \(artist): \(error)")
-                let result = ActionResult(success: false,
-                                          message: "Error: An error occurred when checking if the artwork already exists.")
+                let result = ActionResult(
+                    success: false,
+                    message: "Error: An error occurred when checking if the artwork already exists.")
                 completion(result)
             } else {
                 if exists {
@@ -319,8 +321,9 @@ class ArtistManager: ObservableObject {
                         }
                 } else {
                     logger.error("User has attempted to edit an artwork that already exists: \(artwork)")
-                    let result = ActionResult(success: false,
-                                              message: "Error: An artwork with the name \(artwork) already exists for \(artist).")
+                    let result = ActionResult(
+                        success: false,
+                        message: "Error: An artwork with the name \(artwork) already exists for \(artist).")
                     completion(result)
                 }
             }

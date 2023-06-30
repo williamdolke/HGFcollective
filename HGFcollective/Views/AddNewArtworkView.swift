@@ -106,7 +106,7 @@ struct AddNewArtworkView: View {
                 advancedSection
 
                 Text(statusMessage)
-                    .foregroundColor(Color.theme.favourite)
+                    .foregroundColor(Color.theme.error)
 
                 SubmitButton(action: createArtwork)
                     .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })

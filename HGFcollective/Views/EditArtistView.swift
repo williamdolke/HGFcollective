@@ -63,7 +63,7 @@ struct EditArtistView: View {
                     .font(.caption)
 
                     Text(statusMessage)
-                        .foregroundColor(Color.theme.favourite)
+                        .foregroundColor(Color.theme.error)
 
                     SubmitButton(action: editArtistIfAlreadyExists)
                         .alignmentGuide(.horizontalCenterAlignment, computeValue: { $0.width / 2.0 })

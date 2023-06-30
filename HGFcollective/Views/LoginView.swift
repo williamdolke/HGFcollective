@@ -39,7 +39,7 @@ struct LoginView: View {
 
             // Show the error message if the login fails
             Text(loginStatusMessage)
-                .foregroundColor(Color.theme.favourite)
+                .foregroundColor(Color.theme.error)
         }
         .padding()
         .navigationTitle("Log In")
