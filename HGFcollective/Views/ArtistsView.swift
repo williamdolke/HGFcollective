@@ -63,7 +63,6 @@ struct ArtistsView: View {
         }
     }
 
-    // TODO: Remove duplication of this code
     /// Create the segmented picker from the enum cases
     private var segmentedControl: some View {
         SegmentedPicker(

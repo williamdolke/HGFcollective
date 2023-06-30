@@ -99,18 +99,7 @@ struct EditArtistView: View {
         .padding()
         .background(Color.theme.bubble)
         .cornerRadius(25)
-        // Dismiss the keyboard with a downward drag gesture. The user can also dismiss the
-        // keyboard by pressing the 'return' key.
-        .gesture(
-            DragGesture()
-                .onChanged { value in
-                    // Ignore upward swipes
-                    guard value.translation.height > 0 else { return }
-                }
-                .onEnded { _ in
-                    UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.endEditing(true)
-                }
-        )
+        .keyboardDismissGesture()
     }
 
     private func editArtistIfAlreadyExists() {
