@@ -90,6 +90,7 @@
 		60D098F3297CAC1000F9CE6C /* SegmentedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */; };
 		60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */; };
 		60D3B3D72A4F62DF00D54235 /* Group+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3B3D62A4F62DF00D54235 /* Group+Extension.swift */; };
+		60D3B3DA2A53862E00D54235 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 60D3B3D92A53862E00D54235 /* ZIPFoundation */; };
 		60DD63F12A24DE7D00AF8EA3 /* AddNewArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DD63F02A24DE7D00AF8EA3 /* AddNewArtistView.swift */; };
 		60DD63F32A250A6B00AF8EA3 /* AddNewArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */; };
 		60E43E53296E24EE00279D1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60E43E52296E24EE00279D1B /* FirebaseAnalytics */; };
@@ -224,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60A103B028E0781100DB6A00 /* SDWebImageSwiftUI in Frameworks */,
+				60D3B3DA2A53862E00D54235 /* ZIPFoundation in Frameworks */,
 				6003C20728CEAE2B00ABA79E /* FirebaseDatabaseSwift in Frameworks */,
 				60BB546829D9E1E4008586F2 /* FirebaseMessaging in Frameworks */,
 				60FBD7FE2919AFFE007CB313 /* Logging in Frameworks */,
@@ -495,6 +497,7 @@
 				60858CE5296CC92300F48140 /* FirebaseCrashlytics */,
 				60E43E52296E24EE00279D1B /* FirebaseAnalytics */,
 				60BB546729D9E1E4008586F2 /* FirebaseMessaging */,
+				60D3B3D92A53862E00D54235 /* ZIPFoundation */,
 			);
 			productName = ArtApp;
 			productReference = 6032FF0328CD5E7200C4F22C /* HGFcollective.app */;
@@ -583,6 +586,7 @@
 				6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				60A103AE28E0781100DB6A00 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
 				60FBD7FC2919AFFD007CB313 /* XCRemoteSwiftPackageReference "swift-log" */,
+				60D3B3D82A53862E00D54235 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
 			);
 			productRefGroup = 6032FF0428CD5E7200C4F22C /* Products */;
 			projectDirPath = "";
@@ -1172,6 +1176,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		60D3B3D82A53862E00D54235 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.9;
+			};
+		};
 		60FBD7FC2919AFFD007CB313 /* XCRemoteSwiftPackageReference "swift-log" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-log.git";
@@ -1257,6 +1269,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6003C20328CEAE2B00ABA79E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		60D3B3D92A53862E00D54235 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60D3B3D82A53862E00D54235 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
 		};
 		60E43E52296E24EE00279D1B /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

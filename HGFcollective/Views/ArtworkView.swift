@@ -11,6 +11,7 @@ import FirebaseAnalytics
 import FirebaseCrashlytics
 
 struct ArtworkView: View {
+    @EnvironmentObject var enquiryManager: EnquiryManager
     @EnvironmentObject var artistManager: ArtistManager
     @EnvironmentObject var favourites: Favourites
 
@@ -20,6 +21,7 @@ struct ArtworkView: View {
     @State private var currentIndex: Int = 0
     @State private var result: Result<MFMailComposeResult, Error>?
     @State private var enquireClicked = false
+    @State private var showMailErrorAlert = false
     @State private var showDeleteOptions: Bool = false
 
     @AppStorage("isAdmin") var isAdmin: Bool = false
@@ -101,6 +103,7 @@ struct ArtworkView: View {
         .onAppear {
             logger.info("Presenting artwork view for artist: \(artistName) and artwork: \(artwork.name).")
 
+            // TODO: Move to function
             // Check for images of the artwork to display
             for index in 1...Constants.maximumImages {
                 let artworkAssetName = artwork.name + " " + String(index)
@@ -195,7 +198,12 @@ struct ArtworkView: View {
 
     private var enquireButton: some View {
         Button {
-            enquireClicked.toggle()
+            if MFMailComposeViewController.canSendMail() {
+                enquireClicked.toggle()
+            } else {
+                logger.error("Device is not configured to send mail, cannot present mail view.")
+                showMailErrorAlert.toggle()
+            }
             logger.info("User tapped the enquire button")
         } label: {
             HStack {
@@ -212,8 +220,22 @@ struct ArtworkView: View {
         .contentShape(Rectangle())
         .padding(.bottom, 10)
         .sheet(isPresented: $enquireClicked) {
-            MailView(presentation: $enquireClicked, result: $result)
-                .disabled(!MFMailComposeViewController.canSendMail())
+            MailView(presentation: $enquireClicked,
+                     result: $result,
+                     recipients: enquiryManager.mail.recipients,
+                     subject: enquiryManager.mail.subject ?? "",
+                     body: enquiryManager.mail.msgBody ?? "",
+                     fileURL: nil,
+                     mimeType: nil,
+                     fileName: nil)
+        }
+        .alert(isPresented: $showMailErrorAlert) {
+            Alert(title: Text("Mail Account Is Not Configured"),
+                  message: Text("""
+                                Unable to compose an email. \
+                                Please install the Mail app and sign in to an email account to proceed.
+                                """),
+                  dismissButton: .default(Text("OK"), action: { logger.info("Mail error alert dismissed.") }))
         }
     }
 

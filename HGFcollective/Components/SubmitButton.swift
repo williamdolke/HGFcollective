@@ -16,7 +16,7 @@ struct SubmitButton: View {
             action()
         } label: {
             HStack {
-                Text("Submit")
+                Text("**Submit**")
                     .font(.title2)
                 Image(systemName: "checkmark.icloud")
             }

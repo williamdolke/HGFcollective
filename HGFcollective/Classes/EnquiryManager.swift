@@ -11,7 +11,7 @@ import FirebaseCrashlytics
 
 class EnquiryManager: ObservableObject {
     @Published var chat: Chat?
-    @Published var mail = Mail(recipients: [])
+    @Published var mail = Mail(recipients: [], problemReportRecipients: [])
 
     // Create an instance of our Firestore database
     let firestoreDB = Firestore.firestore()

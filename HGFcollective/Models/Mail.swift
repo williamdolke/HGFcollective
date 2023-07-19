@@ -18,6 +18,7 @@ struct Mail: Identifiable, Codable {
         self.recipients[0]
     }
     var recipients: [String]
+    var problemReportRecipients: [String]
     var subject: String?
     var msgBody: String?
 }

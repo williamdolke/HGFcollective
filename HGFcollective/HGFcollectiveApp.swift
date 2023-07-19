@@ -32,10 +32,19 @@ struct HGFcollectiveApp: App {
 class AppDelegate: NSObject, UIApplicationDelegate {
     var tabBarState = TabBarState()
 
+    private let logFileURL = FileManager.default.urls(
+        for: .documentDirectory,
+        in: .userDomainMask
+    ).first!.appendingPathComponent("HGFcollective.log")
+
     // If the app wasn’t running and the user launches it by tapping a push notification,
     // iOS passes the notification to the app in the launchOptions
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]?) -> Bool {
+#if !DEBUG
+        LoggingSystem.bootstrapLogFile(logFileURL: logFileURL)
+#endif
+
         // Use Firebase library to configure APIs
         FirebaseApp.configure()
 
@@ -169,6 +178,52 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             } else {
                 logger.info("Come back notification scheduled successfully for \(twoWeeksTime).")
             }
+        }
+    }
+}
+
+// TODO: Move to file
+class LogFileHandler: LogHandler {
+    var metadata: Logging.Logger.Metadata = [:]
+    var logLevel: Logger.Level = .info
+    private var logFileURL: URL?
+    private var fileHandle: FileHandle?
+
+    init(logFileURL: URL) {
+        self.logFileURL = logFileURL
+
+        FileManager.default.createFile(atPath: logFileURL.path, contents: nil, attributes: nil)
+
+        if let fileHandle = try? FileHandle(forWritingTo: logFileURL) {
+            self.fileHandle = fileHandle
+            self.fileHandle?.seekToEndOfFile()
+        }
+    }
+
+    subscript(metadataKey _: String) -> Logger.Metadata.Value? {
+        get { nil }
+        set(newValue) {}
+    }
+
+    func log(level: Logger.Level,
+             message: Logger.Message,
+             metadata: Logger.Metadata?,
+             file: String,
+             function: String,
+             line: UInt) {
+        let timestamp = Date.now
+        let logMessage = "\(timestamp): \(level): \(message)"
+        guard let data = "\(logMessage)\n".data(using: .utf8) else { return }
+
+        fileHandle?.write(data)
+    }
+}
+
+extension LoggingSystem {
+    static func bootstrapLogFile(logFileURL: URL) {
+        let logHandler = LogFileHandler(logFileURL: logFileURL)
+        LoggingSystem.bootstrap { _ in
+            logHandler
         }
     }
 }
