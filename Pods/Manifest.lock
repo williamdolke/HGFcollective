@@ -1,4 +1,11 @@
 PODS:
+  - AccessibilitySnapshot (0.6.0):
+    - AccessibilitySnapshot/Core (= 0.6.0)
+    - AccessibilitySnapshot/SnapshotTesting (= 0.6.0)
+  - AccessibilitySnapshot/Core (0.6.0)
+  - AccessibilitySnapshot/SnapshotTesting (0.6.0):
+    - AccessibilitySnapshot/Core
+    - SnapshotTesting (~> 1.0)
   - FirebaseFirestore (9.6.0):
     - FirebaseFirestore/AutodetectLeveldb (= 9.6.0)
   - FirebaseFirestore/AutodetectLeveldb (9.6.0):
@@ -11,12 +18,14 @@ PODS:
   - SwiftLint (0.49.1)
 
 DEPENDENCIES:
+  - AccessibilitySnapshot
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `9.6.0`)
   - SnapshotTesting
   - SwiftLint
 
 SPEC REPOS:
   trunk:
+    - AccessibilitySnapshot
     - SnapshotTesting
     - SwiftLint
 
@@ -31,10 +40,11 @@ CHECKOUT OPTIONS:
     :tag: 9.6.0
 
 SPEC CHECKSUMS:
+  AccessibilitySnapshot: d55ec4ea875392d4b753893cd132e522be031997
   FirebaseFirestore: 9bfe2e814686fb3ba2495b97618b38987e4c8526
   SnapshotTesting: 6141c48b6aa76ead61431ca665c14ab9a066c53b
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: e627125fa59e715274723f2e936b29382cd126fb
+PODFILE CHECKSUM: 5a0437473ce7d932014dbf6712b276b89e7093f7
 
 COCOAPODS: 1.11.3

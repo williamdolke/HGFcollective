@@ -4,6 +4,7 @@
 ### Xcode ###
 ## User settings
 xcuserdata/
+*.xcworkspace/xcuserdata/
 
 ## Xcode 8 and earlier
 *.xcscmblueprint
@@ -13,8 +14,8 @@ xcuserdata/
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
+**/xcshareddata/WorkspaceSettings.xcsettings
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
-**/xcshareddata/WorkspaceSettings.xcsettings
 
 GoogleService-Info.plist

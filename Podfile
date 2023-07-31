@@ -14,5 +14,6 @@ target 'HGFcollectiveSnapshotTests' do
 
   # Pods for Testing
   pod 'SnapshotTesting'
+  pod 'AccessibilitySnapshot'
 
 end

@@ -1,0 +1,1 @@
+../../../AccessibilitySnapshot/Sources/AccessibilitySnapshot/Core/ObjC/include/UIView+DynamicTypeSnapshotting.h
