@@ -9,3 +9,10 @@ target 'HGFcollective' do
   pod 'SwiftLint'
   
 end
+
+target 'HGFcollectiveSnapshotTests' do
+
+  # Pods for Testing
+  pod 'SnapshotTesting'
+
+end

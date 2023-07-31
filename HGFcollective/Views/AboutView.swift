@@ -35,6 +35,7 @@ struct AboutView: View {
                     let content = try? String(contentsOfFile: path!, encoding: String.Encoding.utf8)
                     Text(content ?? "")
                         .padding()
+                        .foregroundColor(Color.theme.systemBackgroundInvert)
                         .background(.ultraThinMaterial,
                                     in: RoundedRectangle(cornerRadius: 20, style: .continuous))
 

@@ -45,6 +45,7 @@ struct EditArtistView: View {
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
+                .accentColor(Color.theme.buttonForeground)
                 .background(Color.theme.accent)
 
                 if !artistName.isEmpty {

@@ -62,6 +62,7 @@ struct EditArtworkView: View {
                     }
                 }
                 .pickerStyle(MenuPickerStyle())
+                .accentColor(Color.theme.buttonForeground)
                 .background(Color.theme.accent)
 
                 if !artistName.isEmpty {
@@ -75,6 +76,7 @@ struct EditArtworkView: View {
                         }
                     }
                     .pickerStyle(MenuPickerStyle())
+                    .accentColor(Color.theme.buttonForeground)
                     .background(Color.theme.accent)
                 }
 

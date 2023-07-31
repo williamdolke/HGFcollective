@@ -1,0 +1,6 @@
+module Pods_HGFcollectiveSnapshotTests {
+  umbrella header "Pods-HGFcollectiveSnapshotTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
