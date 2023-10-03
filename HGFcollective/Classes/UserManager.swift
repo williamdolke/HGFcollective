@@ -9,12 +9,12 @@ import Foundation
 import FirebaseCrashlytics
 import FirebaseFirestore
 
-class UserManager: ObservableObject {
+class UserManager: UserManagerProtocol, ObservableObject {
     // Singleton
     static var shared = UserManager()
 
-    @Published private(set) var users: [User] = []
-    @Published private(set) var messagesManagers: [String: MessagesManager] = [:]
+    @Published var users: [User] = []
+    @Published var messagesManagers: [String: MessagesManager] = [:]
 
     // The cumulative unread messages count for all users
     var unreadMessages: Int = 0
@@ -23,7 +23,7 @@ class UserManager: ObservableObject {
     private var firestoreDB = Firestore.firestore()
     private var listener: ListenerRegistration?
 
-    private init() {
+    init() {
         logger.info("Initialise UserManager.")
     }
 

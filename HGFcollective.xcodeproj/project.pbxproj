@@ -112,11 +112,17 @@
 		60D098F7297DA1E500F9CE6C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60D098F6297DA1E500F9CE6C /* FirebaseCrashlytics */; };
 		60D3B3D72A4F62DF00D54235 /* Group+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D3B3D62A4F62DF00D54235 /* Group+Extension.swift */; };
 		60D3B3DA2A53862E00D54235 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 60D3B3D92A53862E00D54235 /* ZIPFoundation */; };
+		60D865922ACCB27E00CA306E /* TestUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D865912ACCB27E00CA306E /* TestUserManager.swift */; };
+		60D865952ACCB91700CA306E /* UserManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60D865942ACCB91700CA306E /* UserManagerProtocol.swift */; };
+		60D865962ACCC6F800CA306E /* MockUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E99D1E2A78700B000278AD /* MockUserManager.swift */; };
 		60DD63F12A24DE7D00AF8EA3 /* AddNewArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DD63F02A24DE7D00AF8EA3 /* AddNewArtistView.swift */; };
 		60DD63F32A250A6B00AF8EA3 /* AddNewArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */; };
 		60E43E53296E24EE00279D1B /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60E43E52296E24EE00279D1B /* FirebaseAnalytics */; };
 		60E43E5929747ADB00279D1B /* HorizontalAlignment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E43E5829747ADB00279D1B /* HorizontalAlignment+Extension.swift */; };
 		60E99D192A785B76000278AD /* TestPortfolioManagerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E99D182A785B76000278AD /* TestPortfolioManagerView.swift */; };
+		60E99D1B2A786A5B000278AD /* TestImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E99D1A2A786A5B000278AD /* TestImageView.swift */; };
+		60E99D1D2A786DC8000278AD /* TestInboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E99D1C2A786DC8000278AD /* TestInboxView.swift */; };
+		60E99D1F2A78700B000278AD /* MockUserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E99D1E2A78700B000278AD /* MockUserManager.swift */; };
 		60EDFFF129FAECE4008B1F68 /* StorageReference+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDFFF029FAECE4008B1F68 /* StorageReference+Extension.swift */; };
 		60EDFFF329FB0E72008B1F68 /* DocumentReference+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDFFF229FB0E72008B1F68 /* DocumentReference+Extension.swift */; };
 		60EDFFF529FB43E2008B1F68 /* QuerySnapshot+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60EDFFF429FB43E2008B1F68 /* QuerySnapshot+Extension.swift */; };
@@ -253,10 +259,15 @@
 		60D098F0297C78CF00F9CE6C /* CustomListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomListRow.swift; sourceTree = "<group>"; };
 		60D098F2297CAC1000F9CE6C /* SegmentedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedPicker.swift; sourceTree = "<group>"; };
 		60D3B3D62A4F62DF00D54235 /* Group+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Group+Extension.swift"; sourceTree = "<group>"; };
+		60D865912ACCB27E00CA306E /* TestUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUserManager.swift; sourceTree = "<group>"; };
+		60D865942ACCB91700CA306E /* UserManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManagerProtocol.swift; sourceTree = "<group>"; };
 		60DD63F02A24DE7D00AF8EA3 /* AddNewArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtistView.swift; sourceTree = "<group>"; };
 		60DD63F22A250A6B00AF8EA3 /* AddNewArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewArtworkView.swift; sourceTree = "<group>"; };
 		60E43E5829747ADB00279D1B /* HorizontalAlignment+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HorizontalAlignment+Extension.swift"; sourceTree = "<group>"; };
 		60E99D182A785B76000278AD /* TestPortfolioManagerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestPortfolioManagerView.swift; sourceTree = "<group>"; };
+		60E99D1A2A786A5B000278AD /* TestImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestImageView.swift; sourceTree = "<group>"; };
+		60E99D1C2A786DC8000278AD /* TestInboxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestInboxView.swift; sourceTree = "<group>"; };
+		60E99D1E2A78700B000278AD /* MockUserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserManager.swift; sourceTree = "<group>"; };
 		60EDFFF029FAECE4008B1F68 /* StorageReference+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StorageReference+Extension.swift"; sourceTree = "<group>"; };
 		60EDFFF229FB0E72008B1F68 /* DocumentReference+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DocumentReference+Extension.swift"; sourceTree = "<group>"; };
 		60EDFFF429FB43E2008B1F68 /* QuerySnapshot+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuerySnapshot+Extension.swift"; sourceTree = "<group>"; };
@@ -458,6 +469,8 @@
 			isa = PBXGroup;
 			children = (
 				6033369229463B2B008A4444 /* testArtistManager.swift */,
+				60E99D1E2A78700B000278AD /* MockUserManager.swift */,
+				60D865912ACCB27E00CA306E /* TestUserManager.swift */,
 			);
 			path = HGFcollectiveTests;
 			sourceTree = "<group>";
@@ -507,6 +520,8 @@
 				608302032A7708FD0014D634 /* TestConversationPreviewRow.swift */,
 				608302052A771AC80014D634 /* TestMessageField.swift */,
 				60E99D182A785B76000278AD /* TestPortfolioManagerView.swift */,
+				60E99D1A2A786A5B000278AD /* TestImageView.swift */,
+				60E99D1C2A786DC8000278AD /* TestInboxView.swift */,
 			);
 			path = HGFcollectiveSnapshotTests;
 			sourceTree = "<group>";
@@ -538,6 +553,7 @@
 				60339F9728F3531B00E7E1C8 /* Favourites.swift */,
 				607391AD28D136C6009BBFBD /* ArtistManager.swift */,
 				6003C20128CEA97C00ABA79E /* MessagesManager.swift */,
+				60D865942ACCB91700CA306E /* UserManagerProtocol.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -918,6 +934,7 @@
 				6003C20028CEA92200ABA79E /* MessageField.swift in Sources */,
 				60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */,
 				6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */,
+				60D865952ACCB91700CA306E /* UserManagerProtocol.swift in Sources */,
 				60B8EA4E2A4BAE4000E72E13 /* SubmitButton.swift in Sources */,
 				60ADDD5E2958770F00676A3C /* AboutView.swift in Sources */,
 				60EDFFF529FB43E2008B1F68 /* QuerySnapshot+Extension.swift in Sources */,
@@ -956,6 +973,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60E99D1F2A78700B000278AD /* MockUserManager.swift in Sources */,
+				60D865922ACCB27E00CA306E /* TestUserManager.swift in Sources */,
 				6033369329463B2B008A4444 /* testArtistManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -971,11 +990,14 @@
 				608301F82A76D2460014D634 /* TestEditArtworkView.swift in Sources */,
 				608301FA2A76E10C0014D634 /* TestSubmitButton.swift in Sources */,
 				608301DE2A75CAA00014D634 /* TestChatView.swift in Sources */,
+				60E99D1B2A786A5B000278AD /* TestImageView.swift in Sources */,
 				608302002A7706C90014D634 /* TestAddNewArtistView.swift in Sources */,
+				60E99D1D2A786DC8000278AD /* TestInboxView.swift in Sources */,
 				608301FC2A76E5A80014D634 /* TestAboutView.swift in Sources */,
 				608302022A7708960014D634 /* TestAddNewArtworkView.swift in Sources */,
 				608301F42A76CF400014D634 /* TestReportView.swift in Sources */,
 				608301F62A76D2020014D634 /* TestEditArtistView.swift in Sources */,
+				60D865962ACCC6F800CA306E /* MockUserManager.swift in Sources */,
 				608301F02A76CC170014D634 /* TestMenuView.swift in Sources */,
 				608301FE2A76E6240014D634 /* TestNotificationSettingsView.swift in Sources */,
 			);

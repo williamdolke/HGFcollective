@@ -131,23 +131,6 @@ struct ArtworkView: View {
         }
     }
 
-    /// Display all images of the artwork in a snap carousel
-    private var artworkImages: some View {
-        GeometryReader { geo in
-            SnapCarousel(index: $currentIndex, items: images) { image in
-                NavigationLink(destination: ImageView(artworkName: artwork.name,
-                                                      imageNum: String(currentIndex+1),
-                                                      url: artwork.urls?[currentIndex])
-                    .navigationBarBackButtonHidden(true)) {
-                        ImageBubble(assetName: image.assetName,
-                                    url: image.url,
-                                    height: geo.size.height,
-                                    width: nil)
-                }
-            }
-        }
-    }
-
     /// Indicate which image number is being displayed by the snap carousel
     private var imageIndexIndicator: some View {
         HStack(spacing: 10) {

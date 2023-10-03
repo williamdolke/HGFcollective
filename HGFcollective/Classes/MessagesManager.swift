@@ -12,9 +12,9 @@ import FirebaseCrashlytics
 import FirebaseFirestoreSwift
 
 class MessagesManager: ObservableObject {
-    @Published private(set) var messages: [Message] = []
-    @Published private(set) var user: User?
-    @Published private(set) var latestMessageId: String = ""
+    @Published var messages: [Message] = []
+    @Published var user: User?
+    @Published var latestMessageId: String = ""
     // Identifies whether a view is being presented to a user or an admin
     let isCustomer: Bool
     let notificationName: String = "UnreadMessageCountChanged"
