@@ -19,7 +19,7 @@ final class TestUserManager: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-    
+
     func testLogin() {
         userManager.login()
         XCTAssertEqual(userManager.users.count, 1)

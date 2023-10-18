@@ -11,10 +11,10 @@ protocol UserManagerProtocol {
     var users: [User] { get set }
     var messagesManagers: [String: MessagesManager] { get set }
     var unreadMessages: Int { get set }
-    
+
     func login()
     func logout()
-    
+
     func countUnreadMessages()
     func storePreferredName(name: String, id: String)
 }

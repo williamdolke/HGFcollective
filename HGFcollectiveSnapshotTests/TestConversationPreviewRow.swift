@@ -16,7 +16,7 @@ final class TestConversationPreviewRow: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let user = User(id: "test", messagePreview: "Test message.", latestTimestamp: Date.now, read: false, sender: "test", isCustomer: false)
+        let user = User(id: "test", messagePreview: "Test message.", latestTimestamp: Date.distantPast, read: false, sender: "test", isCustomer: false)
         let conversationPreviewRow = ConversationPreviewRow(user: user)
         conversationPreviewRowController = UIHostingController(rootView: conversationPreviewRow)
         conversationPreviewRowController.view.frame = UIScreen.main.bounds
