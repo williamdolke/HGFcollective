@@ -29,7 +29,7 @@
 		6032FF1C28CD5EAC00C4F22C /* ArtworksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF1B28CD5EAC00C4F22C /* ArtworksView.swift */; };
 		6032FF2028CD7F9600C4F22C /* ArtworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */; };
 		6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6032FF2128CD7FCC00C4F22C /* ArtistView.swift */; };
-		6033369329463B2B008A4444 /* testArtistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033369229463B2B008A4444 /* testArtistManager.swift */; };
+		6033369329463B2B008A4444 /* TestArtistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033369229463B2B008A4444 /* TestArtistManager.swift */; };
 		6033369529464135008A4444 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369429464135008A4444 /* FirebaseDatabase */; };
 		6033369729464135008A4444 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6033369629464135008A4444 /* FirebaseDatabaseSwift */; };
 		603336992946414A008A4444 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 603336982946414A008A4444 /* FirebaseAuth */; };
@@ -55,6 +55,7 @@
 		60622CC52A295E0C0007E973 /* CustomToolbarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CC42A295E0C0007E973 /* CustomToolbarItems.swift */; };
 		60622CC72A29FA410007E973 /* Storage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CC62A29FA410007E973 /* Storage+Extension.swift */; };
 		60622CCB2A2AB7C10007E973 /* MultipleImagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60622CCA2A2AB7C10007E973 /* MultipleImagePickerView.swift */; };
+		606E15CE2AE0A55E004ADEE6 /* LogFileHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606E15CD2AE0A55E004ADEE6 /* LogFileHandler.swift */; };
 		607391AE28D136C6009BBFBD /* ArtistManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607391AD28D136C6009BBFBD /* ArtistManager.swift */; };
 		607391B028D1371A009BBFBD /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607391AF28D1371A009BBFBD /* Artist.swift */; };
 		607391B228D29A5D009BBFBD /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607391B128D29A5C009BBFBD /* Artwork.swift */; };
@@ -193,7 +194,7 @@
 		6032FF1F28CD7F9500C4F22C /* ArtworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkView.swift; sourceTree = "<group>"; };
 		6032FF2128CD7FCC00C4F22C /* ArtistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistView.swift; sourceTree = "<group>"; };
 		6033368929463A20008A4444 /* HGFcollectiveTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HGFcollectiveTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		6033369229463B2B008A4444 /* testArtistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = testArtistManager.swift; sourceTree = "<group>"; };
+		6033369229463B2B008A4444 /* TestArtistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestArtistManager.swift; sourceTree = "<group>"; };
 		603336A4294946AF008A4444 /* SnapCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapCarousel.swift; sourceTree = "<group>"; };
 		603336A6294948EF008A4444 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		60339F9728F3531B00E7E1C8 /* Favourites.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Favourites.swift; sourceTree = "<group>"; };
@@ -212,6 +213,7 @@
 		60622CC42A295E0C0007E973 /* CustomToolbarItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolbarItems.swift; sourceTree = "<group>"; };
 		60622CC62A29FA410007E973 /* Storage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Storage+Extension.swift"; sourceTree = "<group>"; };
 		60622CCA2A2AB7C10007E973 /* MultipleImagePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleImagePickerView.swift; sourceTree = "<group>"; };
+		606E15CD2AE0A55E004ADEE6 /* LogFileHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogFileHandler.swift; sourceTree = "<group>"; };
 		607391AD28D136C6009BBFBD /* ArtistManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistManager.swift; sourceTree = "<group>"; };
 		607391AF28D1371A009BBFBD /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		607391B128D29A5C009BBFBD /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
@@ -468,7 +470,7 @@
 		6033368A29463A20008A4444 /* HGFcollectiveTests */ = {
 			isa = PBXGroup;
 			children = (
-				6033369229463B2B008A4444 /* testArtistManager.swift */,
+				6033369229463B2B008A4444 /* TestArtistManager.swift */,
 				60E99D1E2A78700B000278AD /* MockUserManager.swift */,
 				60D865912ACCB27E00CA306E /* TestUserManager.swift */,
 			);
@@ -554,6 +556,7 @@
 				607391AD28D136C6009BBFBD /* ArtistManager.swift */,
 				6003C20128CEA97C00ABA79E /* MessagesManager.swift */,
 				60D865942ACCB91700CA306E /* UserManagerProtocol.swift */,
+				606E15CD2AE0A55E004ADEE6 /* LogFileHandler.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -933,6 +936,7 @@
 				60D3B3D72A4F62DF00D54235 /* Group+Extension.swift in Sources */,
 				6003C20028CEA92200ABA79E /* MessageField.swift in Sources */,
 				60339F9828F3531C00E7E1C8 /* Favourites.swift in Sources */,
+				606E15CE2AE0A55E004ADEE6 /* LogFileHandler.swift in Sources */,
 				6032FF2228CD7FCC00C4F22C /* ArtistView.swift in Sources */,
 				60D865952ACCB91700CA306E /* UserManagerProtocol.swift in Sources */,
 				60B8EA4E2A4BAE4000E72E13 /* SubmitButton.swift in Sources */,
@@ -975,7 +979,7 @@
 			files = (
 				60E99D1F2A78700B000278AD /* MockUserManager.swift in Sources */,
 				60D865922ACCB27E00CA306E /* TestUserManager.swift in Sources */,
-				6033369329463B2B008A4444 /* testArtistManager.swift in Sources */,
+				6033369329463B2B008A4444 /* TestArtistManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1068,6 +1072,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1085,7 +1090,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1132,6 +1137,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1143,7 +1149,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = HGFcollective;
@@ -1168,6 +1174,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HGFcollective/Preview Content\"";
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				ENABLE_PREVIEWS = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HGFcollective/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
@@ -1208,6 +1215,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"HGFcollective/Preview Content\"";
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				ENABLE_PREVIEWS = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HGFcollective/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
@@ -1291,6 +1299,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.williamdolke.HGFcollectiveSnapshotTests;
@@ -1312,6 +1322,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "HGF Collective";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.williamdolke.HGFcollectiveSnapshotTests;
@@ -1341,7 +1353,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.williamdolke.HGFcollective.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1369,7 +1381,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 0.1.3;
+				MARKETING_VERSION = 0.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.williamdolke.HGFcollective.NotificationService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

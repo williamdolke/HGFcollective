@@ -148,7 +148,7 @@
 		296D7435E52D06988CB0B7A69554D9B9 /* Pods-HGFcollectiveSnapshotTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-HGFcollectiveSnapshotTests.modulemap"; sourceTree = "<group>"; };
 		2C62EBE6A04C880176B67323ECA94777 /* Pods-HGFcollective */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-HGFcollective"; path = "libPods-HGFcollective.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2EFD64C25E90BA094A3DB6ADB6AF7698 /* Internal.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Internal.swift; path = Sources/SnapshotTesting/Common/Internal.swift; sourceTree = "<group>"; };
-		323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot-AccessibilitySnapshot */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "AccessibilitySnapshot-AccessibilitySnapshot"; path = AccessibilitySnapshot.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AccessibilitySnapshot.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		342C1E358128382C7B4AA6AC6A57A428 /* XCTAttachment.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = XCTAttachment.swift; path = Sources/SnapshotTesting/Common/XCTAttachment.swift; sourceTree = "<group>"; };
 		391B138810595E3C15158097B31F5947 /* SnapshotTesting-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapshotTesting-prefix.pch"; sourceTree = "<group>"; };
 		3B0190A7F2E9D90788EDBC81F9EA91A9 /* Pods-HGFcollectiveSnapshotTests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-HGFcollectiveSnapshotTests-resources.sh"; sourceTree = "<group>"; };
@@ -550,7 +550,7 @@
 			isa = PBXGroup;
 			children = (
 				792B5E4E0A1AD790F9B36393BB894673 /* AccessibilitySnapshot */,
-				323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot-AccessibilitySnapshot */,
+				323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot.bundle */,
 				2C62EBE6A04C880176B67323ECA94777 /* Pods-HGFcollective */,
 				9A4AEB14C26EF07D6AFDBEF694B01E46 /* Pods-HGFcollectiveSnapshotTests */,
 				A037DBBCCACBFACB5C39A80B1C273043 /* SnapshotTesting */,
@@ -631,7 +631,7 @@
 			);
 			name = "AccessibilitySnapshot-AccessibilitySnapshot";
 			productName = AccessibilitySnapshot;
-			productReference = 323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot-AccessibilitySnapshot */;
+			productReference = 323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 		ADEAE7CDD604DE4F3072E6021A314487 /* SnapshotTesting */ = {
@@ -1030,6 +1030,7 @@
 			baseConfigurationReference = CD0044937982405F3431A241DDC8232A /* AccessibilitySnapshot.debug.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AccessibilitySnapshot";
+				DEVELOPMENT_TEAM = 4XTDP35444;
 				IBSC_MODULE = AccessibilitySnapshot;
 				INFOPLIST_FILE = "Target Support Files/AccessibilitySnapshot/ResourceBundle-AccessibilitySnapshot-AccessibilitySnapshot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1115,6 +1116,7 @@
 			baseConfigurationReference = A57FA07C43D9A56BCD5A92E0659DED6E /* AccessibilitySnapshot.release.xcconfig */;
 			buildSettings = {
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/AccessibilitySnapshot";
+				DEVELOPMENT_TEAM = 4XTDP35444;
 				IBSC_MODULE = AccessibilitySnapshot;
 				INFOPLIST_FILE = "Target Support Files/AccessibilitySnapshot/ResourceBundle-AccessibilitySnapshot-AccessibilitySnapshot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

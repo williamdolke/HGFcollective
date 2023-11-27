@@ -1,5 +1,5 @@
 //
-//  testArtistManager.swift
+//  TestArtistManager.swift
 //  HGFcollectiveTests
 //
 //  Created by William Dolke on 11/12/2022.
@@ -89,7 +89,6 @@ final class TestArtistManager: XCTestCase {
     func testGetArtworkInfoEmpty() throws {
         let artwork = Artwork(name: "Artwork")
         let info = artistManager.getArtworkInfo(artwork: artwork)
-        let expectedString = ""
 
         XCTAssertNil(info)
     }
