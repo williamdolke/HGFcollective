@@ -30,7 +30,7 @@ struct MessageField: View {
 
     var body: some View {
         HStack {
-            mediaButton
+            SelectPhotosButton(action: {showImagePicker.toggle()}, showText: false)
 
             textAndImageInput
 
@@ -56,20 +56,6 @@ struct MessageField: View {
                     UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.endEditing(true)
                 }
         )
-    }
-
-    private var mediaButton: some View {
-        Button {
-            showImagePicker.toggle()
-            logger.info("User tapped the image picker button")
-        } label: {
-            Image(systemName: "photo.on.rectangle.angled")
-                .foregroundColor(Color.theme.buttonForeground)
-                .font(.system(size: 25))
-                .padding(10)
-                .background(Color.theme.accent)
-                .cornerRadius(50)
-        }
     }
 
     private var textAndImageInput: some View {

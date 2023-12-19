@@ -62,7 +62,7 @@ struct AddNewArtworkView: View {
 
     // Sections
     @State private var isDetailExpanded = false
-    @State private var isPhotoExpanded = false
+    @State private var isPhotosExpanded = false
     @State private var isAdvancedExpanded = false
 
     // Photos
@@ -160,6 +160,8 @@ struct AddNewArtworkView: View {
     /// images then this will not be successful and an error messge will be presented
     private func createArtwork() {
         // TODO: Check if the artwork already exists
+        // TODO: Allow a mix of URLs and camera roll images to be used
+        // TODO: Show spinner whilst upload occurs
         // Filter out any empty elements from urls. These correspond
         // to fields where the admin hasn't input anything.
         let nonEmptyURLs = urls.filter { !$0.isEmpty }
@@ -176,15 +178,15 @@ struct AddNewArtworkView: View {
             let dispatchGroup = DispatchGroup()
             var storageURLs: [String] = []
             // Upload images to Storage if specified
-            for (index, image) in images.enumerated() {
-                logger.info("Uploading new artwork image to Storage.")
+            for index in 0..<images.count {
+                logger.info("Uploading new artwork image from index \(index) to Storage.")
 
                 // Create the path where the image will be stored in storage
                 // swiftlint:disable:next line_length
                 let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(index+1)
 
                 // Convert the image to jpeg format and compress
-                guard let imageData = image.jpegData(compressionQuality: compressionRatio) else { return }
+                guard let imageData = images[index].jpegData(compressionQuality: compressionRatio) else { return }
 
                 dispatchGroup.enter() // Notify the group that a task has started
 
@@ -248,10 +250,10 @@ struct AddNewArtworkView: View {
         }
     }
 
-    /// Fields for parameters that will be displayed in the Details section of ArtworkView
+    /// Fields for parameters that will be displayed in the Details section
     private var detailSection: some View {
         VStack {
-            sectionTitle(title: "Details", isExpanded: $isDetailExpanded)
+            SectionTitle(title: "Details", isExpanded: $isDetailExpanded)
 
             if isDetailExpanded {
                 Group {
@@ -316,44 +318,58 @@ struct AddNewArtworkView: View {
     /// Section for the user to upload photos of the artwork or alternatively to specify URLs of images
     private var photoSection: some View {
         VStack {
-            sectionTitle(title: "Photos *", isExpanded: $isPhotoExpanded)
+            SectionTitle(title: "Photos *", isExpanded: $isPhotosExpanded)
 
-            if isPhotoExpanded {
-                Group {
-                    // Stop displaying the button when the limit is hit
-                    if images.count < Constants.maximumImages {
-                        mediaButton
-                    }
-
+            if isPhotosExpanded {
+                if !images.isEmpty {
+                    Text("""
+                 Drag photos to reorder them.
+                 """)
+                    .font(.caption)
                     // Display selected images if the user has selected any
-                    ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(Array(images.enumerated()), id: \.1) { (index, image) in
-                                ZStack {
-                                    Image(uiImage: image)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(height: 120)
-                                    // Overlay a cross which lets the user delete the picture
-                                    Button {
-                                        logger.info("User pressed the close button to delete image \(index)")
-                                        images.remove(at: index)
-                                    } label: {
-                                        Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(Color.theme.favourite)
-                                    }
-                                }
+                    Group {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                currentImages
                             }
                         }
                     }
-                    Text("""
-                         You can add up to \(Constants.maximumImages) photos per artwork.
-                         Alternatively, you can provide up to \(Constants.maximumImages) \
-                         links to images from the internet.
-                         """)
-                        .font(.caption)
+                    .padding()
+                    .background(Color.theme.bubble)
+                    .cornerRadius(25)
+                }
 
-                    urlSection
+                // Stop displaying the button when the limit is hit
+                if images.count < Constants.maximumImages {
+                    SelectPhotosButton(action: {showImagePicker.toggle()})
+                }
+
+                Text("""
+                     You can add up to \(Constants.maximumImages) photos per artwork.
+                     Alternatively, you can provide up to \(Constants.maximumImages) \
+                     links to images from the internet.
+                     """)
+                    .font(.caption)
+
+                urlSection
+            }
+        }
+    }
+
+    private var currentImages: some View {
+        ForEach(Array(images.enumerated()), id: \.1) { (index, image) in
+            ZStack {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 120)
+                // Overlay a cross which lets the user delete the picture
+                Button {
+                    logger.info("User pressed the close button to delete image \(index)")
+                    images.remove(at: index)
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .foregroundColor(Color.theme.favourite)
                 }
             }
         }
@@ -384,29 +400,10 @@ struct AddNewArtworkView: View {
         }
     }
 
-    /// Button that opens the user's photo library and allows them to select photos of the artwork to upload
-    private var mediaButton: some View {
-        Button {
-            showImagePicker.toggle()
-            logger.info("User tapped the image picker button")
-        } label: {
-            HStack {
-                Text("**Select photos**")
-                    .font(.title2)
-                Image(systemName: "photo.on.rectangle.angled")
-                    .foregroundColor(Color.theme.buttonForeground)
-                    .font(.system(size: 25))
-            }
-            .padding(10)
-            .background(Color.theme.accent)
-            .cornerRadius(50)
-        }
-    }
-
     /// Advanced section for anything that shouldn't normally be adjusted
     private var advancedSection: some View {
         VStack {
-            sectionTitle(title: "Advanced", isExpanded: $isAdvancedExpanded)
+            SectionTitle(title: "Advanced", isExpanded: $isAdvancedExpanded)
 
             if isAdvancedExpanded {
                 Group {
@@ -427,26 +424,6 @@ struct AddNewArtworkView: View {
                     .padding()
                 }
             }
-        }
-    }
-
-    private func sectionTitle(title: String, isExpanded: Binding<Bool>) -> some View {
-        Button {
-            withAnimation {
-                isExpanded.wrappedValue.toggle()
-            }
-        } label: {
-            HStack {
-                Text(title)
-                    .font(.headline)
-
-                Spacer()
-
-                Image(systemName: isExpanded.wrappedValue ? "chevron.up" : "chevron.down")
-                    .font(.system(size: 14, weight: .semibold))
-            }
-            .foregroundColor(colorScheme == .dark ? Color.theme.systemBackgroundInvert : Color.theme.accent)
-            .padding()
         }
     }
 }

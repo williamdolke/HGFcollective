@@ -86,7 +86,6 @@ struct ArtistView: View {
 
                 // Append the image if we have a url or it is found in
                 // Assets.xcassets and isn't already included in the array
-                // TODO: This logic might be unnecessary once all arworks have a images
                 let haveURL = (url != "")
                 let haveAsset = artworkAssetName != "" &&
                                  UIImage(named: artworkAssetName) != nil

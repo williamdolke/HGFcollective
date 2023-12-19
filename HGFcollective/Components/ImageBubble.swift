@@ -13,6 +13,7 @@ struct ImageBubble: View {
     // and the integer number will increment as more images are added
     let assetName: String
     var url: String?
+    var uiImage: UIImage?
     // Optionally specify the height and/or width of the bubble
     let height: CGFloat?
     let width: CGFloat?
@@ -40,6 +41,12 @@ struct ImageBubble: View {
                 // be freed from memory when the amount available is low
 // https://www.hackingwithswift.com/forums/swiftui/how-can-i-get-swiftui-to-release-cached-image-memory/9862
                 Image(uiImage: UIImage(named: assetName)!)
+                    .resizable()
+                    .aspectRatio(contentMode: fill ? .fill : .fit)
+                    .frame(width: width, height: height)
+                    .shadow(radius: 5, x: 8, y: 8)
+            } else if (uiImage != nil) {
+                Image(uiImage: uiImage!)
                     .resizable()
                     .aspectRatio(contentMode: fill ? .fill : .fit)
                     .frame(width: width, height: height)

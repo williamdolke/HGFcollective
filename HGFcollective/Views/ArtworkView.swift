@@ -103,7 +103,7 @@ struct ArtworkView: View {
         .onAppear {
             logger.info("Presenting artwork view for artist: \(artistName) and artwork: \(artwork.name).")
 
-            // TODO: Move to function
+            // TODO: Move to shared utils function
             // Check for images of the artwork to display
             for index in 1...Constants.maximumImages {
                 let artworkAssetName = artwork.name + " " + String(index)
@@ -112,7 +112,6 @@ struct ArtworkView: View {
 
                 // Append the image if we have a url or it is found in
                 // Assets.xcassets and isn't already in the array
-                // TODO: This logic might be unnecessary once all arworks have a images
                 let haveURL = (url != "")
                 let haveAsset = artworkAssetName != "" &&
                                  UIImage(named: artworkAssetName) != nil
