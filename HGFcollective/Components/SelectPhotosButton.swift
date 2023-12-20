@@ -33,11 +33,11 @@ struct SelectPhotosButton: View {
     }
 }
 
-#Preview("Light mode") {
+#Preview("Light") {
     SelectPhotosButton(action: {})
 }
 
-#Preview("Dark mode") {
+#Preview("Dark") {
     SelectPhotosButton(action: {})
         .preferredColorScheme(.dark)
 }

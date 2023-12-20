@@ -12,11 +12,13 @@ struct CustomTextField<Field: Hashable>: View, Hashable where Field: Equatable {
     let text: Binding<String>
     let focusedField: FocusState<Field>.Binding
     let field: Field
+    var lineLimit: Int = 3
 
     var body: some View {
-        TextField(title, text: text)
+        TextField(title, text: text, axis: .vertical)
             .accentColor(Color.theme.systemBackgroundInvert)
             .focused(focusedField, equals: field)
+            .lineLimit(lineLimit)
     }
 
     func hash(into hasher: inout Hasher) {

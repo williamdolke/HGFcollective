@@ -28,6 +28,12 @@ struct MessageField: View {
     var editingChanged: (Bool) -> Void = { _ in }
     var commit: () -> Void = { }
 
+    @FocusState private var isFieldFocused: MessageField?
+
+    enum MessageField: Hashable {
+        case message
+    }
+
     var body: some View {
         HStack {
             SelectPhotosButton(action: {showImagePicker.toggle()}, showText: false)
@@ -61,7 +67,10 @@ struct MessageField: View {
     private var textAndImageInput: some View {
         ZStack(alignment: .leading) {
             VStack {
-                TextField("Enter your message here", text: $message)
+                CustomTextField(title: "Enter your message here", 
+                                text: $message,
+                                focusedField: $isFieldFocused,
+                                field: .message)
                     .onReceive(Just(message)) { _ in limitTextLength(maxTextLength) }
                     .accentColor(Color.theme.systemBackgroundInvert)
                     .focused($isFocused)
