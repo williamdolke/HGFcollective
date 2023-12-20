@@ -35,6 +35,8 @@ struct EditArtworkView: View {
 
     @State private var statusMessage = ""
 
+    @State private var isLoading = false
+
     // Sections
     @State private var isDetailExpanded = false
     @State private var isPhotosExpanded = false
@@ -115,6 +117,14 @@ struct EditArtworkView: View {
         .sheet(isPresented: $showImagePicker) {
             MultipleImagePickerView(images: $cameraRollImages, 
                                     limit: Constants.maximumImages - images.count - cameraRollImages.count)
+        }
+        // Show a spinner when performing async tasks
+        .overlay {
+            if isLoading {
+                ActivityIndicator()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(Color.theme.accent)
+            }
         }
         // Refresh the fields when the users selects a different artist
         .onChange(of: artistName) { _ in
@@ -342,7 +352,6 @@ struct EditArtworkView: View {
     private func editArtwork() {
         // TODO: Check if the artwork already exists
         // TODO: Allow a mix of URLs and camera-roll images to be used
-        // TODO: Show spinner whilst upload occurs
         // Only update the indices if the user presses submit for efficiency.
         for index in 0..<images.count where images[index].index != index {
             images[index].index = index + 1
@@ -358,6 +367,8 @@ struct EditArtworkView: View {
             statusMessage = "Error: All required and must be completed."
         } else {
             // TODO: Move to function
+            isLoading = true
+
             let dispatchGroup = DispatchGroup()
 
             // Upload images to Storage if required.
@@ -430,6 +441,7 @@ struct EditArtworkView: View {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
+                    isLoading = false
                 }
             }
         }

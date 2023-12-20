@@ -22,6 +22,8 @@ struct AddNewArtistView: View {
     @State private var biography = ""
     @State private var statusMessage = ""
 
+    @State private var isLoading = false
+
     @FocusState private var isFieldFocused: NewArtistField?
 
     var body: some View {
@@ -63,6 +65,14 @@ struct AddNewArtistView: View {
             }
             .padding()
         }
+        // Show a spinner when performing async tasks
+        .overlay {
+            if isLoading {
+                ActivityIndicator()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(Color.theme.accent)
+            }
+        }
         .onAppear {
             logger.info("Presenting add new artist view.")
 
@@ -101,6 +111,7 @@ struct AddNewArtistView: View {
             logger.info("User has not completed all required fields.")
             statusMessage = "Error: All fields are required and must be completed."
         } else {
+            isLoading =  true
             artistManager.createArtistIfDoesNotExist(name: artistName, biography: biography) { result in
                 if let result = result {
                     statusMessage = result.message
@@ -109,6 +120,7 @@ struct AddNewArtistView: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
+                isLoading = false
             }
         }
     }

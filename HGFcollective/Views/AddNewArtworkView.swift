@@ -65,6 +65,8 @@ struct AddNewArtworkView: View {
     @State private var isPhotosExpanded = false
     @State private var isAdvancedExpanded = false
 
+    @State private var isLoading = false
+
     // Photos
     @State private var images = [UIImage]()
     @State private var showImagePicker = false
@@ -116,6 +118,14 @@ struct AddNewArtworkView: View {
         .sheet(isPresented: $showImagePicker) {
             MultipleImagePickerView(images: $images, limit: Constants.maximumImages-images.count)
         }
+        // Show a spinner when performing async tasks
+        .overlay {
+            if isLoading {
+                ActivityIndicator()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(Color.theme.accent)
+            }
+        }
         .onAppear {
             logger.info("Presenting add new artwork view.")
 
@@ -161,7 +171,6 @@ struct AddNewArtworkView: View {
     private func createArtwork() {
         // TODO: Check if the artwork already exists
         // TODO: Allow a mix of URLs and camera roll images to be used
-        // TODO: Show spinner whilst upload occurs
         // Filter out any empty elements from urls. These correspond
         // to fields where the admin hasn't input anything.
         let nonEmptyURLs = urls.filter { !$0.isEmpty }
@@ -175,6 +184,8 @@ struct AddNewArtworkView: View {
             statusMessage = "Error: All required and must be completed."
         } else {
             // TODO: Move to function
+            isLoading = true
+
             let dispatchGroup = DispatchGroup()
             var storageURLs: [String] = []
             // Upload images to Storage if specified
@@ -245,6 +256,7 @@ struct AddNewArtworkView: View {
                             presentationMode.wrappedValue.dismiss()
                         }
                     }
+                    isLoading = false
                 }
             }
         }

@@ -18,6 +18,8 @@ struct EditArtistView: View {
     @State private var statusMessage = ""
     @State private var selectedArtist = ""
 
+    @State private var isLoading = false
+
     @FocusState private var isFieldFocused: NewArtistField?
 
     var body: some View {
@@ -78,6 +80,14 @@ struct EditArtistView: View {
                 biography = artist.biography
             }
         }
+        // Show a spinner when performing async tasks
+        .overlay {
+            if isLoading {
+                ActivityIndicator()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(Color.theme.accent)
+            }
+        }
         .onAppear {
             logger.info("Presenting edit artist view.")
 
@@ -95,7 +105,7 @@ struct EditArtistView: View {
             CustomTextField(title: "Artist name *", text: $artistName, focusedField: $isFieldFocused, field: .name)
                 .disabled(true)
 
-            CustomTextField(title: "Biography *", text: $biography, focusedField: $isFieldFocused, field: .biography)
+            CustomTextField(title: "Biography *", text: $biography, focusedField: $isFieldFocused, field: .biography, lineLimit: 8)
         }
         .padding()
         .background(Color.theme.bubble)
@@ -108,6 +118,7 @@ struct EditArtistView: View {
             logger.info("User has not completed all required fields.")
             statusMessage = "Error: All fields are required and must be completed."
         } else {
+            isLoading = true
             artistManager.editArtistIfAlreadyExists(name: artistName, biography: biography) { result in
                 if let result = result {
                     statusMessage = result.message
@@ -116,6 +127,7 @@ struct EditArtistView: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                 }
+                isLoading = false
             }
         }
     }
