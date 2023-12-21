@@ -105,7 +105,11 @@ struct EditArtistView: View {
             CustomTextField(title: "Artist name *", text: $artistName, focusedField: $isFieldFocused, field: .name)
                 .disabled(true)
 
-            CustomTextField(title: "Biography *", text: $biography, focusedField: $isFieldFocused, field: .biography, lineLimit: 8)
+            CustomTextField(title: "Biography *",
+                            text: $biography,
+                            focusedField: $isFieldFocused,
+                            field: .biography,
+                            lineLimit: 8)
         }
         .padding()
         .background(Color.theme.bubble)

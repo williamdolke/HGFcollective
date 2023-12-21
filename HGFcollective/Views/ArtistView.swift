@@ -75,25 +75,7 @@ struct ArtistView: View {
             logger.info("Presenting artist view for \(artist.name).")
 
             // Check which artworks have a primary/first image to display
-            for index in 1...Constants.maximumImages {
-                let artistArtworks = artist.artworks
-                let artworkAssetName = (artistArtworks!.count >= index) ? (artistArtworks![index-1].name + " 1") : ""
-                let urls = (artistArtworks!.count >= index) ? artistArtworks![index-1].urls : nil
-                // The URL is an empty string if the first artwork image hasn't been overriden from the database
-                let url = (urls?.count ?? 0 > 0) ? urls?[0] : ""
-                // We need to store the index so we know which will be displayed and which have been skipped
-                let image = Asset(assetName: artworkAssetName, index: index-1, url: url)
-
-                // Append the image if we have a url or it is found in
-                // Assets.xcassets and isn't already included in the array
-                let haveURL = (url != "")
-                let haveAsset = artworkAssetName != "" &&
-                                 UIImage(named: artworkAssetName) != nil
-                if ((haveURL || haveAsset) &&
-                    !images.contains { $0.assetName == image.assetName }) {
-                    images.append(image)
-                }
-            }
+            images = ImageUtils.getFirstImageForEachArtwork(artworks: artist.artworks!)
 
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(artist.name)",

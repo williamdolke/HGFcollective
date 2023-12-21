@@ -28,6 +28,7 @@ struct EditArtworkView: View {
     @State private var price = ""
 
     @State private var images: [Asset] = []
+    @State private var manuallyDeletedImages: [String] = []
     @State private var cameraRollImages = [UIImage]()
     @State private var showImagePicker = false
     @State private var draggedImage: Asset?
@@ -115,7 +116,7 @@ struct EditArtworkView: View {
             .padding()
         }
         .sheet(isPresented: $showImagePicker) {
-            MultipleImagePickerView(images: $cameraRollImages, 
+            MultipleImagePickerView(images: $cameraRollImages,
                                     limit: Constants.maximumImages - images.count - cameraRollImages.count)
         }
         // Show a spinner when performing async tasks
@@ -309,6 +310,11 @@ struct EditArtworkView: View {
                 // Overlay a cross which lets the user delete the picture
                 Button {
                     logger.info("User pressed the close button to delete image \(index)")
+                    // We need to record the urls of images that the user deletes so we can
+                    // potentially clean them up later
+                    if let urlToDelete = images[index].url, !urlToDelete.isEmpty {
+                        manuallyDeletedImages.append(urlToDelete)
+                    }
                     images.remove(at: index)
                 } label: {
                     HStack {
@@ -378,9 +384,13 @@ struct EditArtworkView: View {
             for index in 0..<images.count where images[index].changed == true {
                 logger.info("Uploading new artwork image from index \(index) to Storage.")
 
-                // Create the path where the image will be stored in storage
+                // Create the path where the image will be stored in storage.
+                // We used to add the index to the end of the path, but this can
+                // be buggy when images are rearranged and uploaded whilst editing
+                // the artwork. Hence, a timestamp is used to prevent this.
+                let timeInMilliseconds = Int64(Date().timeIntervalSince1970 * 1000)
                 // swiftlint:disable:next line_length
-                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(index+1)
+                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(timeInMilliseconds)
 
                 // Convert the image to jpeg format and compress
                 guard let imageData = images[index].uiImage?.jpegData(compressionQuality: compressionRatio) else { return }
@@ -389,7 +399,7 @@ struct EditArtworkView: View {
 
                 Storage.storage().uploadData(path: storagePath, data: imageData) { storageURL in
                     if let storageURL = storageURL {
-                        // Delete the image from Storage if that's where it is located
+                        // Delete the old image from Storage if that's where it is located
                         if let imageToDelete = images[index].url {
                             Storage.storage().deleteFiles(atURLs: [imageToDelete])
                         }
@@ -398,6 +408,11 @@ struct EditArtworkView: View {
                     dispatchGroup.leave() // Notify the group that a task has completed
                 }
             }
+
+            dispatchGroup.enter() // Notify the group that a task has started
+            logger.info("Deleting manually deleted images from Storage: \(manuallyDeletedImages)")
+            Storage.storage().deleteFiles(atURLs: manuallyDeletedImages)
+            dispatchGroup.leave() // Notify the group that a task has completed
 
             dispatchGroup.notify(queue: .main) {
                 // Code to execute once all tasks are completed
@@ -450,6 +465,7 @@ struct EditArtworkView: View {
     private func handleArtworkNameChanged() {
         images = []
         cameraRollImages = []
+        manuallyDeletedImages = []
 
         if let artist = artistManager.artists.first(where: { $0.name == artistName }) {
             if let artwork = artist.artworks?.first(where: { $0.name == artworkName }) {
@@ -467,26 +483,7 @@ struct EditArtworkView: View {
                 authenticity = artwork.authenticity ?? ""
                 price = artwork.price ?? ""
 
-                // TODO: Move to shared utils function
-                // Check for images of the artwork to display
-                for index in 1...Constants.maximumImages {
-                    let artworkAssetName = artworkName + " " + String(index)
-                    // url is an empty string if the artwork image hasn't been overriden from the database
-                    let url = (artwork.urls?.count ?? 0 >= index) ? artwork.urls?[index-1] : ""
-
-                    // Append the image if we have a url or it is found in
-                    // Assets.xcassets and isn't already in the array
-                    let haveURL = (url != "")
-                    let haveAsset = artworkAssetName != "" &&
-                                     UIImage(named: artworkAssetName) != nil
-                    let image = Asset(assetName: artworkAssetName,
-                                      index: index,
-                                      url: url)
-                    if ((haveURL || haveAsset) &&
-                        !images.contains { $0.assetName == image.assetName }) {
-                        images.append(image)
-                    }
-                }
+                images = ImageUtils.getImages(artworkName: artwork.name, artworkURLs: artwork.urls)
             }
         }
     }

@@ -103,26 +103,7 @@ struct ArtworkView: View {
         .onAppear {
             logger.info("Presenting artwork view for artist: \(artistName) and artwork: \(artwork.name).")
 
-            // TODO: Move to shared utils function
-            // Check for images of the artwork to display
-            for index in 1...Constants.maximumImages {
-                let artworkAssetName = artwork.name + " " + String(index)
-                // url is an empty string if the artwork image hasn't been overriden from the database
-                let url = (artwork.urls?.count ?? 0 >= index) ? artwork.urls?[index-1] : ""
-
-                // Append the image if we have a url or it is found in
-                // Assets.xcassets and isn't already in the array
-                let haveURL = (url != "")
-                let haveAsset = artworkAssetName != "" &&
-                                 UIImage(named: artworkAssetName) != nil
-                let image = Asset(assetName: artworkAssetName,
-                                  index: index,
-                                  url: url)
-                if ((haveURL || haveAsset) &&
-                    !images.contains { $0.assetName == image.assetName }) {
-                    images.append(image)
-                }
-            }
+            images = ImageUtils.getImages(artworkName: artwork.name, artworkURLs: artwork.urls)
 
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(artwork.name)",

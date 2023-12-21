@@ -67,7 +67,7 @@ struct MessageField: View {
     private var textAndImageInput: some View {
         ZStack(alignment: .leading) {
             VStack {
-                CustomTextField(title: "Enter your message here", 
+                CustomTextField(title: "Enter your message here",
                                 text: $message,
                                 focusedField: $isFieldFocused,
                                 field: .message)

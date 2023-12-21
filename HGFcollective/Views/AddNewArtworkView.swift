@@ -192,9 +192,13 @@ struct AddNewArtworkView: View {
             for index in 0..<images.count {
                 logger.info("Uploading new artwork image from index \(index) to Storage.")
 
-                // Create the path where the image will be stored in storage
+                // Create the path where the image will be stored in storage.
+                // We used to add the index to the end of the path, but this can
+                // be buggy when images are rearranged and uploaded whilst editing
+                // the artwork. Hence, a timestamp is used to prevent this.
+                let timeInMilliseconds = Int64(Date().timeIntervalSince1970 * 1000)
                 // swiftlint:disable:next line_length
-                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(index+1)
+                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(timeInMilliseconds)
 
                 // Convert the image to jpeg format and compress
                 guard let imageData = images[index].jpegData(compressionQuality: compressionRatio) else { return }

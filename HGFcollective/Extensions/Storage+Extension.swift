@@ -38,9 +38,9 @@ extension Storage {
     }
 
     // Check if a URL is of the following format:
-    // http[s]://<host>/v0/b/<bucket>/o/<path/to/object>[?token=signed_url_params]
+    // http[s]://<host>/v0/b/<bucket>/o/<path/to/object>[?alt=media&token=signed_url_params]
     private func isValidURL(_ url: String) -> Bool {
-        let regexPattern = #"^https?://[^/]+/v0/b/[^/]+/o/[^?]+$"#
+        let regexPattern = #"^https?://[^/]+/v0/b/[^/]+/o/[^?]+(\?[^/]+token=[^&=]+)?$"#
         let regex = try? NSRegularExpression(pattern: regexPattern)
 
         let range = NSRange(location: 0, length: url.utf16.count)
