@@ -72,7 +72,7 @@ struct PortfolioManagerView: View {
 }
 
 struct PortfolioManagerView_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
 
     static var previews: some View {
         PortfolioManagerView()

@@ -12,6 +12,9 @@ import FirebaseFirestore
 import FirebaseStorage
 
 class ArtistManager: ObservableObject {
+    // Singleton
+    static let shared = ArtistManager()
+
     @Published var artists: [Artist] = []
     @Published var featuredArtistIndex: Int?
     @Published var featuredArtistName: String?
@@ -24,7 +27,7 @@ class ArtistManager: ObservableObject {
     let firestoreDB = Firestore.firestore()
 
     // On initialisation of the ArtistManager class, get the artists and artworks from Firestore
-    init() {
+    private init() {
         self.getArtists()
     }
 
@@ -48,8 +51,9 @@ class ArtistManager: ObservableObject {
             getArtworks()
             getFeaturedArtist()
             getDiscoverArtists()
+
+            logger.info("Successfully retrieved \(artists.count) artists.")
         }
-        logger.info("Successfully retrieved \(artists.count) artists.")
     }
 
     /// Fetch the artwork documents from the database for all artworks
@@ -92,14 +96,16 @@ class ArtistManager: ObservableObject {
         repeat {
             featuredArtistIndex = Int.random(in: 0..<artists.count)
         } while (artists[featuredArtistIndex!].artworks?.isEmpty == true)
+
         featuredArtistName = artists[featuredArtistIndex!].name
+        logger.info("Featured artist is \(featuredArtistName ?? "nil").")
     }
 
     /// Generate an array of unique random integers from a range
     ///
     /// - Parameters:
-    ///   -min: Minimum value that can be generated
-    ///   -max: Maximum value that can be generated
+    ///   -min: Minimum value that can be generated (inclusive)
+    ///   -max: Maximum value that can be generated (inclusive)
     ///   -count: Number of unique integers to be generated
     func getUniqueRandomNumbers(min: Int, max: Int, count: Int) -> [Int] {
         // Use a set to avoid adding duplicates

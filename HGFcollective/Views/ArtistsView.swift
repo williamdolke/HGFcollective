@@ -165,7 +165,7 @@ struct ArtistsView: View {
 }
 
 struct ArtistsView_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
 
     static var previews: some View {
         ArtistsView()

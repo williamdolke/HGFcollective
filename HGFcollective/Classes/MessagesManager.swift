@@ -17,17 +17,18 @@ class MessagesManager: ObservableObject {
     @Published var latestMessageId: String = ""
     // Identifies whether a view is being presented to a user or an admin
     let isCustomer: Bool
-    let notificationName: String = "UnreadMessageCountChanged"
+    private let notificationName: String = "UnreadMessageCountChanged"
     // Customer uid
     var uid: String = ""
     // The unread message count for this user
     var unreadMessages: Int = 0
-    var messagesListener: ListenerRegistration?
-    var userListener: ListenerRegistration?
+
+    private var messagesListener: ListenerRegistration?
+    private var userListener: ListenerRegistration?
 
     // Create an instance of our Firestore database (for messages) and Firebase Storage (for images)
-    let firestoreDB = Firestore.firestore()
-    let storage = Storage.storage()
+    private let firestoreDB = Firestore.firestore()
+    private let storage = Storage.storage()
 
     init(uid: String, isCustomer: Bool = true) {
         self.uid = uid
@@ -218,7 +219,7 @@ class MessagesManager: ObservableObject {
         }
     }
 
-    /// Clean up when after signing out
+    /// Clean up after signing out
     func cleanup() {
         self.messages = []
         self.user = nil

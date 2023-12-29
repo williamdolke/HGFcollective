@@ -23,7 +23,7 @@ struct HGFcollectiveApp: App {
             // Start fetching the artists from the database when the launch screen
             // is created. Hopefully by the time the launch screen is dismissed
             // this will have completed.
-                .environmentObject(ArtistManager())
+                .environmentObject(ArtistManager.shared)
                 .environmentObject(appDelegate.tabBarState)
         }
     }

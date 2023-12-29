@@ -103,7 +103,7 @@ struct ArtworkView: View {
         .onAppear {
             logger.info("Presenting artwork view for artist: \(artistName) and artwork: \(artwork.name).")
 
-            images = ImageUtils.getImages(artworkName: artwork.name, artworkURLs: artwork.urls)
+            images = ImageUtils.getImages(artworkName: artwork.name, artworkURLs: artwork.urls).images
 
             Analytics.logEvent(AnalyticsEventScreenView,
                                parameters: [AnalyticsParameterScreenName: "\(artwork.name)",
@@ -224,7 +224,7 @@ struct ArtworkView: View {
 struct ArtworkView_Previews: PreviewProvider {
     // The mail composer can't be presented when the enquire button is pressed as it doesn't
     // work on simulators. Hence, we don't need an EnquiryManager environment object.
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
     static let favourites = Favourites()
 
     static let artistName = "Banksy"

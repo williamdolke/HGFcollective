@@ -14,7 +14,7 @@ final class TestArtistManager: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        artistManager = ArtistManager()
+        artistManager = ArtistManager.shared
     }
 
     override func tearDown() {

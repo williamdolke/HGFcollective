@@ -9,9 +9,11 @@ import Foundation
 import UIKit
 
 struct ImageUtils {
-    /// Check for images of an artwork to display and return them in the form of an Asset
-    static func getImages(artworkName: String, artworkURLs: [String]?) -> [Asset] {
+    /// Check for images of an artwork to display. 
+    /// Returns a tuple with an array of images and the number of images from Assets.xcassets;
+    static func getImages(artworkName: String, artworkURLs: [String]?) -> (images: [Asset], numAssets: Int?) {
         var images: [Asset] = []
+        var numAssets = 0
         for index in 1...Constants.maximumImages {
             let artworkAssetName = artworkName + " " + String(index)
             // url is an empty string if the artwork image hasn't been overriden from the database
@@ -29,8 +31,11 @@ struct ImageUtils {
                 !images.contains { $0.assetName == image.assetName }) {
                 images.append(image)
             }
+            if haveAsset {
+                numAssets += 1
+            }
         }
-        return images
+        return (images, (numAssets != 0) ? numAssets : nil)
     }
 
     /// Check for only the first image for a series of artworks and return them in the form of an Asset

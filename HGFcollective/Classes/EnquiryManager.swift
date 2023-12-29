@@ -10,6 +10,9 @@ import FirebaseFirestore
 import FirebaseCrashlytics
 
 class EnquiryManager: ObservableObject {
+    // Singleton
+    static let shared = EnquiryManager()
+
     @Published var chat: Chat?
     @Published var mail = Mail(recipients: [], problemReportRecipients: [])
 

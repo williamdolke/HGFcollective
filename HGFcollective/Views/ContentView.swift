@@ -20,7 +20,7 @@ struct ContentView: View {
     @AppStorage("aboutScreenShown") var aboutScreenShown: Bool = false
     @AppStorage("isAdmin") var isAdmin: Bool = false
     var messagesManager = MessagesManager(uid: UserDefaults.standard.object(forKey: "uid") as? String ?? "" )
-    var enquiryManager = EnquiryManager()
+    var enquiryManager = EnquiryManager.shared
 
     init() {
         if (UserDefaults.standard.value(forKey: "isAdmin") != nil) {
@@ -142,7 +142,7 @@ struct ContentView: View {
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
     static let appDelegate = AppDelegate()
 
     static var previews: some View {

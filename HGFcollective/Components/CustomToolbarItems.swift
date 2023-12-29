@@ -43,7 +43,7 @@ struct CustomToolbarItems: ToolbarContent {
 }
 
 struct CustomToolbarItems_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
     static let appDelegate = AppDelegate()
 
     static var previews: some View {

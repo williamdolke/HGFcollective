@@ -262,7 +262,7 @@ struct ArtworksView: View {
 }
 
 struct ArtworksView_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
     static let favourites = Favourites()
 
     static var previews: some View {

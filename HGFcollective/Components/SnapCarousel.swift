@@ -74,7 +74,7 @@ struct SnapCarousel<Content: View, T: Identifiable>: View {
 }
 
 struct SnapCarousel_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
     static let appDelegate = AppDelegate()
 
     static var previews: some View {

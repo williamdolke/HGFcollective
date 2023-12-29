@@ -103,7 +103,7 @@ struct ChatView: View {
 
 struct ChatView_Previews: PreviewProvider {
     static let messagesManager = MessagesManager(uid: "test")
-    static let enquiryManager = EnquiryManager()
+    static let enquiryManager = EnquiryManager.shared
 
     static var previews: some View {
         ChatView()

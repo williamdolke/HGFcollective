@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 class UserManager: UserManagerProtocol, ObservableObject {
     // Singleton
-    static var shared = UserManager()
+    static let shared = UserManager()
 
     @Published var users: [User] = []
     @Published var messagesManagers: [String: MessagesManager] = [:]
@@ -20,7 +20,7 @@ class UserManager: UserManagerProtocol, ObservableObject {
     var unreadMessages: Int = 0
     private let notificationName: String = "AdminUnreadMessageCountChanged"
 
-    private var firestoreDB = Firestore.firestore()
+    private let firestoreDB = Firestore.firestore()
     private var listener: ListenerRegistration?
 
     init() {

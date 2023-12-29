@@ -17,7 +17,7 @@ final class TestEditArtworkView: XCTestCase {
     override func setUp() {
         super.setUp()
         let editArtworkView = EditArtworkView()
-            .environmentObject(ArtistManager())
+            .environmentObject(ArtistManager.shared)
         editArtworkViewController = UIHostingController(rootView: editArtworkView)
         editArtworkViewController.view.frame = UIScreen.main.bounds
     }

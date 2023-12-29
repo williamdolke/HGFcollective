@@ -18,7 +18,7 @@ final class TestChatView: XCTestCase {
         super.setUp()
         let chatView = ChatView()
             .environmentObject(MessagesManager(uid: "test", isCustomer: true))
-            .environmentObject(EnquiryManager())
+            .environmentObject(EnquiryManager.shared)
             .environmentObject(TabBarState())
         chatViewController = UIHostingController(rootView: chatView)
         chatViewController.view.frame = UIScreen.main.bounds

@@ -17,7 +17,7 @@ final class TestReportView: XCTestCase {
     override func setUp() {
         super.setUp()
         let reportView = ReportView()
-            .environmentObject(EnquiryManager())
+            .environmentObject(EnquiryManager.shared)
         reportViewController = UIHostingController(rootView: reportView)
         reportViewController.view.frame = UIScreen.main.bounds
     }

@@ -28,6 +28,7 @@ struct EditArtworkView: View {
     @State private var price = ""
 
     @State private var images: [Asset] = []
+    @State private var minImagesAllowed: Int?
     @State private var manuallyDeletedImages: [String] = []
     @State private var cameraRollImages = [UIImage]()
     @State private var showImagePicker = false
@@ -306,6 +307,11 @@ struct EditArtworkView: View {
                                                    images: $images,
                                                    draggedItem: $draggedImage)
                 )
+#if DEBUG
+                Text("\(index), \(images[index].index), \(images[index].changed == true ? "true" : "false")")
+                    .background(Color.theme.systemBackground)
+                    .foregroundColor(Color.theme.accent)
+#endif
 
                 // Overlay a cross which lets the user delete the picture
                 Button {
@@ -358,8 +364,10 @@ struct EditArtworkView: View {
     private func editArtwork() {
         // TODO: Check if the artwork already exists
         // TODO: Allow a mix of URLs and camera-roll images to be used
+        statusMessage = ""
+
         // Only update the indices if the user presses submit for efficiency.
-        for index in 0..<images.count where images[index].index != index {
+        for index in 0..<images.count where images[index].index != index + 1 {
             images[index].index = index + 1
         }
 
@@ -371,6 +379,12 @@ struct EditArtworkView: View {
         if artworkName.isEmpty || (images.isEmpty && nonEmptyURLs.isEmpty) {
             logger.info("User has not completed all required fields.")
             statusMessage = "Error: All required and must be completed."
+        } else if ((minImagesAllowed != nil) && images.count < minImagesAllowed!) {
+            logger.info("User has not provided enough images.")
+            statusMessage = """
+                            Error: Not enough images have been provided. It is likely that built-in \
+                            images have been deleted without a replacement image being provided.
+                            """
         } else {
             // TODO: Move to function
             isLoading = true
@@ -439,7 +453,7 @@ struct EditArtworkView: View {
                         return (key, value)
                     }
 
-                // Create a data object for the artwork being created
+                // Create a data object for the artwork being edited
                 var newArtworkData: [String:Any] = [:]
                 for property in properties where !property.value.isEmpty {
                     newArtworkData[property.key] = property.value
@@ -483,14 +497,16 @@ struct EditArtworkView: View {
                 authenticity = artwork.authenticity ?? ""
                 price = artwork.price ?? ""
 
-                images = ImageUtils.getImages(artworkName: artwork.name, artworkURLs: artwork.urls)
+                let imagesTuple = ImageUtils.getImages(artworkName: artwork.name, artworkURLs: artwork.urls)
+                images = imagesTuple.images
+                minImagesAllowed = imagesTuple.numAssets
             }
         }
     }
 }
 
 struct EditArtworkView_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
 
     static var previews: some View {
         EditArtworkView()

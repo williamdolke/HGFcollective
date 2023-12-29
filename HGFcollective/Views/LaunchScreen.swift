@@ -54,7 +54,7 @@ struct LaunchScreen: View {
 }
 
 struct LaunchScreen_Previews: PreviewProvider {
-    static let artistManager = ArtistManager()
+    static let artistManager = ArtistManager.shared
     static var appDelegate = AppDelegate()
 
     static var previews: some View {
