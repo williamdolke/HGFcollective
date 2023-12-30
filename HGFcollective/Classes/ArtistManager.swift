@@ -298,7 +298,8 @@ class ArtistManager: ObservableObject {
 
     func editArtworkIfAlreadyExists(artist: String,
                                     artwork: String,
-                                    data: [String:Any], completion: @escaping (ActionResult?) -> Void) {
+                                    data: [String:Any],
+                                    completion: @escaping (ActionResult?) -> Void) {
         let artworkPath = "artists/" + artist + "/artworks/" + artwork
         firestoreDB.checkDocumentExists(docPath: artworkPath) { exists, error in
             if let error = error {
@@ -361,6 +362,147 @@ class ArtistManager: ObservableObject {
                 logger.info("Artwork \(artwork) deleted successfully.")
             }
         }
+    }
+
+    // swiftlint:disable cyclomatic_complexity
+    func createOrEditArtwork(artistName: String,
+                             artworkName: String,
+                             artworkData: [String: Any],
+                             nonEmptyURLs: [String],
+                             images: [Any],
+                             deleteImages: [String]?,
+                             isEditing: Bool,
+                             compressionRatio: Double,
+                             completion: @escaping (ActionResult?) -> Void) {
+        let dispatchGroup = DispatchGroup()
+        var storageURLs: [String] = []
+        // We need to mutate images and artworkData when we're editing an artwork
+        var images = images
+        var artworkData = artworkData
+
+        // Upload images to Storage if required.
+        // When editing we don't want to upload images stored in
+        // Assets.xcassets that haven't been overriden or images
+        // we already have a url for that haven't been overriden.
+        for index in 0..<images.count {
+            if !isEditing || (isEditing && (images[index] as? Asset)?.changed == true) {
+                logger.info("Uploading new artwork image from index \(index) to Storage.")
+
+                // Create the path where the image will be stored in storage.
+                // We used to add the index to the end of the path, but this can
+                // be buggy when images are rearranged and uploaded whilst editing
+                // the artwork. Hence, a timestamp is used to prevent this.
+                let timeInMilliseconds = Int64(Date().timeIntervalSince1970 * 1000)
+                // swiftlint:disable:next line_length
+                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(timeInMilliseconds)
+
+                // Convert the image to jpeg format and compress
+                var image: UIImage?
+                if let asset = images[index] as? Asset {
+                    image = asset.uiImage
+                } else {
+                    image = images[index] as? UIImage
+                }
+                guard let imageData = image?.jpegData(compressionQuality: compressionRatio) else { continue }
+
+                dispatchGroup.enter() // Notify the group that a task has started
+
+                Storage.storage().uploadData(path: storagePath, data: imageData) { storageURL in
+                    if let storageURL = storageURL {
+                        storageURLs.append(storageURL)
+
+                        if isEditing {
+                            // Delete the old image from Storage if that's where it is located
+                            if let imageToDelete = (images[index] as? Asset)?.url {
+                                Storage.storage().deleteFiles(atURLs: [imageToDelete])
+                            }
+                            if var image = images[index] as? Asset {
+                                image.url = storageURL
+                                images[index] = image
+                            }
+                        }
+                    }
+                    dispatchGroup.leave() // Notify the group that a task has completed
+                }
+            }
+        }
+
+        if isEditing {
+            dispatchGroup.enter()
+            logger.info("Deleting manually deleted images from Storage: \(String(describing: deleteImages))")
+            Storage.storage().deleteFiles(atURLs: deleteImages ?? [])
+            dispatchGroup.leave()
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            // Code to execute once all tasks are completed
+            logger.info("All images have finished uploading.")
+            logger.info("Storage URLs: \(storageURLs)")
+
+            if isEditing {
+                artworkData["urls"] = (images as? [Asset])?.map { $0.url }
+                ArtistManager.shared.editArtworkIfAlreadyExists(artist: artistName,
+                                                                artwork: artworkName,
+                                                                data: artworkData) { result in
+                    completion(result)
+                }
+            } else {
+                if !nonEmptyURLs.isEmpty {
+                    artworkData["urls"] = nonEmptyURLs
+                } else if !storageURLs.isEmpty {
+                    artworkData["urls"] = storageURLs
+                }
+
+                ArtistManager.shared.createNewArtwork(artist: artistName,
+                                                      artwork: artworkName,
+                                                      data: artworkData) { result in
+                    completion(result)
+                }
+            }
+        }
+    }
+    // swiftlint:enable cyclomatic_complexity
+
+    func createArtworkData(name: String,
+                           description: String,
+                           editionNumber: String,
+                           editionSize: String,
+                           material: String,
+                           dimensionUnframed: String,
+                           dimensionFramed: String,
+                           year: String,
+                           signed: String,
+                           numbered: String,
+                           stamped: String,
+                           authenticity: String,
+                           price: String) -> [String: Any] {
+        // Use compactMap to remove any empty strings
+        let properties: [(key: String, value: String)]  = [
+            ("name", name),
+            ("description", description),
+            ("editionNumber", editionNumber),
+            ("editionSize", editionSize),
+            ("material", material),
+            ("dimensionUnframed", dimensionUnframed),
+            ("dimensionFramed", dimensionFramed),
+            ("year", year),
+            ("signed", signed),
+            ("numbered", numbered),
+            ("stamped", stamped),
+            ("authenticity", authenticity),
+            ("price", price)
+        ]
+            .compactMap { key, value in
+                guard !value.isEmpty else { return nil }
+                return (key, value)
+            }
+
+        // Create a data object for the artwork being edited
+        var artworkData: [String: String] = [:]
+        for property in properties where !property.value.isEmpty {
+            artworkData[property.key] = property.value
+        }
+        return artworkData
     }
 }
 

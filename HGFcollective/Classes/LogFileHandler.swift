@@ -25,9 +25,13 @@ class LogFileHandler: LogHandler {
         }
     }
 
-    subscript(metadataKey _: String) -> Logger.Metadata.Value? {
-        get { nil }
-        set(newValue) {}
+    subscript(metadataKey metadataKey: String) -> Logger.Metadata.Value? {
+        get {
+            return metadata[metadataKey]
+        }
+        set(newValue) {
+            metadata[metadataKey] = newValue
+        }
     }
 
     func log(level: Logger.Level,

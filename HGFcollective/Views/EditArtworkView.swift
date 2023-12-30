@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseAnalytics
-import FirebaseStorage
 
 struct EditArtworkView: View {
     // User input fields
@@ -386,92 +385,37 @@ struct EditArtworkView: View {
                             images have been deleted without a replacement image being provided.
                             """
         } else {
-            // TODO: Move to function
             isLoading = true
 
-            let dispatchGroup = DispatchGroup()
+            let editedArtworkData = artistManager.createArtworkData(name: artworkName,
+                                                                    description: description,
+                                                                    editionNumber: editionNumber,
+                                                                    editionSize: editionSize,
+                                                                    material: material,
+                                                                    dimensionUnframed: dimensionUnframed,
+                                                                    dimensionFramed: dimensionFramed,
+                                                                    year: year,
+                                                                    signed: signed,
+                                                                    numbered: numbered,
+                                                                    stamped: stamped,
+                                                                    authenticity: authenticity,
+                                                                    price: price)
 
-            // Upload images to Storage if required.
-            // We don't want to upload images stored in Assets.xcassets
-            // that haven't been overriden or images we already have a
-            // url for that haven't been overriden.
-            for index in 0..<images.count where images[index].changed == true {
-                logger.info("Uploading new artwork image from index \(index) to Storage.")
-
-                // Create the path where the image will be stored in storage.
-                // We used to add the index to the end of the path, but this can
-                // be buggy when images are rearranged and uploaded whilst editing
-                // the artwork. Hence, a timestamp is used to prevent this.
-                let timeInMilliseconds = Int64(Date().timeIntervalSince1970 * 1000)
-                // swiftlint:disable:next line_length
-                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(timeInMilliseconds)
-
-                // Convert the image to jpeg format and compress
-                guard let imageData = images[index].uiImage?.jpegData(compressionQuality: compressionRatio) else { return }
-
-                dispatchGroup.enter() // Notify the group that a task has started
-
-                Storage.storage().uploadData(path: storagePath, data: imageData) { storageURL in
-                    if let storageURL = storageURL {
-                        // Delete the old image from Storage if that's where it is located
-                        if let imageToDelete = images[index].url {
-                            Storage.storage().deleteFiles(atURLs: [imageToDelete])
-                        }
-                        images[index].url = storageURL
+            artistManager.createOrEditArtwork(artistName: artistName,
+                                              artworkName: artworkName,
+                                              artworkData: editedArtworkData,
+                                              nonEmptyURLs: nonEmptyURLs, images: images,
+                                              deleteImages: manuallyDeletedImages,
+                                              isEditing: true,
+                                              compressionRatio: compressionRatio) { result in
+                if let result = result {
+                    statusMessage = result.message
+                    // Go back to the portfolio manager menu if successful
+                    if result.success == true {
+                        presentationMode.wrappedValue.dismiss()
                     }
-                    dispatchGroup.leave() // Notify the group that a task has completed
                 }
-            }
-
-            dispatchGroup.enter() // Notify the group that a task has started
-            logger.info("Deleting manually deleted images from Storage: \(manuallyDeletedImages)")
-            Storage.storage().deleteFiles(atURLs: manuallyDeletedImages)
-            dispatchGroup.leave() // Notify the group that a task has completed
-
-            dispatchGroup.notify(queue: .main) {
-                // Code to execute once all tasks are completed
-                logger.info("All images have finished uploading.")
-
-                // Use compactMap to remove any empty strings
-                let properties: [(key: String, value: String)]  = [
-                    ("name", artworkName),
-                    ("description", description),
-                    ("editionNumber", editionNumber),
-                    ("editionSize", editionSize),
-                    ("material", material),
-                    ("dimensionUnframed", dimensionUnframed),
-                    ("dimensionFramed", dimensionFramed),
-                    ("year", year),
-                    ("signed", signed),
-                    ("numbered", numbered),
-                    ("stamped", stamped),
-                    ("authenticity", authenticity),
-                    ("price", price)
-                ]
-                    .compactMap { key, value in
-                        guard !value.isEmpty else { return nil }
-                        return (key, value)
-                    }
-
-                // Create a data object for the artwork being edited
-                var newArtworkData: [String:Any] = [:]
-                for property in properties where !property.value.isEmpty {
-                    newArtworkData[property.key] = property.value
-                }
-                newArtworkData["urls"] = images.map { $0.url }
-
-                artistManager.editArtworkIfAlreadyExists(artist: artistName,
-                                                         artwork: artworkName,
-                                                         data: newArtworkData) { result in
-                    if let result = result {
-                        statusMessage = result.message
-                        // Go back to the portfolio manager menu if successful
-                        if result.success == true {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                    isLoading = false
-                }
+                isLoading = false
             }
         }
     }
@@ -515,36 +459,5 @@ struct EditArtworkView_Previews: PreviewProvider {
         EditArtworkView()
             .environmentObject(artistManager)
             .preferredColorScheme(.dark)
-    }
-}
-
-struct DropViewDelegate: DropDelegate {
-    let destinationItem: Asset
-    @Binding var images: [Asset]
-    @Binding var draggedItem: Asset?
-
-    func dropUpdated(info: DropInfo) -> DropProposal? {
-        return DropProposal(operation: .move)
-    }
-
-    func performDrop(info: DropInfo) -> Bool {
-        draggedItem = nil
-        return true
-    }
-
-    func dropEntered(info: DropInfo) {
-        // Swap images
-        if let draggedItem {
-            let fromIndex = images.firstIndex(of: draggedItem)
-            if let fromIndex {
-                let toIndex = images.firstIndex(of: destinationItem)
-                if let toIndex, fromIndex != toIndex {
-                    withAnimation {
-                        self.images.move(fromOffsets: IndexSet(integer: fromIndex),
-                                         toOffset: (toIndex > fromIndex ? (toIndex + 1) : toIndex))
-                    }
-                }
-            }
-        }
     }
 }

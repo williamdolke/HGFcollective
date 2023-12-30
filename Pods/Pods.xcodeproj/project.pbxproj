@@ -174,7 +174,7 @@
 		6EC6496CFC21D0A31E3CC175E47F4A81 /* leveldb-library.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = "leveldb-library.xcframework"; path = "FirebaseFirestore/leveldb-library.xcframework"; sourceTree = "<group>"; };
 		6EDA4F7599F1657115D8EBC05B7EBB56 /* NSView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSView.swift; path = Sources/SnapshotTesting/Snapshotting/NSView.swift; sourceTree = "<group>"; };
 		7080199D7880F6275898EDA64D348697 /* AccessibilitySnapshot.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AccessibilitySnapshot.modulemap; sourceTree = "<group>"; };
-		792B5E4E0A1AD790F9B36393BB894673 /* AccessibilitySnapshot */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = AccessibilitySnapshot; path = libAccessibilitySnapshot.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		792B5E4E0A1AD790F9B36393BB894673 /* libAccessibilitySnapshot.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAccessibilitySnapshot.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7A333E5CC775FC29D13FA744D2766468 /* Snapshotting.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Snapshotting.swift; path = Sources/SnapshotTesting/Snapshotting.swift; sourceTree = "<group>"; };
 		7A3619138F9C4FF844D04BC783224051 /* gRPC-C++.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = "gRPC-C++.xcframework"; path = "FirebaseFirestore/gRPC-C++.xcframework"; sourceTree = "<group>"; };
 		7CB4DC771072FC79F142B2A527B60097 /* ASAccessibilityEnabler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ASAccessibilityEnabler.m; path = Sources/AccessibilitySnapshot/Core/ObjC/ASAccessibilityEnabler.m; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 		9A4AEB14C26EF07D6AFDBEF694B01E46 /* Pods-HGFcollectiveSnapshotTests */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "Pods-HGFcollectiveSnapshotTests"; path = "libPods-HGFcollectiveSnapshotTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9E97B591BE8C21CE7A5458072E6CAFED /* NSViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NSViewController.swift; path = Sources/SnapshotTesting/Snapshotting/NSViewController.swift; sourceTree = "<group>"; };
-		A037DBBCCACBFACB5C39A80B1C273043 /* SnapshotTesting */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = SnapshotTesting; path = libSnapshotTesting.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A037DBBCCACBFACB5C39A80B1C273043 /* libSnapshotTesting.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSnapshotTesting.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A27EA869A1F4B449E2E2B69CC7A7CC6A /* Images.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Sources/AccessibilitySnapshot/Core/Swift/Assets/Images.xcassets; sourceTree = "<group>"; };
 		A2E1AA8B8E7CBDAE382D240C05FB182D /* abseil.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = abseil.xcframework; path = FirebaseFirestore/abseil.xcframework; sourceTree = "<group>"; };
 		A5430FE3ABA4AE356D427AE5B10089EA /* Codable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Codable.swift; path = Sources/SnapshotTesting/Snapshotting/Codable.swift; sourceTree = "<group>"; };
@@ -549,11 +549,11 @@
 		EC7FD5A3653E87F570FAD203DD34C2F0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				792B5E4E0A1AD790F9B36393BB894673 /* AccessibilitySnapshot */,
+				792B5E4E0A1AD790F9B36393BB894673 /* libAccessibilitySnapshot.a */,
 				323D6A1E83C4F7C62D4AA097D4A3D6B2 /* AccessibilitySnapshot.bundle */,
 				2C62EBE6A04C880176B67323ECA94777 /* Pods-HGFcollective */,
 				9A4AEB14C26EF07D6AFDBEF694B01E46 /* Pods-HGFcollectiveSnapshotTests */,
-				A037DBBCCACBFACB5C39A80B1C273043 /* SnapshotTesting */,
+				A037DBBCCACBFACB5C39A80B1C273043 /* libSnapshotTesting.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -649,7 +649,7 @@
 			);
 			name = SnapshotTesting;
 			productName = SnapshotTesting;
-			productReference = A037DBBCCACBFACB5C39A80B1C273043 /* SnapshotTesting */;
+			productReference = A037DBBCCACBFACB5C39A80B1C273043 /* libSnapshotTesting.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		CE4FF8C9506BD38425BD468AFFE0EBC5 /* Pods-HGFcollectiveSnapshotTests */ = {
@@ -688,7 +688,7 @@
 			);
 			name = AccessibilitySnapshot;
 			productName = AccessibilitySnapshot;
-			productReference = 792B5E4E0A1AD790F9B36393BB894673 /* AccessibilitySnapshot */;
+			productReference = 792B5E4E0A1AD790F9B36393BB894673 /* libAccessibilitySnapshot.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -1033,7 +1033,7 @@
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				IBSC_MODULE = AccessibilitySnapshot;
 				INFOPLIST_FILE = "Target Support Files/AccessibilitySnapshot/ResourceBundle-AccessibilitySnapshot-AccessibilitySnapshot-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				PRODUCT_NAME = AccessibilitySnapshot;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1095,7 +1095,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/SnapshotTesting/SnapshotTesting-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MODULEMAP_FILE = Headers/Public/SnapshotTesting/SnapshotTesting.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1119,7 +1119,7 @@
 				DEVELOPMENT_TEAM = 4XTDP35444;
 				IBSC_MODULE = AccessibilitySnapshot;
 				INFOPLIST_FILE = "Target Support Files/AccessibilitySnapshot/ResourceBundle-AccessibilitySnapshot-AccessibilitySnapshot-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				PRODUCT_NAME = AccessibilitySnapshot;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1158,7 +1158,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/SnapshotTesting/SnapshotTesting-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MODULEMAP_FILE = Headers/Public/SnapshotTesting/SnapshotTesting.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1201,7 +1201,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/AccessibilitySnapshot/AccessibilitySnapshot-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MODULEMAP_FILE = Headers/Public/AccessibilitySnapshot/AccessibilitySnapshot.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1250,7 +1250,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/AccessibilitySnapshot/AccessibilitySnapshot-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MODULEMAP_FILE = Headers/Public/AccessibilitySnapshot/AccessibilitySnapshot.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";

@@ -171,6 +171,8 @@ struct AddNewArtworkView: View {
     private func createArtwork() {
         // TODO: Check if the artwork already exists
         // TODO: Allow a mix of URLs and camera roll images to be used
+        statusMessage = ""
+
         // Filter out any empty elements from urls. These correspond
         // to fields where the admin hasn't input anything.
         let nonEmptyURLs = urls.filter { !$0.isEmpty }
@@ -183,85 +185,38 @@ struct AddNewArtworkView: View {
             logger.info("User has not completed all required fields.")
             statusMessage = "Error: All required and must be completed."
         } else {
-            // TODO: Move to function
             isLoading = true
 
-            let dispatchGroup = DispatchGroup()
-            var storageURLs: [String] = []
-            // Upload images to Storage if specified
-            for index in 0..<images.count {
-                logger.info("Uploading new artwork image from index \(index) to Storage.")
+            let newArtworkData = artistManager.createArtworkData(name: artworkName,
+                                                                 description: description,
+                                                                 editionNumber: editionNumber,
+                                                                 editionSize: editionSize,
+                                                                 material: material,
+                                                                 dimensionUnframed: dimensionUnframed,
+                                                                 dimensionFramed: dimensionFramed,
+                                                                 year: year,
+                                                                 signed: signed,
+                                                                 numbered: numbered,
+                                                                 stamped: stamped,
+                                                                 authenticity: authenticity,
+                                                                 price: price)
 
-                // Create the path where the image will be stored in storage.
-                // We used to add the index to the end of the path, but this can
-                // be buggy when images are rearranged and uploaded whilst editing
-                // the artwork. Hence, a timestamp is used to prevent this.
-                let timeInMilliseconds = Int64(Date().timeIntervalSince1970 * 1000)
-                // swiftlint:disable:next line_length
-                let storagePath = "artists/" + artistName + "/artworks/" + artworkName + "/" + artworkName + " " + String(timeInMilliseconds)
-
-                // Convert the image to jpeg format and compress
-                guard let imageData = images[index].jpegData(compressionQuality: compressionRatio) else { return }
-
-                dispatchGroup.enter() // Notify the group that a task has started
-
-                Storage.storage().uploadData(path: storagePath, data: imageData) { storageURL in
-                    if let storageURL = storageURL {
-                        storageURLs.append(storageURL)
+            artistManager.createOrEditArtwork(artistName: artistName,
+                                                         artworkName: artworkName,
+                                                         artworkData: newArtworkData,
+                                                         nonEmptyURLs: nonEmptyURLs,
+                                                         images: images,
+                                                         deleteImages: nil,
+                                                         isEditing: false,
+                                                         compressionRatio: compressionRatio) { result in
+                if let result = result {
+                    statusMessage = result.message
+                    // Go back to the portfolio manager menu if successful
+                    if result.success == true {
+                        presentationMode.wrappedValue.dismiss()
                     }
-                    dispatchGroup.leave() // Notify the group that a task has completed
                 }
-            }
-
-            dispatchGroup.notify(queue: .main) {
-                // Code to execute once all tasks are completed
-                logger.info("All images have finished uploading.")
-                logger.info("Storage URLs: \(storageURLs)")
-
-                // Use compactMap to remove any empty strings
-                let properties: [(key: String, value: String)]  = [
-                    ("name", artworkName),
-                    ("description", description),
-                    ("editionNumber", editionNumber),
-                    ("editionSize", editionSize),
-                    ("material", material),
-                    ("dimensionUnframed", dimensionUnframed),
-                    ("dimensionFramed", dimensionFramed),
-                    ("year", year),
-                    ("signed", signed),
-                    ("numbered", numbered),
-                    ("stamped", stamped),
-                    ("authenticity", authenticity),
-                    ("price", price)
-                ]
-                    .compactMap { key, value in
-                        guard !value.isEmpty else { return nil }
-                        return (key, value)
-                    }
-
-                // Create a data object for the artwork being created
-                var newArtworkData: [String:Any] = [:]
-                for property in properties where !property.value.isEmpty {
-                    newArtworkData[property.key] = property.value
-                }
-                if !nonEmptyURLs.isEmpty {
-                    newArtworkData["urls"] = nonEmptyURLs
-                } else if !storageURLs.isEmpty {
-                    newArtworkData["urls"] = storageURLs
-                }
-
-                artistManager.createNewArtwork(artist: artistName,
-                                               artwork: artworkName,
-                                               data: newArtworkData) { result in
-                    if let result = result {
-                        statusMessage = result.message
-                        // Go back to the portfolio manager menu if successful
-                        if result.success == true {
-                            presentationMode.wrappedValue.dismiss()
-                        }
-                    }
-                    isLoading = false
-                }
+                isLoading = false
             }
         }
     }
